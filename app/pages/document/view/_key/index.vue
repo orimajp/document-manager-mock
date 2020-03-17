@@ -13,7 +13,7 @@ import {
   DocumentNode,
   DocumentPage
 } from '@/models/DocumentModel'
-
+/*
 const openChildNode = (topNode: DocumentNode, list: Array<string>): void => {
   // topNode.expand = false
   topNode.closeNodes()
@@ -21,7 +21,7 @@ const openChildNode = (topNode: DocumentNode, list: Array<string>): void => {
   topNode.selectNode()
   openNode(topNode, list)
 }
-
+*/
 const openNode = (node: DocumentNode, list: Array<string>): void => {
   // node.select = node.pageKey === list[list.length - 1]
   if (node.pageKey === list[list.length - 1]) {
@@ -45,16 +45,35 @@ const openNode = (node: DocumentNode, list: Array<string>): void => {
     openNode(node.nodes[i], list)
   }
 }
-
+/*
 const selectNode = (topNode: DocumentNode, pageKey: string): Array<string> => {
   console.log(`topNode=${topNode}, pageKey=${pageKey}`)
   // TODO 階層ページキーリストを取得
   return []
 }
+ */
 
 export default Vue.extend({
   //  async fetch(ctx: Context) {
   async fetch({ params, app: { $accessor } }: Context) {
+    const key = params.key
+    console.log(`pageKey=${key}`)
+    await $accessor.page.fetchPage(key)
+    await $accessor.setPageKey(key)
+    const pageData = $accessor.page.getPage(key)
+    if (pageData === null) {
+      throw new Error('page not dound')
+    }
+    await $accessor.document.fetchDocument(pageData.documentKey)
+    await $accessor.setDocumentKey(pageData.documentKey)
+    // const keyArray = $accessor.document.getNestedKeyArray(key)
+    const keyArray = $accessor.document.document.getNestedKeyArray(key)
+    $accessor.document.openChildren(keyArray)
+    const document = $accessor.document.document
+    console.log(JSON.stringify(pageData, null, 2))
+    console.log(JSON.stringify(document, null, 2))
+
+    /*
     // const params = ctx.params
     const key = params.key
     console.log(`pageKey=${key}`)
@@ -69,12 +88,14 @@ export default Vue.extend({
     await $accessor.setDocumentKey(page.documentKey)
     const document = $accessor.document.document as DocumentMain
     const topNode = document.node
+    console.log(topNode)
     console.log('before change')
     // topNode.expand = true
     topNode.openNodes()
     console.log('after change')
     const list = selectNode(topNode, key)
     openChildNode(topNode, list)
+     */
   },
   /*
   async asyncData(ctx: Context): Promise<object | void> | object | void {

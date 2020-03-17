@@ -25,3 +25,9 @@ declare module '@nuxt/types' {
 export interface NuxtAppOptions {
   $accessor: typeof accessorType
 }
+
+export {
+  DocumentMainData,
+  DocumentPageData,
+  DocumentNodeData
+} from './document'
