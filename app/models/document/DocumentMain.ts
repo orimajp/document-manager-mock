@@ -1,9 +1,9 @@
-import { DocumentNodeWrapper } from '~/models/document/DocumentNodeWrapper'
+import { DocumentNode } from '~/models/document/DocumentNode'
 
-export class DocumentMainWrapper {
+export class DocumentMain {
   documentKey: string
-  node: DocumentNodeWrapper
-  constructor(documentKey: string, node: DocumentNodeWrapper) {
+  node: DocumentNode
+  constructor(documentKey: string, node: DocumentNode) {
     this.documentKey = documentKey
     this.node = node
   }
@@ -24,7 +24,7 @@ export class DocumentMainWrapper {
     return this.getNestedKeys(pageKey, keys, this.node)
   }
 
-  private openNode(targetNode: DocumentNodeWrapper, list: Array<string>): void {
+  private openNode(targetNode: DocumentNode, list: Array<string>): void {
     targetNode.select = targetNode.pageKey === list[list.length - 1]
 
     if (!targetNode.nodes || targetNode.nodes.length === 0) {
@@ -42,7 +42,7 @@ export class DocumentMainWrapper {
   private getNestedKeys(
     searchPageKey: string,
     keys: Array<string>,
-    targetNode: DocumentNodeWrapper
+    targetNode: DocumentNode
   ): Array<string> {
     const nodePageKey = targetNode.pageKey
     const appendPageKeys = keys.concat(nodePageKey)

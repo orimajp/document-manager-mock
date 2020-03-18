@@ -1,8 +1,8 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
 import { DocumentPageData } from '~/types'
-import { documentService2 } from '~/services/DocumentService2'
+import { documentService } from '~/services/DocumentService'
 import { DocumentPageHolder } from '~/models/document/DocumentPageHolder'
-import { DocumentPageWrapper } from '~/models/document/DocumentPageWrapper'
+import { DocumentPage } from '~/models/document/DocumentPage'
 
 const holder = new DocumentPageHolder()
 
@@ -22,7 +22,7 @@ export const mutations = mutationTree(state(), {
   clearAllPages(state): void {
     state.pageHolder.clearPageCache()
   },
-  setPage(state, pair: [string, DocumentPageWrapper]): void {
+  setPage(state, pair: [string, DocumentPage]): void {
     state.pageHolder.addPage(pair[0], pair[1])
   }
 })
@@ -32,14 +32,14 @@ export const actions = actionTree(
   {
     // TODO 現状はマップに無いページは必ずデータを取得する処理。実際の処理では新しいページがある場合のみ置き換える
     fetchPage({ getters, commit }, pageKey: string) {
-      const pageData = getters.getPage(pageKey)
-      if (pageData === null) {
-        return documentService2
+      const cachedPageData = getters.getPage(pageKey)
+      if (cachedPageData === null) {
+        return documentService
           .getPage(pageKey)
-          .then((page: DocumentPageData) => {
-            console.log(`commit#setPage=${JSON.stringify(page)}`)
-            const wrapper = new DocumentPageWrapper(page)
-            commit('setPage', [pageKey, wrapper])
+          .then((pageData: DocumentPageData) => {
+            console.log(`commit#setPage=${JSON.stringify(pageData)}`)
+            const page = new DocumentPage(pageData)
+            commit('setPage', [pageKey, page])
           })
       }
     },

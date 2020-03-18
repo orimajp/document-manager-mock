@@ -1,11 +1,11 @@
 import { DocumentNodeData } from '~/types'
 
-export class DocumentNodeWrapper {
+export class DocumentNode {
   pageTitle: string
   pageKey: string
   expand: boolean
   select: boolean
-  nodes: Array<DocumentNodeWrapper>
+  nodes: Array<DocumentNode>
   constructor(nodeData: DocumentNodeData) {
     this.pageTitle = nodeData.pageTitle
     this.pageKey = nodeData.pageKey

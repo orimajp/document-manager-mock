@@ -1,11 +1,11 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
 import { DocumentMainData } from '~/types'
-import { documentService2 } from '~/services/DocumentService2'
-import { DocumentMainWrapper } from '~/models/document/DocumentMainWrapper'
-import { DocumentMainWrapperBuilder } from '~/models/document/DocumentMainWrapperBuilder'
+import { documentService } from '~/services/DocumentService'
+import { DocumentMain } from '~/models/document/DocumentMain'
+import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 
 export const state = () => ({
-  document: {} as DocumentMainWrapper
+  document: {} as DocumentMain
 })
 
 export type RootState = ReturnType<typeof state>
@@ -19,7 +19,7 @@ export const getters = getterTree(state, {
 })
 
 export const mutations = mutationTree(state, {
-  setDocument(state, document: DocumentMainWrapper): void {
+  setDocument(state, document: DocumentMain): void {
     state.document = document
   },
   openChildren(state, list: Array<string>): void {
@@ -31,10 +31,10 @@ export const actions = actionTree(
   { state, getters, mutations },
   {
     fetchDocument({ commit }, documentKey: string) {
-      return documentService2
+      return documentService
         .getDocument(documentKey)
         .then((document: DocumentMainData) => {
-          const builder = new DocumentMainWrapperBuilder(document)
+          const builder = new DocumentMainBuilder(document)
           commit('setDocument', builder.createDocument())
         })
     },

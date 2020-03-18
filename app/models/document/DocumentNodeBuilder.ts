@@ -1,15 +1,15 @@
 import { DocumentNodeData } from '~/types'
-import { DocumentNodeWrapper } from '~/models/document/DocumentNodeWrapper'
+import { DocumentNode } from '~/models/document/DocumentNode'
 
-export class DocumentNodeWrapperBuilder {
+export class DocumentNodeBuilder {
   private readonly topNodeData: DocumentNodeData
 
   constructor(nodeData: DocumentNodeData) {
     this.topNodeData = nodeData
   }
 
-  createTopNode(): DocumentNodeWrapper {
-    const topnodeWrapper = new DocumentNodeWrapper(this.topNodeData)
+  createTopNode(): DocumentNode {
+    const topnodeWrapper = new DocumentNode(this.topNodeData)
     for (const data of this.topNodeData.nodes) {
       this.createNestedNode(data, topnodeWrapper)
     }
@@ -18,9 +18,9 @@ export class DocumentNodeWrapperBuilder {
 
   private createNestedNode(
     currentData: DocumentNodeData,
-    currentWrapper: DocumentNodeWrapper
+    currentWrapper: DocumentNode
   ): void {
-    const newWrapper = new DocumentNodeWrapper(currentData)
+    const newWrapper = new DocumentNode(currentData)
     currentWrapper.nodes.push(newWrapper)
     for (const data of currentData.nodes) {
       this.createNestedNode(data, newWrapper)

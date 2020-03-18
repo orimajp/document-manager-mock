@@ -7,9 +7,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Context } from '@nuxt/types'
-import { DocumentNodeWrapper } from '../../../../models/document/DocumentNodeWrapper'
-import { DocumentMainWrapper } from '../../../../models/document/DocumentMainWrapper'
-import { DocumentPageWrapper } from '../../../../models/document/DocumentPageWrapper'
+import { DocumentNode } from '../../../../models/document/DocumentNode'
+import { DocumentMain } from '../../../../models/document/DocumentMain'
+import { DocumentPage } from '../../../../models/document/DocumentPage'
 
 export default Vue.extend({
   //  async fetch(ctx: Context) {
@@ -35,16 +35,16 @@ export default Vue.extend({
     pageKeyArray: [] as Array<String>
   }),
   computed: {
-    pageData(): DocumentPageWrapper {
+    pageData(): DocumentPage {
       const pageKey = this.$accessor.pageKey
       return this.$accessor.page.getPage(pageKey)
     },
-    treeNode(): DocumentNodeWrapper {
+    treeNode(): DocumentNode {
       return this.getDocument().node
     }
   },
   methods: {
-    getDocument(): DocumentMainWrapper {
+    getDocument(): DocumentMain {
       return this.$accessor.document.document
     },
     openChildren(list: Array<string>): void {
@@ -59,7 +59,7 @@ export default Vue.extend({
       // topNode.select = false
       // topNode.unselectNode()
       // openNode(topNode, list)
-      this.$accessor.openChildren(list)
+      this.$accessor.document.openChildren(list)
     }
   }
 })

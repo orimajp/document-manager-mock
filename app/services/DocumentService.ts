@@ -1,6 +1,6 @@
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 
-class DocumentService2 {
+class DocumentService {
   getDocument(documentKey: string): Promise<DocumentMainData> {
     return new Promise<DocumentMainData>((resolve, reject) => {
       const document = createDocument(documentKey)
@@ -22,7 +22,7 @@ class DocumentService2 {
   }
 }
 
-export const documentService2 = new DocumentService2()
+export const documentService = new DocumentService()
 
 const createDocument = (documentKey: string): DocumentMainData | null => {
   const documentNode = nodeMap.get(documentKey)

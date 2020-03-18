@@ -1,6 +1,6 @@
 import { DocumentPageData } from '~/types'
 
-export class DocumentPageWrapper {
+export class DocumentPage {
   documentKey: string
   pageKey: string
   pageTitle: string
