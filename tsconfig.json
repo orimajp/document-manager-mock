@@ -27,8 +27,9 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/vuetify",
-      "types"
+      "@nuxtjs/vuetify"
+      // "@nuxtjs/vuetify",
+      // "types"
     ]
   },
   "files": [
