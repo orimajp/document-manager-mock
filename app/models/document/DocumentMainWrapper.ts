@@ -14,11 +14,7 @@ export class DocumentMainWrapper {
   }
 
   openChildren(list: Array<string>): void {
-    // topNode.expand = false
-    // this.node.closeNodes()
     this.node.expand = false
-    // topNode.select = false
-    // this.node.unselectNode()
     this.node.select = false
     this.openNode(this.node, list)
   }
@@ -29,28 +25,12 @@ export class DocumentMainWrapper {
   }
 
   private openNode(targetNode: DocumentNodeWrapper, list: Array<string>): void {
-    // node.select = node.pageKey === list[list.length - 1]
     targetNode.select = targetNode.pageKey === list[list.length - 1]
-    /*
-    if (targetNode.pageKey === list[list.length - 1]) {
-      targetNode.selectNode()
-    } else {
-      targetNode.unselectNode()
-    }
-     */
 
     if (!targetNode.nodes || targetNode.nodes.length === 0) {
       return
     }
-    // node.expand = !!list.includes(node.pageKey)
     targetNode.expand = list.includes(targetNode.pageKey)
-    /*
-    if (list.includes(targetNode.pageKey)) {
-      targetNode.openNodes()
-    } else {
-      targetNode.closeNodes()
-    }
-     */
     if (!targetNode.expand) {
       return
     }

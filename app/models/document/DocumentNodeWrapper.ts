@@ -13,22 +13,4 @@ export class DocumentNodeWrapper {
     this.select = false
     this.nodes = []
   }
-
-  /*
-  openNodes(): void {
-    this.expand = true
-  }
-
-  closeNodes(): void {
-    this.expand = false
-  }
-
-  selectNode(): void {
-    this.select = true
-  }
-
-  unselectNode(): void {
-    this.select = false
-  }
-   */
 }
