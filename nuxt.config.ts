@@ -72,5 +72,5 @@ const nuxtConfig: Configuration = {
   }
 }
 
-// module.exports = nuxtConfig
-export default nuxtConfig
+module.exports = nuxtConfig
+// export default nuxtConfig

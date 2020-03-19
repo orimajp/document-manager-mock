@@ -5,7 +5,10 @@ import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 
 export const state = () => ({
-  document: {} as DocumentMain
+  document: {
+    documentKey: '',
+    node: {}
+  } as DocumentMain
 })
 
 export type RootState = ReturnType<typeof state>
