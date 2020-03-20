@@ -20,6 +20,7 @@ Vuex(というかVuexに格納するクラス)にてデータ更新処理を行�
 5. http://localhost:3000/document/view/page0
 
 # 参考
+## VuexへのTypeScript適用
 * [NuxtJS + Vuexでいい感じのTypescript環境をあまり頑張らないで構築する - Qiita](https://qiita.com/shindex512/items/a90217b9e4c03c5b5215)
 * [Introduction | 🏦 Nuxt Typed Vuex](https://nuxt-typed-vuex.roe.dev/)
 * [danielroe/nuxt-typed-vuex: 🏦 A typed store accessor for Nuxt.](https://github.com/danielroe/nuxt-typed-vuex)

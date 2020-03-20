@@ -17,6 +17,7 @@
     "nuxt-typed-vuex": "^0.1.17"
   },
   "devDependencies": {
+    "@mdi/font": "^5.0.45",
     "@nuxt/typescript-build": "^0.6.0",
     "@nuxtjs/eslint-config": "^2.0.2",
     "@nuxtjs/eslint-config-typescript": "^1.0.2",
