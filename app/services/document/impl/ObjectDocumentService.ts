@@ -1,6 +1,7 @@
+import { IDocumentService } from '~/services/document/IDocumentService'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 
-class DocumentService {
+class ObjectDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMainData> {
     return new Promise<DocumentMainData>((resolve, reject) => {
       const document = createDocument(documentKey)
@@ -22,7 +23,7 @@ class DocumentService {
   }
 }
 
-export const documentService = new DocumentService()
+export const objectDocumentService = new ObjectDocumentService()
 
 const createDocument = (documentKey: string): DocumentMainData | null => {
   const documentNode = nodeMap.get(documentKey)
