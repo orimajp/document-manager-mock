@@ -14,6 +14,10 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.0",
     "@nuxtjs/markdownit": "^1.2.9",
+    "@types/highlightjs": "^9.12.0",
+    "github-markdown-css": "^4.0.0",
+    "highlight.js": "^9.18.1",
+    "highlightjs-vue": "^1.0.0",
     "nuxt": "^2.12.0",
     "nuxt-typed-vuex": "^0.1.17"
   },

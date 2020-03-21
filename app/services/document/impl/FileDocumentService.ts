@@ -76,6 +76,53 @@ const dummyPageData = `
 #### (見出し4)
 ##### (見出し5)
 ###### (見出し6)
+
+# コード
+## TypeScript
+
+\`\`\`ts
+import { DocumentMainData, DocumentPageData } from '~/types'
+
+export interface IDocumentService {
+  getDocument(documentKey: string): Promise<DocumentMainData>
+  getPage(pageKey: string): Promise<DocumentPageData>
+}
+\`\`\`
+
+## Vue.js
+
+\`\`\`vue
+<template>
+  <div>
+    <v-content>
+      <v-container>
+        <h1>ナビゲーション</h1>
+        <ul>
+          <li>
+            <nuxt-link to="/document/view/page0">
+              ツリー構造テスト(page0)
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/document/view/md-page0">
+              markdownレンダリングテスト(md-page0)
+            </nuxt-link>
+          </li>
+        </ul>
+      </v-container>
+    </v-content>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({})
+</script>
+
+<style></style>
+\`\`\`
+
+
 `
 
 const documentNode1 = {

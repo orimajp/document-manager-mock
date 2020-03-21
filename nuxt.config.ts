@@ -1,5 +1,7 @@
 import * as path from 'path'
 import { Configuration } from '@nuxt/types'
+// import hljs from 'highlight.js' // こっちだけimportするとコードハイライトでコケる
+// import hljsDefineVue from 'highlightjs-vue' // こちらはimortできない
 
 const nuxtConfig: Configuration = {
   mode: 'spa',
@@ -19,15 +21,17 @@ const nuxtConfig: Configuration = {
       }
     ],
     link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      /*
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
         href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css'
       }
+      */
     ]
   },
-  /* マテリアルデザインアイコンのCDN指定は暫定 */
 
   /*
    ** for IntelliJ IDEA / WebStorm
@@ -47,11 +51,15 @@ const nuxtConfig: Configuration = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    'github-markdown-css',
+    '../node_modules/highlight.js/styles/github-gist.css'
+    // 'github-markdown-css' // github-gist.cssaが無いとハイライトされない
+  ],
   /*
    ** Plugins to load before mounting the App
    */
-  // plugins: ['~/plugins/vuetify'],
+  plugins: ['~/plugins/vuetify'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -71,12 +79,25 @@ const nuxtConfig: Configuration = {
 
   // [optional] markdownit options
   // See https://github.com/markdown-it/markdown-it
+  // https://github.com/highlightjs/highlightjs-vue
   markdownit: {
     injected: true, // $mdを利用してmarkdownをhtmlにレンダリングする
     breaks: true, // 改行コードを<br>に変換する
     html: true, // HTML タグを有効にする
     linkify: true, // URLに似たテキストをリンクに自動変換する
     typography: true, // 言語に依存しないきれいな 置換 + 引用符 を有効にします。
+    highlight: (str: string, lang: string) => {
+      const hljs = require('highlight.js')
+      const hljsDefineVue = require('highlightjs-vue')
+      hljsDefineVue(hljs)
+      hljs.initHighlightingOnLoad()
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(lang, str).value
+        } catch (__) {}
+        return '' // use external default escaping
+      }
+    },
     use: []
   },
 
