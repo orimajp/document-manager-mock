@@ -3,6 +3,7 @@
     <div class="link-area">
       <div
         class="document-top-link"
+        :class="{ selected: selected }"
         @click="goDocumentTop"
         v-text="pageTitle"
       />
@@ -37,6 +38,10 @@ export default Vue.extend({
   computed: {
     pageTitle(): string {
       return this.currentNode.pageTitle
+    },
+    selected(): boolean {
+      const pageKey = this.$accessor.pageKey
+      return this.currentNode.pageKey === pageKey
     }
   },
   methods: {
@@ -62,5 +67,11 @@ export default Vue.extend({
 .tree-area {
   /*margin-left: -13px;*/
   margin-left: -10px;
+}
+.selected {
+  font-weight: bold;
+  color: black;
+  /*background-color: white;*/
+  background-color: lightgrey;
 }
 </style>
