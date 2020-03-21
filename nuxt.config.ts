@@ -18,8 +18,17 @@ const nuxtConfig: Configuration = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css'
+      }
+    ]
   },
+  /* マテリアルデザインアイコンのCDN指定は暫定 */
+
   /*
    ** for IntelliJ IDEA / WebStorm
    */
@@ -42,7 +51,7 @@ const nuxtConfig: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/vuetify'],
+  // plugins: ['~/plugins/vuetify'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -58,7 +67,19 @@ const nuxtConfig: Configuration = {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/markdownit'],
+
+  // [optional] markdownit options
+  // See https://github.com/markdown-it/markdown-it
+  markdownit: {
+    injected: true, // $mdを利用してmarkdownをhtmlにレンダリングする
+    breaks: true, // 改行コードを<br>に変換する
+    html: true, // HTML タグを有効にする
+    linkify: true, // URLに似たテキストをリンクに自動変換する
+    typography: true, // 言語に依存しないきれいな 置換 + 引用符 を有効にします。
+    use: []
+  },
+
   /*
    ** Build configuration
    */

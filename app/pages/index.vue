@@ -6,7 +6,12 @@
         <ul>
           <li>
             <nuxt-link to="/document/view/page0">
-              page0
+              ツリー構造テスト(page0)
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/document/view/md-page0">
+              markdownレンダリングテスト(md-page0)
             </nuxt-link>
           </li>
         </ul>

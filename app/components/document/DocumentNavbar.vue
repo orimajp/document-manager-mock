@@ -3,6 +3,11 @@
     <!--
     <v-app-bar-nav-icon />
     -->
+    <v-btn icon @click="goTop">
+      <v-icon>
+        mdi-home
+      </v-icon>
+    </v-btn>
     <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
   </v-app-bar>
 </template>
@@ -24,6 +29,11 @@ export default Vue.extend({
   computed: {
     pageTitle(): string {
       return this.documentNavbarContent.pageTitle
+    }
+  },
+  methods: {
+    goTop(): void {
+      this.$router.push('/')
     }
   }
 })

@@ -5,8 +5,10 @@ import { fileDocumentService } from '~/services/document/impl/FileDocumentServic
 class DocumentServiceFactory {
   getDocumentService(key: string): IDocumentService {
     if (this.isFileDocument(key)) {
+      console.log('select FileDocumentService.')
       return fileDocumentService
     }
+    console.log('select ObjectDocumentService.')
     return objectDocumentService
   }
 

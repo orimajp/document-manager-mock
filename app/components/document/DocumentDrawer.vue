@@ -1,7 +1,11 @@
 <template>
   <v-navigation-drawer clipped permanent app color="secondary">
     <div class="link-area">
-      <div class="document-top-link" v-text="pageTitle" />
+      <div
+        class="document-top-link"
+        @click="goDocumentTop"
+        v-text="pageTitle"
+      />
       <div class="tree-area">
         <document-tree
           :current-node="currentNode"
@@ -34,6 +38,11 @@ export default Vue.extend({
     pageTitle(): string {
       return this.currentNode.pageTitle
     }
+  },
+  methods: {
+    goDocumentTop(): void {
+      this.$router.push(`./${this.currentNode.pageKey}`)
+    }
   }
 })
 </script>
@@ -46,6 +55,9 @@ export default Vue.extend({
 .document-top-link {
   padding: 0 0 0 10px;
   margin-bottom: 5px;
+}
+.document-top-link:hover {
+  background-color: darkgrey;
 }
 .tree-area {
   /*margin-left: -13px;*/

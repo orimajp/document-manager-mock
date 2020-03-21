@@ -3,7 +3,12 @@
     <v-container fluid>
       <h1>{{ pageTitle }}</h1>
       <div class="document-area">
-        <div>{{ pageData }}</div>
+        <div class="markdown-body">
+          <!--
+          <div>{{ pageData }}</div>
+          -->
+          <div v-html="$md.render(pageData)" />
+        </div>
       </div>
     </v-container>
   </v-content>
@@ -31,7 +36,30 @@ export default Vue.extend({
 </script>
 
 <style>
+/* ここはmarkdown-itの都合上scopedは使えない */
+.v-application code {
+  box-shadow: none;
+  border-radius: 0;
+  font-weight: normal;
+  font-size: 100%;
+  color: black;
+  /*text-indent: 0;*/
+  padding: 0;
+}
+
+.v-application code::after {
+  content: none;
+}
+/*.v-application pre > code {
+  margin-bottom: -20px;
+}*/
+.v-application pre {
+  text-indent: -0.5em;
+}
 .document-area {
   padding: 10px;
+}
+.document-area pre > code {
+  font-weight: 500;
 }
 </style>

@@ -39,8 +39,13 @@ export default Vue.extend({
     }
 
     const currentDocument = $accessor.document.document
-    if (currentDocument.documentKey === '' || $accessor.documentKey) {
-      console.log(`Document取得(): documentKey=${pageData.documentKey}`)
+    if (
+      currentDocument.documentKey === '' ||
+      $accessor.documentKey !== pageData.documentKey
+    ) {
+      console.log(
+        `Document取得(): original documentKey=${currentDocument.documentKey} new documentKey=${pageData.documentKey}`
+      )
       await $accessor.document.fetchDocument(pageData.documentKey)
       await $accessor.setDocumentKey(pageData.documentKey)
     }
