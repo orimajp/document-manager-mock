@@ -95,7 +95,9 @@ li {
   text-indent: -1em;
   padding-left: 1em;
 }
-
+.doc-list {
+  cursor: pointer;
+}
 .doc-list:hover {
   /*background-color: lightgrey;*/
   background-color: darkgrey;

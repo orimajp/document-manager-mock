@@ -60,6 +60,7 @@ export default Vue.extend({
 .document-top-link {
   padding: 0 0 0 10px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 .document-top-link:hover {
   background-color: darkgrey;
