@@ -77,15 +77,44 @@ const dummyPageData = `
 ##### (見出し5)
 ###### (見出し6)
 
+> 引用
+
+# リンクテスト
+\`[]()\`記述によるリンクが通常のアンカータグになるためか遷移が遅い。
+相対リンクの場合、Nuxt.jsの画面遷移処理に置き換えるなどの仕組みが必要かも?
+
+* [page0](/document/view/page0)
+* [page8](/document/view/page8)
+
+## 内部リンク置換処理の参考になりそうなページ
+* https://github.com/nuxt-community/modules/issues/185
+* https://github.com/nuxt/nuxtjs.org/blob/master/components/commons/HtmlParser.global.vue
+* https://bitto.jp/posts/blog/nuxt%E5%8C%96/nuxt-md-anchor-convert/https://bitto.jp/posts/blog/nuxt%E5%8C%96/nuxt-md-anchor-convert/
+
 # コード
 ## TypeScript
 
 \`\`\`ts
-import { DocumentMainData, DocumentPageData } from '~/types'
+import { DocumentPage } from '~/models/document/DocumentPage'
 
-export interface IDocumentService {
-  getDocument(documentKey: string): Promise<DocumentMainData>
-  getPage(pageKey: string): Promise<DocumentPageData>
+export class DocumentPageHolder {
+  private pageMap: Map<string, DocumentPage>
+  constructor() {
+    this.pageMap = new Map<string, DocumentPage>()
+  }
+
+  getPage(pageKey: string): DocumentPage | null {
+    const page = this.pageMap.get(pageKey)
+    return page || null // narrowing
+  }
+
+  addPage(pageKey: string, page: DocumentPage): void {
+    this.pageMap.set(pageKey, page)
+  }
+
+  clearPageCache(): void {
+    this.pageMap.clear()
+  }
 }
 \`\`\`
 
@@ -122,6 +151,39 @@ export default Vue.extend({})
 <style></style>
 \`\`\`
 
+# markdown-it-sanitizer
+<b>これは強調されるが以下のscriptタグは無効化される。</b>
+
+<script>
+alert('危険!')
+</script>
+
+# markdown-it-container
+とりあえずBootstrap風スタイル。
+
+::: alert-primary
+Primary
+:::
+
+::: alert-secondary
+Secondary
+:::
+
+::: alert-success
+Success
+:::
+
+::: alert-info
+Info
+:::
+
+::: alert-warning
+Warning
+:::
+
+::: alert-danger
+Danger
+:::
 
 `
 

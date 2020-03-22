@@ -98,7 +98,15 @@ const nuxtConfig: Configuration = {
         return '' // use external default escaping
       }
     },
-    use: []
+    use: [
+      ['markdown-it-container', 'alert-primary'],
+      ['markdown-it-container', 'alert-secondary'],
+      ['markdown-it-container', 'alert-info'],
+      ['markdown-it-container', 'alert-success'],
+      ['markdown-it-container', 'alert-warning'],
+      ['markdown-it-container', 'alert-danger'],
+      'markdown-it-sanitizer'
+    ]
   },
 
   /*
