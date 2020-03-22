@@ -28,6 +28,65 @@ export default Vue.extend({
     pageData(): string {
       return this.pageContent.pageData
     }
+  },
+  watch: {
+    pageData() {
+      this.contentUpdated()
+    }
+  },
+  mounted() {
+    this.$nextTick(this.addListeners)
+  },
+  beforeDestroy() {
+    this.removeListeners()
+  },
+  methods: {
+    // https://github.com/nuxt-community/modules/issues/185
+    // https://github.com/nuxt/nuxtjs.org/blob/master/components/commons/HtmlParser.global.vue
+    navigate(event): void {
+      // const markdownBody = event.target.getElementsByClassName('markdown-body') // クラスによる絞り込みは何故か動かず
+      // const hrefs = markdownBody[0].getAttribute('href')
+      const hrefs = event.target.getAttribute('href')
+      if (!hrefs) {
+        return
+      }
+      console.log(`navigate hrefs=${hrefs}`)
+      const href = hrefs[0]
+      console.log(`navigate href=${href}`)
+      if (href === '/') {
+        event.preventDefault()
+        this.$router.push(hrefs)
+        return
+      }
+      if (hrefs.startsWith(location.origin)) {
+        const pathName = hrefs.slice(location.origin.length)
+        event.preventDefault()
+        this.$router.push(pathName)
+        return
+      }
+      location.href = href
+    },
+    contentUpdated(): void {
+      this.removeListeners()
+      this.$nextTick(() => {
+        this.addListeners()
+      })
+    },
+    addListeners() {
+      console.log('addListeners() called.')
+      // this._links = this.$el.getElementsByTagName('a')
+      this._links = this.$el.getElementsByTagName('a')
+      for (let i = 0; i < this._links.length; i++) {
+        this._links[i].addEventListener('click', this.navigate, false)
+      }
+    },
+    removeListeners() {
+      console.log('removeListeners() called.')
+      for (let i = 0; i < this._links.length; i++) {
+        this._links[i].removeEventListener('click', this.navigate, false)
+      }
+      this._links = []
+    }
   }
 })
 </script>

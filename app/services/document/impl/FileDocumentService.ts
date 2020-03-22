@@ -80,13 +80,16 @@ const dummyPageData = `
 > 引用
 
 # リンクテスト
-\`[]()\`記述によるリンクが通常のアンカータグになるためか遷移が遅い。
-相対リンクの場合、Nuxt.jsの画面遷移処理に置き換えるなどの仕組みが必要かも?
+\`[]()\`記述によるリンクが通常のアンカータグになるためか遷移が遅いため、相対リンクの場合はNuxt.jsの画面遷移処理を実行する。
 
-* [page0](/document/view/page0)
-* [page8](/document/view/page8)
+* [page0(/document/view/page0)](/document/view/page0)
+* [page8(/document/view/page8)](/document/view/page8)
+* [page8(http://localhost:3333/document/view/page8)](http://localhost:3333/document/view/page8)
+* [Google(外部リンク)](https://www.google.com/)
 
-## 内部リンク置換処理の参考になりそうなページ
+## 内部リンク用画面遷移処理の参考になったページ
+このうち\`HtmlParser.global.vue\`をアレンジして利用した。
+
 * https://github.com/nuxt-community/modules/issues/185
 * https://github.com/nuxt/nuxtjs.org/blob/master/components/commons/HtmlParser.global.vue
 * https://bitto.jp/posts/blog/nuxt%E5%8C%96/nuxt-md-anchor-convert/https://bitto.jp/posts/blog/nuxt%E5%8C%96/nuxt-md-anchor-convert/
