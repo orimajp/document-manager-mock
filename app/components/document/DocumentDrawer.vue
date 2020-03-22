@@ -7,12 +7,12 @@
         @click="goDocumentTop"
         v-text="pageTitle"
       />
-      <div class="tree-area">
+      <ul class="tree-area">
         <document-tree
           :current-node="currentNode"
           :page-key-array="pageKeyArray"
         />
-      </div>
+      </ul>
     </div>
   </v-navigation-drawer>
 </template>
@@ -58,16 +58,20 @@ export default Vue.extend({
   color: white;
 }
 .document-top-link {
-  padding: 0 0 0 10px;
+  /*padding: 0 0 0 10px;*/
+  padding: 5px 0 5px 10px;
   margin-bottom: 5px;
   cursor: pointer;
 }
 .document-top-link:hover {
   background-color: darkgrey;
+  color: black;
 }
 .tree-area {
   /*margin-left: -13px;*/
+  /*margin-left: -10px;*/
   margin-left: -10px;
+  padding-left: 0;
 }
 .selected {
   font-weight: bold;

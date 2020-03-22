@@ -97,12 +97,15 @@ li {
 }
 .doc-list {
   cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .doc-list:hover {
-  /*background-color: lightgrey;*/
-  background-color: darkgrey;
+  background-color: lightgrey;
+  /*background-color: darkgrey;*/
   /*background-color: white;*/
   padding-left: 13px;
+  color: black;
 }
 .collapse-icon {
   color: white;
