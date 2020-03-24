@@ -32,6 +32,7 @@ export default Vue.extend({
   watch: {
     pageData() {
       this.contentUpdated()
+      this.updateDrawer()
     }
   },
   mounted() {
@@ -44,8 +45,6 @@ export default Vue.extend({
     // https://github.com/nuxt-community/modules/issues/185
     // https://github.com/nuxt/nuxtjs.org/blob/master/components/commons/HtmlParser.global.vue
     navigate(event): void {
-      // const markdownBody = event.target.getElementsByClassName('markdown-body') // クラスによる絞り込みは何故か動かず
-      // const hrefs = markdownBody[0].getAttribute('href')
       const hrefs = event.target.getAttribute('href')
       if (!hrefs) {
         return
@@ -74,7 +73,6 @@ export default Vue.extend({
     },
     addListeners() {
       console.log('addListeners() called.')
-      // this._links = this.$el.getElementsByTagName('a')
       this._links = this.$el.getElementsByTagName('a')
       for (let i = 0; i < this._links.length; i++) {
         this._links[i].addEventListener('click', this.navigate, false)
@@ -86,6 +84,12 @@ export default Vue.extend({
         this._links[i].removeEventListener('click', this.navigate, false)
       }
       this._links = []
+    },
+    updateDrawer() {
+      this.$nextTick(() => {
+        // index.vueが初期化中で?メソッド呼び出しが聞かないのでストアメソッドを直接呼び出す
+        this.$accessor.drawer.setDrawer(false)
+      })
     }
   }
 })

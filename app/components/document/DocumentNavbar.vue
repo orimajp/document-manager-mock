@@ -1,14 +1,14 @@
 <template>
   <v-app-bar app clipped-left dark dense class="primary">
-    <!--
-    <v-app-bar-nav-icon />
-    -->
+    <v-app-bar-nav-icon v-if="!permanent" @click="openDrawer" />
     <v-btn icon @click="goTop">
       <v-icon>
         mdi-home
       </v-icon>
     </v-btn>
-    <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+    <v-toolbar-title>
+      <small>{{ pageTitle }}</small>
+    </v-toolbar-title>
   </v-app-bar>
 </template>
 
@@ -24,7 +24,11 @@ export default Vue.extend({
     documentNavbarContent: {
       type: Object,
       required: true
-    } as PropOptions<DocumentNavbarContent>
+    } as PropOptions<DocumentNavbarContent>,
+    permanent: {
+      type: Boolean,
+      required: true
+    }
   },
   computed: {
     pageTitle(): string {
@@ -34,6 +38,9 @@ export default Vue.extend({
   methods: {
     goTop(): void {
       this.$router.push('/')
+    },
+    openDrawer(): void {
+      this.$emit('openDrawer')
     }
   }
 })

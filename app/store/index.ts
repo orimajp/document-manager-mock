@@ -7,6 +7,7 @@ import {
 } from 'typed-vuex'
 import * as document from '~/store/document'
 import * as page from '~/store/page'
+import * as drawer from '~/store/drawer'
 
 export const state = () => ({
   pageKey: '' as string,
@@ -49,6 +50,7 @@ export const accessorType = getAccessorType({
   modules: {
     // import したサブモジュールはここに記述します。
     document,
-    page
+    page,
+    drawer
   }
 })

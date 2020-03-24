@@ -1,5 +1,15 @@
 <template>
-  <v-navigation-drawer clipped permanent app color="secondary">
+  <v-navigation-drawer
+    v-model="drawerState"
+    :permanent="permanent"
+    :temporary="!permanent"
+    app
+    clipped
+    color="secondary"
+  >
+    <div class="pinned-area">
+      <v-checkbox v-model="permanentState" label="Pinned" dark />
+    </div>
     <div class="link-area">
       <div
         class="document-top-link"
@@ -33,7 +43,15 @@ export default Vue.extend({
     pageKeyArray: {
       type: Array,
       required: true
-    } as PropOptions<Array<String>>
+    } as PropOptions<Array<String>>,
+    permanent: {
+      type: Boolean,
+      required: true
+    },
+    drawer: {
+      type: Boolean,
+      required: true
+    }
   },
   computed: {
     pageTitle(): string {
@@ -42,6 +60,33 @@ export default Vue.extend({
     selected(): boolean {
       const pageKey = this.$accessor.pageKey
       return this.currentNode.pageKey === pageKey
+    },
+    drawerState: {
+      get() {
+        console.log('drawerState#get() state=' + this.drawer)
+        return this.drawer
+      },
+      set(val): void {
+        console.log('drawerState#set() state=' + this.drawer)
+        if (val) {
+          return
+        }
+        this.$emit('closeDrawer')
+      }
+    },
+    permanentState: {
+      get(): boolean {
+        return this.permanent
+      },
+      set(val): void {
+        console.log('permanentState()#set() state=' + val)
+        this.$emit('setPermanent', val)
+      }
+    }
+  },
+  watch: {
+    permanent() {
+      console.log('watch#permanent(): permanent=' + this.permanent)
     }
   },
   methods: {
@@ -53,6 +98,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.pinned-area {
+  color: white;
+  padding-left: 10px;
+}
 .link-area {
   padding: 10px 0 10px 0;
   color: white;
@@ -68,9 +117,7 @@ export default Vue.extend({
   color: black;
 }
 .tree-area {
-  /*margin-left: -13px;*/
-  /*margin-left: -10px;*/
-  margin-left: -10px;
+  margin-left: -13px;
   padding-left: 0;
 }
 .selected {

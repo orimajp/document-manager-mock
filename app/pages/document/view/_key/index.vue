@@ -1,10 +1,18 @@
 <template>
   <div>
-    <!--
-    <h1>テスト</h1>
-    -->
-    <document-drawer :current-node="treeNode" :page-key-array="pageKeyArray" />
-    <document-navbar :document-navbar-content="documentNavbarContent" />
+    <document-drawer
+      :current-node="treeNode"
+      :page-key-array="pageKeyArray"
+      :permanent="permanent"
+      :drawer="drawer"
+      @closeDrawer="closeDrawer"
+      @setPermanent="setPermanent"
+    />
+    <document-navbar
+      :document-navbar-content="documentNavbarContent"
+      :permanent="permanent"
+      @openDrawer="openDrawer"
+    />
     <document-content :page-content="pageData" />
   </div>
 </template>
@@ -27,7 +35,6 @@ export default Vue.extend({
     DocumentContent,
     DocumentDrawer
   },
-  //  async fetch(ctx: Context) {
   async fetch({ params, app: { $accessor } }: Context) {
     const key = params.key
     console.log(`pageKey=${key}`)
@@ -72,25 +79,28 @@ export default Vue.extend({
       return {
         pageTitle: this.pageData.pageTitle
       } as DocumentNavbarContent
+    },
+    drawer(): boolean {
+      return this.$accessor.drawer.drawer
+    },
+    permanent(): boolean {
+      return this.$accessor.drawer.permanent
     }
   },
   methods: {
+    openDrawer(): void {
+      this.$accessor.drawer.setDrawer(true)
+    },
+    closeDrawer(): void {
+      console.log('closeDrawer() called.')
+      this.$accessor.drawer.setDrawer(false)
+    },
+    setPermanent(state): void {
+      console.log('index#setPermanent() called. state=' + state)
+      this.$accessor.drawer.setPermanent(state)
+    },
     getDocument(): DocumentMain {
       return this.$accessor.document.document
-    },
-    openChildren(list: Array<string>): void {
-      const pageKey = list[list.length - 1]
-      this.$accessor.setPageKey(pageKey)
-
-      // const topNode = this.getTopNode()
-      // const topNode = this.getDocument()
-
-      // topNode.expand = false
-      // topNode.closeNodes()
-      // topNode.select = false
-      // topNode.unselectNode()
-      // openNode(topNode, list)
-      this.$accessor.document.openChildren(list)
     }
   }
 })
