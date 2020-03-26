@@ -105,7 +105,8 @@ const nuxtConfig: Configuration = {
       ['markdown-it-container', 'alert-success'],
       ['markdown-it-container', 'alert-warning'],
       ['markdown-it-container', 'alert-danger'],
-      'markdown-it-sanitizer'
+      'markdown-it-sanitizer',
+      'markdown-it-plantuml'
     ]
   },
 

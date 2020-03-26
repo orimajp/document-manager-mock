@@ -188,6 +188,16 @@ Warning
 Danger
 :::
 
+# markdown-it-plantuml
+
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml
+
 `
 
 const documentNode1 = {
