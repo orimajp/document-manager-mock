@@ -25,7 +25,6 @@ import DocumentNavbar from '~/components/document/DocumentNavbar'
 import DocumentDrawer from '~/components/document/DocumentDrawer'
 import DocumentContent from '~/components/document/DocumentContent.vue'
 import { DocumentNode } from '~/models/document/DocumentNode'
-import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentPage } from '~/models/document/DocumentPage'
 
 export default Vue.extend({
@@ -73,7 +72,7 @@ export default Vue.extend({
       return this.$accessor.page.getPage(pageKey)
     },
     treeNode(): DocumentNode {
-      return this.getDocument().node
+      return this.$accessor.document.document.node
     },
     documentNavbarContent(): DocumentNavbarContent {
       return {
@@ -98,9 +97,6 @@ export default Vue.extend({
     setPermanent(state): void {
       console.log('index#setPermanent() called. state=' + state)
       this.$accessor.drawer.setPermanent(state)
-    },
-    getDocument(): DocumentMain {
-      return this.$accessor.document.document
     }
   }
 })
