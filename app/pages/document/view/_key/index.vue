@@ -13,17 +13,20 @@
       :permanent="permanent"
       @openDrawer="openDrawer"
     />
-    <document-content :page-content="pageData" />
+    <document-content ref="documentContent" :page-content="pageData" />
+    <document-toc-drawer :headlines="headlines" @goHeadline="goHeadline" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Context } from '@nuxt/types'
+import { DocumentHeadline } from '~/models/document/DocumentHeadline'
 import { DocumentNavbarContent } from '~/components/document/DocumentNavbar.vue'
 import DocumentNavbar from '~/components/document/DocumentNavbar'
 import DocumentDrawer from '~/components/document/DocumentDrawer'
 import DocumentContent from '~/components/document/DocumentContent.vue'
+import DocumentTocDrawer from '~/components/document/DocumentTocDrawer'
 import { DocumentNode } from '~/models/document/DocumentNode'
 import { DocumentPage } from '~/models/document/DocumentPage'
 
@@ -32,7 +35,8 @@ export default Vue.extend({
   components: {
     DocumentNavbar,
     DocumentContent,
-    DocumentDrawer
+    DocumentDrawer,
+    DocumentTocDrawer
   },
   async fetch({ params, app: { $accessor } }: Context) {
     const key = params.key
@@ -84,6 +88,9 @@ export default Vue.extend({
     },
     permanent(): boolean {
       return this.$accessor.drawer.permanent
+    },
+    headlines(): Array<DocumentHeadline> {
+      return this.$accessor.headline.headlines
     }
   },
   methods: {
@@ -97,6 +104,10 @@ export default Vue.extend({
     setPermanent(state): void {
       console.log('index#setPermanent() called. state=' + state)
       this.$accessor.drawer.setPermanent(state)
+    },
+    goHeadline(id: string): void {
+      // alert(`index id=${id}`)
+      this.$refs.documentContent.goHeadline(id)
     }
   }
 })

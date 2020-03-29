@@ -18,6 +18,7 @@
     "github-markdown-css": "^4.0.0",
     "highlight.js": "^9.18.1",
     "highlightjs-vue": "^1.0.0",
+    "markdown-it-anchor": "^5.2.5",
     "markdown-it-container": "^2.0.0",
     "markdown-it-plantuml": "^1.4.1",
     "markdown-it-sanitizer": "^0.4.3",

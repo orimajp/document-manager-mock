@@ -21,6 +21,8 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    'no-console': 'off',
+    'vue/max-attributes-per-line': 'off',
     'space-before-function-paren': 0,
     'arrow-parens': "off"
   }

@@ -13,7 +13,50 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
+import { DocumentHeadline } from '~/models/document/DocumentHeadline'
 import { DocumentPage } from '~/models/document/DocumentPage'
+
+const tagToNumber = new Map<String, number>([
+  ['h1', 1],
+  ['h2', 2],
+  ['h3', 3],
+  ['h4', 4],
+  ['h5', 5],
+  ['h6', 6]
+])
+
+const headlineSelector =
+  '.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6'
+
+const getInnerPath = (hrefs: string): string => {
+  console.log(`navigate hrefs=${hrefs}`)
+  const href = hrefs[0]
+  console.log(`navigate href=${href}`)
+  // 絶対パス
+  if (href === '/') {
+    return hrefs
+  }
+  console.log(`hrefs=${hrefs}, location.origin=${location.origin}`)
+  // 自サイトへのプロトコル付きリンク(何て言えばいいのか?)
+  if (hrefs.startsWith(location.origin)) {
+    return hrefs.slice(location.origin.length)
+  }
+  // 外部サイトリンク
+  return null
+}
+
+const headlineToNumber = (tagName: String): number => {
+  const tagNumber = tagToNumber.get(tagName.toLowerCase())
+  return tagNumber || tagNumber
+}
+
+const createHeadline = (element: HTMLElement): DocumentHeadline => {
+  const id = element.id
+  const tagName = element.tagName
+  const textContent = element.textContent
+  return new DocumentHeadline(headlineToNumber(tagName), id, textContent)
+}
+
 export default Vue.extend({
   props: {
     pageContent: {
@@ -32,11 +75,15 @@ export default Vue.extend({
   watch: {
     pageData() {
       this.contentUpdated()
-      this.updateDrawer()
+      this.collectHeadlines()
     }
   },
   mounted() {
-    this.$nextTick(this.addListeners)
+    this.$nextTick(() => {
+      this.addListeners()
+      this.updateDrawer()
+      this.collectHeadlines()
+    })
   },
   beforeDestroy() {
     this.removeListeners()
@@ -49,26 +96,21 @@ export default Vue.extend({
       if (!hrefs) {
         return
       }
-      console.log(`navigate hrefs=${hrefs}`)
-      const href = hrefs[0]
-      console.log(`navigate href=${href}`)
-      if (href === '/') {
+      const innerPath = getInnerPath(hrefs)
+      if (innerPath !== null) {
         event.preventDefault()
-        this.$router.push(hrefs)
+        this.$router.push(innerPath)
         return
       }
-      if (hrefs.startsWith(location.origin)) {
-        const pathName = hrefs.slice(location.origin.length)
-        event.preventDefault()
-        this.$router.push(pathName)
-        return
-      }
-      location.href = href
+      event.preventDefault()
+      window.open(hrefs, '_blank')
     },
     contentUpdated(): void {
       this.removeListeners()
       this.$nextTick(() => {
         this.addListeners()
+        // これはここである必要は無いのだがメニュー操作時にドロワを閉じるタイミングを遅らせたい
+        this.updateDrawer()
       })
     },
     addListeners() {
@@ -86,10 +128,31 @@ export default Vue.extend({
       this._links = []
     },
     updateDrawer() {
-      this.$nextTick(() => {
-        // index.vueが初期化中で?メソッド呼び出しが聞かないのでストアメソッドを直接呼び出す
-        this.$accessor.drawer.setDrawer(false)
-      })
+      // index.vueが初期化中で?メソッド呼び出しが効かないのでストアメソッドを直接呼び出す
+      this.$accessor.drawer.setDrawer(false)
+    },
+    collectHeadlines() {
+      this.$accessor.headline.clearHeadlines()
+      const headers = this.$el.querySelectorAll(headlineSelector) as NodeListOf<
+        HTMLElement
+      >
+      for (const header of headers) {
+        this.$accessor.headline.addHeadline(createHeadline(header))
+      }
+      console.log(JSON.stringify(this.$accessor.headline.headlines, null, 2))
+    },
+    goHeadline(id: string): void {
+      // 日本語見出しに対してmarkdown-it-anchorが生成するIDが文法的に誤っているため、querySelector()や$vuetify.goTo()で利用できない
+      // this.$vuetify.goTo(`#${id}`)
+      // alert(`content id=${id}`)
+      // const element = this.$el.querySelector(`#${id}`)
+      // this.$vuetify.goTo(element)
+      window.location.href = `#${id}`
+      // this.$nextTick(() => {
+      // window.scrollBy(0, -300)
+      // })
+      // 固定ナビテーション分無理矢理位置合わせ
+      setTimeout(() => window.scrollBy(0, -60), 100)
     }
   }
 })

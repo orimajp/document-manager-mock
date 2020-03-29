@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app clipped-left dark dense class="primary">
+  <v-app-bar app clipped-left clipped-right dark dense class="primary">
     <v-app-bar-nav-icon v-if="!permanent" @click="openDrawer" />
     <v-btn icon @click="goTop">
       <v-icon>

@@ -8,6 +8,7 @@ import {
 import * as document from '~/store/document'
 import * as page from '~/store/page'
 import * as drawer from '~/store/drawer'
+import * as headline from '~/store/headline'
 
 export const state = () => ({
   pageKey: '' as string,
@@ -51,6 +52,7 @@ export const accessorType = getAccessorType({
     // import したサブモジュールはここに記述します。
     document,
     page,
-    drawer
+    drawer,
+    headline
   }
 })
