@@ -198,6 +198,16 @@ Alice -> Bob: Another authentication Request
 Alice <-- Bob: another authentication Response
 @enduml
 
+# markdown-it-mark
+==ハイライト表示== のテストです。
+このプラグインは分かち書きが必要っぽい。
+
+# markdown-it-footnote
+これは脚注[^1]のテストです
+
+[^1]:これは１つ目の脚注の内容です
+
+
 `
 
 const documentNode1 = {

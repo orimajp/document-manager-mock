@@ -20,6 +20,8 @@
     "highlightjs-vue": "^1.0.0",
     "markdown-it-anchor": "^5.2.5",
     "markdown-it-container": "^2.0.0",
+    "markdown-it-footnote": "^3.0.2",
+    "markdown-it-mark": "^3.0.0",
     "markdown-it-plantuml": "^1.4.1",
     "markdown-it-sanitizer": "^0.4.3",
     "nuxt": "^2.12.1",
