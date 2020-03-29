@@ -13,17 +13,9 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
+import { DocumentHeadlineFactory } from '~/models/document/factory/DocumentHeadlineFactory'
 import { DocumentHeadline } from '~/models/document/DocumentHeadline'
 import { DocumentPage } from '~/models/document/DocumentPage'
-
-const tagToNumber = new Map<String, number>([
-  ['h1', 1],
-  ['h2', 2],
-  ['h3', 3],
-  ['h4', 4],
-  ['h5', 5],
-  ['h6', 6]
-])
 
 const headlineSelector =
   '.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6'
@@ -45,16 +37,8 @@ const getInnerPath = (hrefs: string): string => {
   return null
 }
 
-const headlineToNumber = (tagName: String): number => {
-  const tagNumber = tagToNumber.get(tagName.toLowerCase())
-  return tagNumber || tagNumber
-}
-
 const createHeadline = (element: HTMLElement): DocumentHeadline => {
-  const id = element.id
-  const tagName = element.tagName
-  const textContent = element.textContent
-  return new DocumentHeadline(headlineToNumber(tagName), id, textContent)
+  return DocumentHeadlineFactory.createDocumentHeadline(element)
 }
 
 export default Vue.extend({

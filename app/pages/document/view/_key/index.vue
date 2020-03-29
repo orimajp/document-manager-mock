@@ -63,9 +63,9 @@ export default Vue.extend({
     // const keyArray = $accessor.document.getNestedKeyArray(key)
     const keyArray = $accessor.document.document.getNestedKeyArray(key)
     $accessor.document.openChildren(keyArray)
-    const document = $accessor.document.document
-    console.log(JSON.stringify(pageData, null, 2))
-    console.log(JSON.stringify(document, null, 2))
+    // const document = $accessor.document.document
+    // console.log(JSON.stringify(pageData, null, 2))
+    // console.log(JSON.stringify(document, null, 2))
   },
   data: () => ({
     pageKeyArray: [] as Array<String>
