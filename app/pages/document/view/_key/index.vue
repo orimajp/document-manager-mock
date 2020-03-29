@@ -93,6 +93,12 @@ export default Vue.extend({
       return this.$accessor.headline.headlines
     }
   },
+  mounted(): void {
+    const hash = location.hash
+    if (hash) {
+      this.goHeadline(hash.slice(1))
+    }
+  },
   methods: {
     openDrawer(): void {
       this.$accessor.drawer.setDrawer(true)
