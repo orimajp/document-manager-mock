@@ -207,6 +207,18 @@ Alice <-- Bob: another authentication Response
 
 [^1]:これは１つ目の脚注の内容です
 
+# markdown-it-ins
+++下線++
+
+# markdown-it-sub
+
+H~2~o
+
+# markdown-it-abbr
+The HTML specification is maintained by the W3C.
+
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
 
 `
 

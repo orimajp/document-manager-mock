@@ -109,7 +109,10 @@ const nuxtConfig: Configuration = {
       'markdown-it-plantuml',
       'markdown-it-anchor',
       'markdown-it-mark',
-      'markdown-it-footnote'
+      'markdown-it-footnote',
+      'markdown-it-ins',
+      'markdown-it-sub',
+      'markdown-it-abbr'
     ]
   },
 

@@ -243,4 +243,8 @@ export default Vue.extend({
 .markdown-body .alert-danger p {
   margin: 0;
 }
+
+.markdown-body .footnotes-list {
+  font-size: 85%;
+}
 </style>
