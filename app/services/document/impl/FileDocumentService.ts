@@ -220,6 +220,17 @@ The HTML specification is maintained by the W3C.
 *[HTML]: Hyper Text Markup Language
 *[W3C]:  World Wide Web Consortium
 
+# markdown-it-deflist
+改行の制御はmarkdown-itのbreaksパラメータの影響を受けているっぽい。
+
+名前 1
+:  定義1
+定義1の改行
+
+名前2 *名前のマークアッップ*
+
+:  定義2
+
 `
 
 const documentNode1 = {

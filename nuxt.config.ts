@@ -112,7 +112,8 @@ const nuxtConfig: Configuration = {
       'markdown-it-footnote',
       'markdown-it-ins',
       'markdown-it-sub',
-      'markdown-it-abbr'
+      'markdown-it-abbr',
+      'markdown-it-deflist'
     ]
   },
 
