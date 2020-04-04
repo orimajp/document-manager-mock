@@ -1,24 +1,28 @@
 import { IDocumentService } from '~/services/document/IDocumentService'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
+import { DocumentPage } from '~/models/document/DocumentPage'
+import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
+import { DocumentMain } from '~/models/document/DocumentMain'
 
 class ObjectDocumentService implements IDocumentService {
-  getDocument(documentKey: string): Promise<DocumentMainData> {
-    return new Promise<DocumentMainData>((resolve, reject) => {
+  getDocument(documentKey: string): Promise<DocumentMain> {
+    return new Promise<DocumentMain>((resolve, reject) => {
       const document = createDocument(documentKey)
       if (document === null) {
         reject(new Error(`document not found documentKey=${documentKey}`))
       }
-      resolve(document as DocumentMainData)
+      const builder = new DocumentMainBuilder(document as DocumentMainData)
+      resolve(builder.createDocument())
     })
   }
 
-  getPage(pageKey: string): Promise<DocumentPageData> {
-    return new Promise<DocumentPageData>((resolve, reject) => {
+  getPage(pageKey: string): Promise<DocumentPage> {
+    return new Promise<DocumentPage>((resolve, reject) => {
       const page = createPage(pageKey)
       if (page === null) {
         reject(new Error(`page not found pageKey=${page}`))
       }
-      resolve(page as DocumentPageData)
+      resolve(new DocumentPage(page as DocumentPageData))
     })
   }
 }

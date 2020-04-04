@@ -1,6 +1,7 @@
-import { DocumentMainData, DocumentPageData } from '~/types'
+import { DocumentPage } from '~/models/document/DocumentPage'
+import { DocumentMain } from '~/models/document/DocumentMain'
 
 export interface IDocumentService {
-  getDocument(documentKey: string): Promise<DocumentMainData>
-  getPage(pageKey: string): Promise<DocumentPageData>
+  getDocument(documentKey: string): Promise<DocumentMain>
+  getPage(pageKey: string): Promise<DocumentPage>
 }

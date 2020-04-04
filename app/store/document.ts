@@ -1,7 +1,5 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
-import { DocumentMainData } from '~/types'
 import { DocumentMain } from '~/models/document/DocumentMain'
-import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { documentServiceFactory } from '~/services/document/DocumentServiceFactory'
 import { IDocumentService } from '~/services/document/IDocumentService'
 
@@ -37,9 +35,8 @@ export const actions = actionTree(
     fetchDocument({ commit }, documentKey: string) {
       return getDocumentService(documentKey)
         .getDocument(documentKey)
-        .then((document: DocumentMainData) => {
-          const builder = new DocumentMainBuilder(document)
-          commit('setDocument', builder.createDocument())
+        .then((document: DocumentMain) => {
+          commit('setDocument', document)
         })
     },
     openChildren({ commit }, list: Array<string>) {
