@@ -1,8 +1,7 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
 import { DocumentPageHolder } from '~/models/document/DocumentPageHolder'
 import { DocumentPage } from '~/models/document/DocumentPage'
-import { IDocumentService } from '~/services/document/IDocumentService'
-import { documentServiceFactory } from '~/services/document/DocumentServiceFactory'
+import { documentService } from '~/services/document/DocumentService'
 
 const holder = new DocumentPageHolder()
 
@@ -34,7 +33,7 @@ export const actions = actionTree(
     fetchPage({ getters, commit }, pageKey: string) {
       const cachedPageData = getters.getPage(pageKey)
       if (cachedPageData === null) {
-        return getDocumentService(pageKey)
+        return documentService
           .getPage(pageKey)
           .then((pageData: DocumentPage) => {
             console.log(`commit#setPage=${JSON.stringify(pageData)}`)
@@ -47,7 +46,3 @@ export const actions = actionTree(
     }
   }
 )
-
-const getDocumentService = (pageKey: string): IDocumentService => {
-  return documentServiceFactory.getDocumentService(pageKey)
-}

@@ -25,6 +25,41 @@ class ObjectDocumentService implements IDocumentService {
       resolve(new DocumentPage(page as DocumentPageData))
     })
   }
+
+  getRowDocument(documentKey: string): Promise<DocumentMainData> {
+    return new Promise<DocumentMainData>((resolve, reject) => {
+      const document = createDocument(documentKey)
+      if (document === null) {
+        reject(new Error(`document not found documentKey=${documentKey}`))
+      }
+      resolve(document as DocumentMainData)
+    })
+  }
+
+  getRowPage(pageKey: string): Promise<DocumentPageData> {
+    return new Promise<DocumentPageData>((resolve, reject) => {
+      const page = createPage(pageKey)
+      if (page === null) {
+        reject(new Error(`page not found pageKey=${page}`))
+      }
+      resolve(page as DocumentPageData)
+    })
+  }
+
+  updateRowDocumentNodes(
+    documentKey: string,
+    nodes: Array<DocumentNodeData>
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const document = createDocument(documentKey)
+      if (document === null) {
+        reject(new Error(`document not found documentKey=${documentKey}`))
+      }
+      const node = (document as DocumentMainData).node
+      node.nodes = nodes
+      resolve()
+    })
+  }
 }
 
 export const objectDocumentService = new ObjectDocumentService()

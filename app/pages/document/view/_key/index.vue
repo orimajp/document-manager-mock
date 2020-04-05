@@ -9,8 +9,9 @@
       @setPermanent="setPermanent"
     />
     <document-navbar
-      :document-navbar-content="documentNavbarContent"
+      :document-view-navbar-content="documentViewNavbarContent"
       :permanent="permanent"
+      :can-tree-edit="canTreeEdit"
       @openDrawer="openDrawer"
     />
     <document-content ref="documentContent" :page-content="pageData" />
@@ -22,13 +23,13 @@
 import Vue from 'vue'
 import { Context } from '@nuxt/types'
 import { DocumentHeadline } from '~/models/document/DocumentHeadline'
-import { DocumentNavbarContent } from '~/components/document/DocumentNavbar.vue'
 import DocumentNavbar from '~/components/document/DocumentNavbar'
 import DocumentDrawer from '~/components/document/DocumentDrawer'
 import DocumentContent from '~/components/document/DocumentContent.vue'
 import DocumentTocDrawer from '~/components/document/DocumentTocDrawer'
 import { DocumentNode } from '~/models/document/DocumentNode'
 import { DocumentPage } from '~/models/document/DocumentPage'
+import { DocumentViewNavbarContent } from '~/components/document/DocumentNavbar.vue'
 
 export default Vue.extend({
   layout: 'viewer',
@@ -78,10 +79,11 @@ export default Vue.extend({
     treeNode(): DocumentNode {
       return this.$accessor.document.document.node
     },
-    documentNavbarContent(): DocumentNavbarContent {
+    documentViewNavbarContent(): DocumentViewNavbarContent {
       return {
-        pageTitle: this.pageData.pageTitle
-      } as DocumentNavbarContent
+        pageTitle: this.pageData.pageTitle,
+        documentKey: this.$accessor.documentKey
+      } as DocumentViewNavbarContent
     },
     drawer(): boolean {
       return this.$accessor.drawer.drawer
@@ -91,6 +93,9 @@ export default Vue.extend({
     },
     headlines(): Array<DocumentHeadline> {
       return this.$accessor.headline.headlines
+    },
+    canTreeEdit(): boolean {
+      return this.treeNode.nodes.length > 0
     }
   },
   mounted(): void {

@@ -9,30 +9,44 @@
     <v-toolbar-title>
       <small>{{ pageTitle }}</small>
     </v-toolbar-title>
+    <v-spacer />
+    <v-btn
+      color="success"
+      depressed
+      :disabled="!canTreeEdit"
+      @click="goTreeEdit"
+    >
+      メニュー階層変更
+    </v-btn>
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 
-export interface DocumentNavbarContent {
+export interface DocumentViewNavbarContent {
   pageTitle: String
+  documentKey: String
 }
 
 export default Vue.extend({
   props: {
-    documentNavbarContent: {
+    documentViewNavbarContent: {
       type: Object,
       required: true
-    } as PropOptions<DocumentNavbarContent>,
+    } as PropOptions<DocumentViewNavbarContent>,
     permanent: {
+      type: Boolean,
+      required: true
+    },
+    canTreeEdit: {
       type: Boolean,
       required: true
     }
   },
   computed: {
     pageTitle(): string {
-      return this.documentNavbarContent.pageTitle
+      return this.documentViewNavbarContent.pageTitle
     }
   },
   methods: {
@@ -41,6 +55,11 @@ export default Vue.extend({
     },
     openDrawer(): void {
       this.$emit('openDrawer')
+    },
+    goTreeEdit(): void {
+      this.$router.push(
+        `/document/tree/${this.documentViewNavbarContent.documentKey}`
+      )
     }
   }
 })

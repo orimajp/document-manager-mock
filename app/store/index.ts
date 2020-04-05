@@ -28,6 +28,9 @@ export const mutations = mutationTree(state, {
   },
   setDocumentKey(state, documentKey: string): void {
     state.documentKey = documentKey
+  },
+  crearDocumentKey(state): void {
+    state.documentKey = ''
   }
 })
 
@@ -39,6 +42,9 @@ export const actions = actionTree(
     },
     setDocumentKey({ commit }, documentKey: string) {
       commit('setDocumentKey', documentKey)
+    },
+    crearDocumentKey({ commit }) {
+      commit('crearDocumentKey')
     }
   }
 )

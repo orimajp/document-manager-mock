@@ -24,6 +24,10 @@
       ],
       "tree-helper": ["types/tree-helper"]
     },
+    "typeRoots": [
+      "node_modules/@types",
+      "app/types"
+    ],
     "types": [
       "@types/node",
       "@nuxt/types",
