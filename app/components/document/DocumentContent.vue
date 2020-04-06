@@ -28,6 +28,10 @@ const getInnerPath = (hrefs: string): string => {
   if (href === '/') {
     return hrefs
   }
+  // ハッシュ
+  if (href === '#') {
+    return hrefs
+  }
   console.log(`hrefs=${hrefs}, location.origin=${location.origin}`)
   // 自サイトへのプロトコル付きリンク(何て言えばいいのか?)
   if (hrefs.startsWith(location.origin)) {
@@ -83,6 +87,15 @@ export default Vue.extend({
       const innerPath = getInnerPath(hrefs)
       if (innerPath !== null) {
         event.preventDefault()
+        if (innerPath.startsWith('#fnref')) {
+          this.goHeadline(innerPath.slice(1))
+          return
+        }
+        if (innerPath.startsWith('#')) {
+          // FIXME ここは難しい。脚注へのリンクとは限らない
+          this.goFootNode(innerPath.slice(1))
+          return
+        }
         this.$router.push(innerPath)
         return
       }
@@ -137,6 +150,9 @@ export default Vue.extend({
       // })
       // 固定ナビテーション分無理矢理位置合わせ
       setTimeout(() => window.scrollBy(0, -60), 100)
+    },
+    goFootNode(id: string): void {
+      window.location.href = `#${id}`
     }
   }
 })
