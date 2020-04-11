@@ -38,6 +38,9 @@ import Vue, { PropType } from 'vue'
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { EDIT, PREV } from '~/models/EditorDisplayMode'
 
+/* textarea高さ補正値 */
+const ADJUST_HEIGHT = 210
+
 export default Vue.extend({
   props: {
     pageContent: {
@@ -54,7 +57,7 @@ export default Vue.extend({
   }),
   computed: {
     textareaHeight() {
-      return this.windowHeight - 210
+      return this.windowHeight - ADJUST_HEIGHT
     },
     containerWidth() {
       if (this.displayMode === EDIT) {
@@ -92,7 +95,6 @@ export default Vue.extend({
 .fixed-content {
   top: 40px;
   position: fixed;
-  /*width: 50%;*/
   z-index: 2;
 }
 .center-line {
