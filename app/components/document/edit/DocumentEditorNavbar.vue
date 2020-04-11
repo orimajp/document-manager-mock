@@ -9,7 +9,7 @@
       ページ編集
     </v-toolbar-title>
     <v-spacer />
-    <v-btn-toggle v-model="mode">
+    <v-btn-toggle v-model="mode" dense>
       <v-btn :value="editValue" color="secondary">
         <span>EDIT</span>
       </v-btn>
