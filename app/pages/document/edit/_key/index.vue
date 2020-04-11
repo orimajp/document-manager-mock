@@ -43,6 +43,26 @@ const getDocument = (page: DocumentPage | null) => {
 }
 */
 
+const getDisplayEditFormCols = displayMode => {
+  if (displayMode === PREV) {
+    return 0
+  }
+  if (displayMode === EDIT) {
+    return 12
+  }
+  return 6
+}
+
+const getDisplayPreviewAreaCols = displayMode => {
+  if (displayMode === PREV) {
+    return 12
+  }
+  if (displayMode === EDIT) {
+    return 0
+  }
+  return 6
+}
+
 export default Vue.extend({
   layout: 'viewer',
   components: {
@@ -76,22 +96,10 @@ export default Vue.extend({
       return this.displayMode !== EDIT
     },
     displayEditFormCols() {
-      if (this.displayMode === PREV) {
-        return 0
-      }
-      if (this.displayMode === EDIT) {
-        return 12
-      }
-      return 6
+      return getDisplayEditFormCols(this.displayMode)
     },
     displayPreviewAreaCols() {
-      if (this.displayMode === PREV) {
-        return 12
-      }
-      if (this.displayMode === EDIT) {
-        return 0
-      }
-      return 6
+      return getDisplayPreviewAreaCols(this.displayMode)
     }
   },
   watch: {
