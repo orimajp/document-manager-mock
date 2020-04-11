@@ -82,7 +82,8 @@ export default Vue.extend({
     documentViewNavbarContent(): DocumentViewNavbarContent {
       return {
         pageTitle: this.pageData.pageTitle,
-        documentKey: this.$accessor.documentKey
+        documentKey: this.pageData.documentKey,
+        pageKey: this.pageData.pageKey
       } as DocumentViewNavbarContent
     },
     drawer(): boolean {
@@ -119,6 +120,9 @@ export default Vue.extend({
     goHeadline(id: string): void {
       // alert(`index id=${id}`)
       this.$refs.documentContent.goHeadline(id)
+    },
+    goFootNode(id: string): void {
+      this.$refs.documentContent.goFootNode(id)
     }
   }
 })

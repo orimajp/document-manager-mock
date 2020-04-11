@@ -30,7 +30,8 @@ export const actions = actionTree(
   { state, getters, mutations },
   {
     // TODO 現状はマップに無いページは必ずデータを取得する処理。実際の処理では新しいページがある場合のみ置き換える
-    fetchPage({ getters, commit }, pageKey: string) {
+    // fetchPage({ getters, commit }, pageKey: string) {
+    /*
       const cachedPageData = getters.getPage(pageKey)
       if (cachedPageData === null) {
         return documentService
@@ -40,6 +41,13 @@ export const actions = actionTree(
             commit('setPage', [pageKey, pageData])
           })
       }
+      */
+    // ページ更新対応
+    fetchPage({ commit }, pageKey: string) {
+      return documentService.getPage(pageKey).then((pageData: DocumentPage) => {
+        console.log(`commit#setPage=${JSON.stringify(pageData)}`)
+        commit('setPage', [pageKey, pageData])
+      })
     },
     clearAllPages({ commit }) {
       commit('clearAllPages')

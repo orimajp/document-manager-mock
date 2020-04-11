@@ -10,9 +10,13 @@
       <small>{{ pageTitle }}</small>
     </v-toolbar-title>
     <v-spacer />
+    <v-btn color="info" depressed @click="goPageEdit">
+      ページ編集
+    </v-btn>
     <v-btn
       color="success"
       depressed
+      class="toolba-button"
       :disabled="!canTreeEdit"
       @click="goTreeEdit"
     >
@@ -22,19 +26,20 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import Vue, { PropType } from 'vue'
 
 export interface DocumentViewNavbarContent {
   pageTitle: String
   documentKey: String
+  pageKey: String
 }
 
 export default Vue.extend({
   props: {
     documentViewNavbarContent: {
-      type: Object,
+      type: Object as PropType<DocumentViewNavbarContent>,
       required: true
-    } as PropOptions<DocumentViewNavbarContent>,
+    },
     permanent: {
       type: Boolean,
       required: true
@@ -56,6 +61,11 @@ export default Vue.extend({
     openDrawer(): void {
       this.$emit('openDrawer')
     },
+    goPageEdit(): void {
+      this.$router.push(
+        `/document/edit/${this.documentViewNavbarContent.pageKey}`
+      )
+    },
     goTreeEdit(): void {
       this.$router.push(
         `/document/tree/${this.documentViewNavbarContent.documentKey}`
@@ -64,3 +74,9 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style scoped>
+.toolba-button {
+  margin-left: 7px;
+}
+</style>

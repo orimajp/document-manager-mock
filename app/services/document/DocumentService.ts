@@ -3,6 +3,7 @@ import { IDocumentService } from '~/services/document/IDocumentService'
 import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
+import { pageKeyFactory } from '~/services/document/PageKeyFactory'
 
 class DocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -29,6 +30,20 @@ class DocumentService implements IDocumentService {
       documentKey,
       nodes
     )
+  }
+
+  updateRowDocumentPage(pageData: DocumentPageData): void {
+    getDocumentService(pageData.pageKey).updateRowDocumentPage(pageData)
+  }
+
+  updateDocumentPage(pageData: DocumentPage): void {
+    getDocumentService(pageData.pageKey).updateDocumentPage(pageData)
+  }
+
+  registerDocumentPage(pageData: DocumentPage): DocumentPage {
+    const pageKey = pageKeyFactory.createPageKey()
+    pageData.pageKey = pageKey
+    return getDocumentService(pageKey).registerDocumentPage(pageData)
   }
 }
 

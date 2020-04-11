@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import Vue, { PropType } from 'vue'
 import draggable from 'vuedraggable'
-import { DocumentNodeData } from '../../../types/document'
+import { DocumentNodeData } from '~/types/document'
 export default Vue.extend({
   name: 'EditableTree',
   components: {
@@ -27,15 +27,15 @@ export default Vue.extend({
   },
   props: {
     value: {
-      type: Array,
+      type: Array as PropType<Array<DocumentNodeData>>,
       required: false,
       default: null
-    } as PropOptions<Array<DocumentNodeData>>,
+    },
     list: {
-      type: Array,
+      type: Array as PropType<Array<DocumentNodeData>>,
       required: false,
       default: null
-    } as PropOptions<Array<DocumentNodeData>>
+    }
   },
   computed: {
     readValue() {

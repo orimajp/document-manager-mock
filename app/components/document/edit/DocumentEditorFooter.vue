@@ -1,13 +1,13 @@
 <template>
-  <v-footer fixed padless>
+  <v-footer padless fixed>
     <v-spacer />
     <div class="footer-button">
-      <v-btn block @click="cancelTree">
+      <v-btn block @click="cancelDocument">
         キャンセル
       </v-btn>
     </div>
     <div class="footer-button">
-      <v-btn color="primary" block @click="registerTree">
+      <v-btn color="primary" block @click="updateDocument">
         変更保存
       </v-btn>
     </div>
@@ -18,11 +18,11 @@
 import Vue from 'vue'
 export default Vue.extend({
   methods: {
-    registerTree() {
-      this.$emit('registerTree')
+    updateDocument() {
+      this.$emit('updateDocument')
     },
-    cancelTree() {
-      this.$emit('cancelTree')
+    cancelDocument() {
+      this.$emit('cancelDocument')
     }
   }
 })

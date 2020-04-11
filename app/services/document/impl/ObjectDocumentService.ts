@@ -60,6 +60,33 @@ class ObjectDocumentService implements IDocumentService {
       resolve()
     })
   }
+
+  updateRowDocumentPage(pageData: DocumentPageData) {
+    for (const page of documentPages) {
+      if (page.pageKey === pageData.pageKey) {
+        page.pageTitle = pageData.pageTitle
+        page.pageData = pageData.pageData
+        return
+      }
+    }
+    throw new Error('ページが見つかりません。')
+  }
+
+  updateDocumentPage(pageData: DocumentPage): void {
+    for (const page of documentPages) {
+      if (page.pageKey === pageData.pageKey) {
+        page.pageTitle = pageData.pageTitle
+        page.pageData = pageData.pageData
+        return
+      }
+    }
+    throw new Error('ページが見つかりません。')
+  }
+
+  registerDocumentPage(pageData: DocumentPage): DocumentPage {
+    console.log(`registerDocumentPage() 開発中 pageData=${pageData}`)
+    return {} as DocumentPage
+  }
 }
 
 export const objectDocumentService = new ObjectDocumentService()

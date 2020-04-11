@@ -58,6 +58,33 @@ class FileDocumentService implements IDocumentService {
       resolve()
     })
   }
+
+  updateRowDocumentPage(pageData: DocumentPageData) {
+    for (const page of documentPages) {
+      if (page.pageKey === pageData.pageKey) {
+        page.pageTitle = pageData.pageTitle
+        page.pageData = pageData.pageData
+        return
+      }
+    }
+    throw new Error('ページが見つかりません。')
+  }
+
+  updateDocumentPage(pageData: DocumentPage): void {
+    for (const page of documentPages) {
+      if (page.pageKey === pageData.pageKey) {
+        page.pageTitle = pageData.pageTitle
+        page.pageData = pageData.pageData
+        return
+      }
+    }
+    throw new Error('ページが見つかりません。')
+  }
+
+  registerDocumentPage(pageData: DocumentPage): DocumentPage {
+    console.log(`registerDocumentPage() 開発中 pageData=${pageData}`)
+    return {} as DocumentPage
+  }
 }
 
 export const fileDocumentService = new FileDocumentService()
@@ -74,30 +101,19 @@ const createDocument = (documentKey: string): DocumentMainData | null => {
   } as DocumentMainData | null
 }
 
-const getDocumentKey = (pageKey: string): string => {
-  const documentKey = pageToDocument.get(pageKey)
-  if (documentKey === undefined) {
-    throw new Error(`DocumentKey not registerd. pageKey=${pageKey}`)
+const getPage = (pageKey: string): DocumentPageData | null => {
+  for (const page of documentPages) {
+    if (page.pageKey === pageKey) {
+      const pageData = {} as DocumentPageData
+      pageData.pageKey = page.pageKey
+      pageData.documentKey = page.documentKey
+      pageData.pageTitle = page.pageTitle
+      pageData.pageData = convertCr(page.pageData)
+      return pageData
+    }
   }
-  return documentKey
-}
 
-const getPage = (pageKey: string): DocumentPageData => {
-  const page = {} as DocumentPageData
-  page.pageKey = pageKey
-  page.documentKey = getDocumentKey(pageKey)
-  page.pageTitle = `マークダウン:${pageKey}`
-  // page.pageData = require(`~/contents/${pageKey}.md`)
-  // page.pageData = await import(`~/contents/${pageKey}.md`)
-  // page.pageData = ''
-  /*
-  page.pageData = `
-  # マークダウンテスト
-  `
-   */
-  page.pageData = convertCr(dummyPageData)
-
-  return page
+  return null
 }
 
 const convertCr = (page: string): string => {
@@ -107,7 +123,7 @@ const convertCr = (page: string): string => {
 }
 
 // ファイル読み取りに苦戦しているのでとりあえずデータ定義で逃げる
-const dummyPageData = `
+const dummyPageData1 = `
 # (見出し1)
 ## (見出し2)
 ### (見出し3)
@@ -271,6 +287,15 @@ The HTML specification is maintained by the W3C.
 
 `
 
+const documentPages: Array<DocumentPageData> = [
+  {
+    documentKey: 'md-page0',
+    pageKey: 'md-page0',
+    pageTitle: 'マークダウン:md-page0',
+    pageData: dummyPageData1
+  }
+]
+
 const documentNode1 = {
   pageTitle: 'マークダウン:md-page0',
   pageKey: 'md-page0',
@@ -286,9 +311,4 @@ const documentNode100 = {
 const nodeMap = new Map<String, DocumentNodeData>([
   ['md-page0', documentNode1],
   ['md-page100', documentNode100]
-])
-
-const pageToDocument = new Map<string, string>([
-  ['md-page0', 'md-page0'],
-  ['md-page100', 'md-page100']
 ])

@@ -11,4 +11,7 @@ export interface IDocumentService {
     documentKey: string,
     nodes: Array<DocumentNodeData>
   ): Promise<void>
+  updateRowDocumentPage(pageData: DocumentPageData): void
+  updateDocumentPage(pageData: DocumentPage): void
+  registerDocumentPage(pageData: DocumentPage): DocumentPage
 }
