@@ -41,6 +41,16 @@ import { EDIT, PREV } from '~/models/EditorDisplayMode'
 /* textarea高さ補正値 */
 const ADJUST_HEIGHT = 210
 
+const containerWidth = displayMode => {
+  if (displayMode === EDIT) {
+    return 100
+  }
+  if (displayMode === PREV) {
+    return 0
+  }
+  return 50
+}
+
 export default Vue.extend({
   props: {
     pageContent: {
@@ -60,13 +70,7 @@ export default Vue.extend({
       return this.windowHeight - ADJUST_HEIGHT
     },
     containerWidth() {
-      if (this.displayMode === EDIT) {
-        return '100%'
-      }
-      if (this.displayMode === PREV) {
-        return '0%'
-      }
-      return '50%'
+      return `${containerWidth(this.displayMode)}%`
     }
   },
   mounted(): void {
