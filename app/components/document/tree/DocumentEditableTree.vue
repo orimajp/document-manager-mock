@@ -65,6 +65,10 @@ export default Vue.extend({
   border: solid darkgrey 1px;
   border-radius: 5px;
   background-color: #fefefe;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
 }
 .item-sub {
   /*margin: 0 0 0 1rem;*/
