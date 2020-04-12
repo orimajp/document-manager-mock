@@ -12,7 +12,11 @@
         />
       </v-col>
       <v-col v-show="displayPreviewArea" :cols="displayPreviewAreaCols">
-        <document-content ref="documentContent" :page-content="page" />
+        <document-content
+          ref="documentContent"
+          :page-content="page"
+          :editor="true"
+        />
       </v-col>
     </v-row>
     <document-editor-footer

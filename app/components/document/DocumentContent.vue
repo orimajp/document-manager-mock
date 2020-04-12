@@ -50,7 +50,12 @@ export default Vue.extend({
     pageContent: {
       type: Object,
       required: true
-    } as PropOptions<DocumentPage>
+    } as PropOptions<DocumentPage>,
+    editor: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   computed: {
     pageTitle(): string {
@@ -96,6 +101,10 @@ export default Vue.extend({
           this.goFootNode(innerPath.slice(1))
           return
         }
+        if (this.editor) {
+          alert('編集中は画面遷移できません。')
+          return
+        }
         this.$router.push(innerPath)
         return
       }
@@ -129,6 +138,9 @@ export default Vue.extend({
       this.$accessor.drawer.setDrawer(false)
     },
     collectHeadlines() {
+      if (this.editor) {
+        return
+      }
       this.$accessor.headline.clearHeadlines()
       const headers = this.$el.querySelectorAll(headlineSelector) as NodeListOf<
         HTMLElement
