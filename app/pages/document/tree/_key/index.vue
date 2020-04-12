@@ -5,10 +5,10 @@
     />
     <v-content>
       <v-container>
-        <div class="tree-edit">
-          <div class="tree-edit-area">
+        <div class="tree-edit-content">
+          <v-card :height="editAreaHeight" class="tree-edit-area" outlined>
             <document-editable-tree v-model="treeNodes" />
-          </div>
+          </v-card>
         </div>
       </v-container>
     </v-content>
@@ -28,6 +28,9 @@ import { DocumentMainData, DocumentNodeData } from '~/types/document'
 import DocumentEditableTreeNavbar from '~/components/document/tree/DocumentEditableTreeNavbar'
 import DocumentEditableTree from '~/components/document/tree/DocumentEditableTree.vue'
 import DocumentEditableTreeFotter from '~/components/document/tree/DocumentEditableTreeFooter.vue'
+
+/* 高さ補正値 */
+const ADJUST_HEIGHT = 140
 
 // https://wood-roots.com/web/vue-js/2537
 // https://github.com/SortableJS/Vue.Draggable
@@ -52,14 +55,25 @@ export default Vue.extend({
   },
   data: () => ({
     document: {} as DocumentMainData,
-    treeNodes: [] as Array<DocumentNodeData>
+    treeNodes: [] as Array<DocumentNodeData>,
+    windowHeight: 0
   }),
   computed: {
     documentTreeNavbarContent(): DocumentTreeNavbarContent {
       return {
         pageTitle: this.page.pageTitle
       } as DocumentTreeNavbarContent
+    },
+    editAreaHeight() {
+      return this.windowHeight - ADJUST_HEIGHT
     }
+  },
+  mounted(): void {
+    this.windowHeight = window.innerHeight
+    window.addEventListener('resize', this.calculateWindowWidth, false)
+  },
+  beforeDestroy(): void {
+    window.removeEventListener('resize', this.calculateWindowWidth, false)
   },
   methods: {
     async registerTree() {
@@ -75,21 +89,23 @@ export default Vue.extend({
     },
     gotoView() {
       this.$router.push(`/document/view/${this.document.documentKey}`)
+    },
+    calculateWindowWidth() {
+      this.windowHeight = window.innerHeight
+      console.log(this.windowHeight)
     }
   }
 })
 </script>
 
 <style scoped>
-.tree-edit {
+.tree-edit-content {
+  padding: 10px;
+}
+.tree-edit-area {
   width: 100%;
-  /*height: 100%;*/
-  height: 500px; /* TODO 編集エリアの高さをウィンドウサイズに合わせて変更する方法 */
-  /*bottom: 300px;*/
   overflow: scroll;
   padding: 20px;
-  /*margin-top: 50px;*/
-  /*margin-bottom: 100px;*/
   border-radius: 5px;
   background: repeating-linear-gradient(
     90deg,
@@ -98,7 +114,5 @@ export default Vue.extend({
     #e0e0e0 20px,
     #e0e0e0 40px
   );
-}
-.tree-edit-area {
 }
 </style>
