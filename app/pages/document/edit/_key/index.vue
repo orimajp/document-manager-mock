@@ -33,6 +33,10 @@ import DocumentEditorFooter from '~/components/document/edit/DocumentEditorFoote
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMain } from '~/models/document/DocumentMain'
 import { EDIT, DUAL, PREV } from '~/models/EditorDisplayMode'
+import {
+  getDisplayEditFormCols,
+  getDisplayPreviewAreaCols
+} from '~/models/EditorPaneColumns'
 
 /*
 const getDocument = (page: DocumentPage | null) => {
@@ -42,26 +46,6 @@ const getDocument = (page: DocumentPage | null) => {
   return documentService.getDocument(page.documentKey)
 }
 */
-
-const getDisplayEditFormCols = displayMode => {
-  if (displayMode === PREV) {
-    return 0
-  }
-  if (displayMode === EDIT) {
-    return 12
-  }
-  return 6
-}
-
-const getDisplayPreviewAreaCols = displayMode => {
-  if (displayMode === PREV) {
-    return 12
-  }
-  if (displayMode === EDIT) {
-    return 0
-  }
-  return 6
-}
 
 export default Vue.extend({
   layout: 'viewer',
@@ -115,9 +99,6 @@ export default Vue.extend({
       await this.$router.push(`/document/view/${createdPage.pageKey}`)
     },
      */
-    pageData() {
-      return this.page
-    },
     updateTitle(pageTitle) {
       console.log(`updateTitle() pageTitle=${pageTitle}`)
       this.page.pageTitle = pageTitle
