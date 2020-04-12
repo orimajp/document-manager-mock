@@ -3,6 +3,7 @@ import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { DocumentMain } from '~/models/document/DocumentMain'
+import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 
 class FileDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -84,6 +85,15 @@ class FileDocumentService implements IDocumentService {
   registerDocumentPage(pageData: DocumentPage): DocumentPage {
     console.log(`registerDocumentPage() 開発中 pageData=${pageData}`)
     return {} as DocumentPage
+  }
+
+  getDocumentList(): Array<DocumentListRecord> {
+    return [
+      {
+        pageName: 'マークダウン:md-page0',
+        documentKey: 'md-page0'
+      }
+    ]
   }
 }
 

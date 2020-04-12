@@ -12,6 +12,13 @@ class DocumentServiceFactory {
     return objectDocumentService
   }
 
+  getAllDocumentServices(): Array<IDocumentService> {
+    const services = [] as Array<IDocumentService>
+    services.push(objectDocumentService)
+    services.push(fileDocumentService)
+    return services
+  }
+
   private isFileDocument(key: string): boolean {
     return key.startsWith('md')
   }

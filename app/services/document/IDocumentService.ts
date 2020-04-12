@@ -1,6 +1,7 @@
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
+import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 
 export interface IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain>
@@ -14,4 +15,5 @@ export interface IDocumentService {
   updateRowDocumentPage(pageData: DocumentPageData): void
   updateDocumentPage(pageData: DocumentPage): void
   registerDocumentPage(pageData: DocumentPage): DocumentPage
+  getDocumentList(): Array<DocumentListRecord>
 }

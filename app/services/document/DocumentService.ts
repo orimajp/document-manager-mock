@@ -4,6 +4,7 @@ import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 import { pageKeyFactory } from '~/services/document/PageKeyFactory'
+import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 
 class DocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -44,6 +45,17 @@ class DocumentService implements IDocumentService {
     const pageKey = pageKeyFactory.createPageKey()
     pageData.pageKey = pageKey
     return getDocumentService(pageKey).registerDocumentPage(pageData)
+  }
+
+  getDocumentList(): Array<DocumentListRecord> {
+    const records = [] as Array<DocumentListRecord>
+    for (const service of documentServiceFactory.getAllDocumentServices()) {
+      for (const record of service.getDocumentList()) {
+        records.push(record)
+      }
+    }
+    console.log(JSON.stringify(records))
+    return records
   }
 }
 
