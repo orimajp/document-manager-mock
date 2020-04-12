@@ -14,6 +14,7 @@
           filled
           :value="pageContent.pageTitle"
           @input="updateTitle"
+          @change="notichChange"
         />
       </v-col>
       <v-col cols="12">
@@ -27,6 +28,7 @@
           :height="textareaHeight"
           :value="pageContent.pageData"
           @input="updatePageData"
+          @change="notichChange"
         />
       </v-col>
     </v-row>
@@ -90,6 +92,9 @@ export default Vue.extend({
     calculateWindowWidth() {
       this.windowHeight = window.innerHeight
       console.log(this.windowHeight)
+    },
+    notichChange() {
+      this.$emit('notichChange')
     }
   }
 })

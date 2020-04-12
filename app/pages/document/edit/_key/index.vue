@@ -1,6 +1,6 @@
 <template>
   <div>
-    <document-editor-navbar @changeMode="changeMode" />
+    <document-editor-navbar @changeMode="changeMode" @goTop="goTop" />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
         <document-editor-form
@@ -8,6 +8,7 @@
           :display-mode="displayMode"
           @updateTitle="updateTitle"
           @updatePageData="updatePageData"
+          @notichChange="notichChange"
         />
       </v-col>
       <v-col v-show="displayPreviewArea" :cols="displayPreviewAreaCols">
@@ -47,6 +48,10 @@ const getDocument = (page: DocumentPage | null) => {
 }
 */
 
+const LEAVE_CONFIRM_MESSAGE =
+  '編集中のデータを破棄してページを離れます。よろしいですか？'
+
+// https://crieit.net/posts/Nuxt-js-5e4d14a9d61f4
 export default Vue.extend({
   layout: 'viewer',
   components: {
@@ -67,7 +72,10 @@ export default Vue.extend({
   data: () => ({
     document: {} as DocumentMain,
     page: {} as DocumentPage,
-    displayMode: DUAL // 初期値がコンポーネントと同期しない可能性あり
+    displayMode: DUAL, // 初期値がコンポーネントと同期しない可能性あり
+    change: false,
+    distinationPath: '',
+    savePage: false
   }),
   computed: {
     isDocumentTopPage(): boolean {
@@ -91,6 +99,24 @@ export default Vue.extend({
       console.log(`display mode change ${oldValue} to ${newValue}`)
     }
   },
+  mounted(): void {
+    this.addListener()
+  },
+  beforeDestroy(): void {
+    this.removeListener()
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  beforeRouteLeave(to, from, next) {
+    if (!this.change || this.savePage) {
+      return next()
+    }
+    const answer = window.confirm(LEAVE_CONFIRM_MESSAGE)
+    if (answer) {
+      next()
+      return
+    }
+    next(false)
+  },
   methods: {
     /*
     async registerPage() {
@@ -108,6 +134,7 @@ export default Vue.extend({
       this.page.pageData = pageData
     },
     async updateDocument() {
+      this.savePage = true
       await documentService.updateDocumentPage(this.page)
       await this.$router.push(`/document/view/${this.page.pageKey}`)
     },
@@ -116,6 +143,25 @@ export default Vue.extend({
     },
     changeMode(mode) {
       this.displayMode = mode
+    },
+    notichChange() {
+      this.change = true
+    },
+    goTop() {
+      this.$router.push('/')
+    },
+    addListener() {
+      window.addEventListener('beforeunload', this.confirmUnload, false)
+    },
+    removeListener() {
+      window.removeEventListener('beforeunload', this.confirmUnload, false)
+    },
+    confirmUnload(event: BeforeUnloadEvent) {
+      if (this.change && !this.savePage) {
+        event.preventDefault()
+        // ここのメッセージはブラウザ依存
+        event.returnValue = LEAVE_CONFIRM_MESSAGE
+      }
     }
   }
 })

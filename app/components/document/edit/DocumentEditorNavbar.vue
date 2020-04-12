@@ -41,7 +41,7 @@ export default Vue.extend({
   },
   methods: {
     goTop(): void {
-      this.$router.push('/')
+      this.$emit('goTop')
     }
   }
 })
