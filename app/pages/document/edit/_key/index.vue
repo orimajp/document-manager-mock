@@ -83,12 +83,14 @@ export default Vue.extend({
     displayMode: DUAL, // 初期値がコンポーネントと同期しない可能性あり
     change: false,
     distinationPath: '',
-    savePage: false,
-    pageTitle: 'ページ編集'
+    savePage: false
   }),
   computed: {
     isDocumentTopPage(): boolean {
       return this.page.documentKey === this.page.pageKey
+    },
+    pageTitle() {
+      return this.isDocumentTopPage ? 'ドキュメント編集' : 'ページ編集'
     },
     displayEditForm() {
       return this.displayMode !== PREV
