@@ -11,7 +11,7 @@
     </v-toolbar-title>
     <v-spacer />
     <v-btn color="info" depressed @click="goPageEdit">
-      ページ編集
+      {{ editButtonTitle }}
     </v-btn>
     <v-btn
       color="success"
@@ -50,6 +50,15 @@ export default Vue.extend({
     }
   },
   computed: {
+    isDocumentTopPage(): boolean {
+      return (
+        this.documentViewNavbarContent.pageKey ===
+        this.documentViewNavbarContent.documentKey
+      )
+    },
+    editButtonTitle(): string {
+      return this.isDocumentTopPage ? 'ドキュメント編集' : 'ページ編集'
+    },
     pageTitle(): string {
       return this.documentViewNavbarContent.pageTitle
     }
