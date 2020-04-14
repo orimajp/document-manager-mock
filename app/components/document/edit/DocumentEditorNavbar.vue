@@ -6,7 +6,7 @@
       </v-icon>
     </v-btn>
     <v-toolbar-title>
-      ページ編集
+      {{ pageTitle }}
     </v-toolbar-title>
     <v-spacer />
     <v-btn-toggle v-model="mode" dense>
@@ -28,6 +28,12 @@
 import Vue from 'vue'
 import { EDIT, DUAL, PREV } from '~/models/EditorDisplayMode'
 export default Vue.extend({
+  props: {
+    pageTitle: {
+      type: String,
+      required: true
+    }
+  },
   data: () => ({
     mode: DUAL,
     editValue: EDIT,

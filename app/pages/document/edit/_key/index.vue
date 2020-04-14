@@ -1,6 +1,10 @@
 <template>
   <div>
-    <document-editor-navbar @changeMode="changeMode" @goTop="goTop" />
+    <document-editor-navbar
+      :page-title="pageTitle"
+      @changeMode="changeMode"
+      @goTop="goTop"
+    />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
         <document-editor-form
@@ -79,7 +83,8 @@ export default Vue.extend({
     displayMode: DUAL, // 初期値がコンポーネントと同期しない可能性あり
     change: false,
     distinationPath: '',
-    savePage: false
+    savePage: false,
+    pageTitle: 'ページ編集'
   }),
   computed: {
     isDocumentTopPage(): boolean {
