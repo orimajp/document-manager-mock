@@ -37,20 +37,9 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import { DocumentPage } from '~/models/document/DocumentPage'
-import { EDIT, PREV } from '~/models/EditorDisplayMode'
 
 /* textarea高さ補正値 */
 const ADJUST_HEIGHT = 210
-
-const containerWidth = displayMode => {
-  if (displayMode === EDIT) {
-    return 100
-  }
-  if (displayMode === PREV) {
-    return 0
-  }
-  return 50
-}
 
 export default Vue.extend({
   props: {
@@ -60,6 +49,10 @@ export default Vue.extend({
     },
     displayMode: {
       type: String,
+      required: true
+    },
+    editFormCols: {
+      type: Number,
       required: true
     }
   },
@@ -71,7 +64,7 @@ export default Vue.extend({
       return this.windowHeight - ADJUST_HEIGHT
     },
     containerWidth() {
-      return `${containerWidth(this.displayMode)}%`
+      return `${(this.editFormCols * 100) / 12}%`
     }
   },
   mounted(): void {

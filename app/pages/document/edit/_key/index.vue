@@ -10,6 +10,7 @@
         <document-editor-form
           :page-content="page"
           :display-mode="displayMode"
+          :edit-form-cols="displayEditFormCols"
           @updateTitle="updateTitle"
           @updatePageData="updatePageData"
           @notichChange="notichChange"
