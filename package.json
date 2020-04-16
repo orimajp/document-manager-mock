@@ -5,7 +5,7 @@
   "author": "Hideo Oshima",
   "private": true,
   "scripts": {
-    "dev": "NUXT_HOST=0.0.0.0 NUXT_PORT=3333 nuxt-ts",
+    "dev": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3333 nuxt-ts",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
@@ -41,6 +41,7 @@
     "@nuxtjs/vuetify": "^1.11.0",
     "@types/vuedraggable": "^2.23.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-nuxt": ">=0.5.2",
