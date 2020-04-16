@@ -15,7 +15,11 @@
           @notichChange="notichChange"
         />
       </v-col>
-      <v-col v-show="displayPreviewArea" :cols="displayPreviewAreaCols">
+      <v-col
+        v-show="displayPreviewArea"
+        :cols="displayPreviewAreaCols"
+        :class="{ 'preview-area': dualMode }"
+      >
         <document-content
           ref="documentContent"
           :page-content="page"
@@ -24,7 +28,6 @@
       </v-col>
     </v-row>
     <document-editor-footer
-      class="editor-footter"
       @updateDocument="updateDocument"
       @cancelDocument="cancelDocument"
     />
@@ -103,6 +106,9 @@ export default Vue.extend({
     },
     displayPreviewAreaCols() {
       return getDisplayPreviewAreaCols(this.displayMode)
+    },
+    dualMode() {
+      return this.displayMode === DUAL
     }
   },
   watch: {
@@ -181,8 +187,9 @@ export default Vue.extend({
 <style scoped>
 .content-area {
   margin-top: 50px;
+  margin-bottom: 50px;
 }
-.editor-footter {
-  bottom: 0;
+.preview-area {
+  padding-left: 0;
 }
 </style>

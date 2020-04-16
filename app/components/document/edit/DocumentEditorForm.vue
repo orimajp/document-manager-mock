@@ -24,7 +24,6 @@
           placeholder="本文"
           dense
           filled
-          class="markdown-textarea"
           :height="textareaHeight"
           :value="pageContent.pageData"
           @input="updatePageData"
@@ -100,18 +99,17 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
+<style>
 .fixed-content {
   top: 40px;
   position: fixed;
   z-index: 2;
 }
-.center-line {
-  border-right: 1px solid lightgray;
-}
-.markdown-textarea {
-  /*display: block;*/
+.fixed-content textarea {
+  line-height: 1.5em;
   font-size: 80%;
-  /*line-height: 1.2;*/
+}
+.fixed-content.center-line {
+  border-right: 1px solid lightgray;
 }
 </style>
