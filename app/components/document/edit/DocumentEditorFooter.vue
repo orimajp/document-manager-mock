@@ -7,7 +7,7 @@
       </v-btn>
     </div>
     <div class="footer-button">
-      <v-btn color="primary" block @click="updateDocument">
+      <v-btn color="primary" block :disabled="!change" @click="updateDocument">
         変更保存
       </v-btn>
     </div>
@@ -17,6 +17,12 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+  props: {
+    change: {
+      type: Boolean,
+      required: true
+    }
+  },
   methods: {
     updateDocument() {
       this.$emit('updateDocument')

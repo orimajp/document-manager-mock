@@ -29,6 +29,7 @@
       </v-col>
     </v-row>
     <document-editor-footer
+      :change="change"
       @updateDocument="updateDocument"
       @cancelDocument="cancelDocument"
     />
