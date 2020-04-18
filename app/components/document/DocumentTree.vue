@@ -7,7 +7,9 @@
       @click="openPage(currentPageKey)"
     >
       <v-icon class="collapse-icon" v-text="open" />
-      <span class="doc-title" v-text="currentNode.pageTitle" />
+      <nuxt-link :to="getNuxtLink(currentPageKey)" class="page-link">
+        {{ currentNode.pageTitle }}
+      </nuxt-link>
     </li>
     <li
       v-if="currentNode.expand"
@@ -67,7 +69,10 @@ export default Vue.extend({
   },
   methods: {
     openPage(pageKey: string): void {
-      this.$router.push(`/document/view/${pageKey}`)
+      this.$router.push(this.getNuxtLink(pageKey))
+    },
+    getNuxtLink(pageKey: string): string {
+      return `/document/view/${pageKey}`
     }
   }
 })
@@ -99,6 +104,7 @@ li {
   cursor: pointer;
   padding-top: 10px;
   padding-bottom: 10px;
+  /*position: relative;*/
 }
 .doc-list:hover {
   background-color: lightgrey;
@@ -106,6 +112,10 @@ li {
   /*background-color: white;*/
   padding-left: 13px;
   color: black;
+}
+.page-link {
+  color: inherit;
+  text-decoration: none;
 }
 .collapse-icon {
   color: white;
