@@ -113,7 +113,7 @@ export default Vue.extend({
   cursor: pointer;
 }
 .document-top-link:hover {
-  background-color: darkgrey;
+  background-color: lightgray;
   color: black;
 }
 .tree-area {

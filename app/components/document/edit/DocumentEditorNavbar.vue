@@ -5,10 +5,21 @@
         mdi-home
       </v-icon>
     </v-btn>
-    <v-toolbar-title>
-      {{ pageTitle }}
-    </v-toolbar-title>
-    <v-spacer />
+    <v-chip label>
+      {{ editTarget }}
+    </v-chip>
+    <v-text-field
+      outlined
+      light
+      dense
+      filled
+      flat
+      hide-details
+      placeholder="タイトル"
+      class="header-input"
+      :value="pageTitle"
+      @input="updateTitle"
+    />
     <v-btn-toggle v-model="mode" dense>
       <v-btn :value="editValue" color="secondary">
         <span>EDIT</span>
@@ -24,13 +35,16 @@
 </template>
 
 <script lang="ts">
-// import Vue, { PropType } from 'vue'
 import Vue from 'vue'
 import { EDIT, DUAL, PREV } from '~/models/EditorDisplayMode'
 export default Vue.extend({
   props: {
     pageTitle: {
       type: String,
+      required: true
+    },
+    documentEdit: {
+      type: Boolean,
       required: true
     }
   },
@@ -40,6 +54,19 @@ export default Vue.extend({
     dualValue: DUAL,
     prevValue: PREV
   }),
+  computed: {
+    title: {
+      get() {
+        return this.pageTitle
+      },
+      set(val) {
+        this.$emit('updateTitle', val)
+      }
+    },
+    editTarget(): String {
+      return this.documentEdit ? 'Doc' : 'Page'
+    }
+  },
   watch: {
     mode() {
       this.$emit('changeMode', this.mode)
@@ -48,17 +75,19 @@ export default Vue.extend({
   methods: {
     goTop(): void {
       this.$emit('goTop')
+    },
+    updateTitle(newTitle): void {
+      this.$emit('updateTitle', newTitle)
     }
   }
 })
 </script>
 
 <style scoped>
-.mode-button {
-  min-width: 300px;
-}
-.mode-button-box {
-  margin-top: 5px;
-  margin-bottom: 5px;
+.header-input {
+  margin-top: 0;
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: #f5f5f5;
 }
 </style>

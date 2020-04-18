@@ -5,29 +5,16 @@
     class="fixed-content center-line"
   >
     <v-row>
-      <v-col cols="12" class="pb-0">
-        <v-text-field
-          outlined
-          label="タイトル"
-          placeholder="タイトル"
-          dense
-          filled
-          :value="pageContent.pageTitle"
-          @input="updateTitle"
-          @change="notichChange"
-        />
-      </v-col>
       <v-col cols="12">
         <v-textarea
           outlined
-          label="本文"
           placeholder="本文"
           dense
           filled
+          hide-details
           :height="textareaHeight"
           :value="pageContent.pageData"
           @input="updatePageData"
-          @change="notichChange"
         />
       </v-col>
     </v-row>
@@ -39,7 +26,7 @@ import Vue, { PropType } from 'vue'
 import { DocumentPage } from '~/models/document/DocumentPage'
 
 /* textarea高さ補正値 */
-const ADJUST_HEIGHT = 210
+const ADJUST_HEIGHT = 124
 
 export default Vue.extend({
   props: {
@@ -84,9 +71,6 @@ export default Vue.extend({
     calculateWindowWidth() {
       this.windowHeight = window.innerHeight
       console.log(this.windowHeight)
-    },
-    notichChange() {
-      this.$emit('notichChange')
     }
   }
 })

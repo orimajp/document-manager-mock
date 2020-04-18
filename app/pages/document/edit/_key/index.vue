@@ -1,9 +1,11 @@
 <template>
   <div>
     <document-editor-navbar
-      :page-title="pageTitle"
+      :page-title="page.pageTitle"
+      :document-edit="isDocumentTopPage"
       @changeMode="changeMode"
       @goTop="goTop"
+      @updateTitle="updateTitle"
     />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
@@ -13,7 +15,6 @@
           :edit-form-cols="displayEditFormCols"
           @updateTitle="updateTitle"
           @updatePageData="updatePageData"
-          @notichChange="notichChange"
         />
       </v-col>
       <v-col
@@ -93,9 +94,6 @@ export default Vue.extend({
     isDocumentTopPage(): boolean {
       return this.page.documentKey === this.page.pageKey
     },
-    pageTitle() {
-      return this.isDocumentTopPage ? 'ドキュメント編集' : 'ページ編集'
-    },
     displayEditForm() {
       return this.displayMode !== PREV
     },
@@ -145,10 +143,12 @@ export default Vue.extend({
      */
     updateTitle(pageTitle) {
       console.log(`updateTitle() pageTitle=${pageTitle}`)
+      this.change = true
       this.page.pageTitle = pageTitle
     },
     updatePageData(pageData) {
       console.log(`updatePageData() pageData=${pageData}`)
+      this.change = true
       this.page.pageData = pageData
     },
     async updateDocument() {
@@ -161,9 +161,6 @@ export default Vue.extend({
     },
     changeMode(mode) {
       this.displayMode = mode
-    },
-    notichChange() {
-      this.change = true
     },
     goTop() {
       this.$router.push('/')
@@ -190,6 +187,7 @@ export default Vue.extend({
   margin-top: 50px;
   margin-bottom: 50px;
 }
+/* 以下は利用している */
 .preview-area {
   padding-left: 0;
 }
