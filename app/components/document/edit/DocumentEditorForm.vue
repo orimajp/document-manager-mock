@@ -24,6 +24,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import { DocumentPage } from '~/models/document/DocumentPage'
+import { getDisplayEditFormCols } from '~/models/EditorPaneColumns'
 
 /* textarea高さ補正値 */
 const ADJUST_HEIGHT = 124
@@ -37,10 +38,6 @@ export default Vue.extend({
     displayMode: {
       type: String,
       required: true
-    },
-    editFormCols: {
-      type: Number,
-      required: true
     }
   },
   data: () => ({
@@ -51,7 +48,7 @@ export default Vue.extend({
       return this.windowHeight - ADJUST_HEIGHT
     },
     containerWidth() {
-      return `${(this.editFormCols * 100) / 12}%`
+      return `${(getDisplayEditFormCols(this.displayMode) * 100) / 12}%`
     }
   },
   mounted(): void {
