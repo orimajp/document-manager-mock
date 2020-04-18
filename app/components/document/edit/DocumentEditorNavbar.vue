@@ -64,7 +64,7 @@ export default Vue.extend({
       }
     },
     editTarget(): String {
-      return this.documentEdit ? 'Doc' : 'Page'
+      return this.documentEdit ? 'D' : 'P'
     }
   },
   watch: {
