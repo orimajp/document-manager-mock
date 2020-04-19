@@ -5,7 +5,7 @@
         mdi-home
       </v-icon>
     </v-btn>
-    <v-chip label>
+    <v-chip>
       {{ editTarget }}
     </v-chip>
     <v-text-field
@@ -21,13 +21,13 @@
       @input="updateTitle"
     />
     <v-btn-toggle v-model="mode" dense>
-      <v-btn :value="editValue" color="secondary">
+      <v-btn :value="editValue" color="secondary" :disabled="disableEdit">
         <span>EDIT</span>
       </v-btn>
-      <v-btn :value="dualValue" color="secondary">
+      <v-btn :value="dualValue" color="secondary" :disabled="disableDual">
         <span>DUAL</span>
       </v-btn>
-      <v-btn :value="prevValue" color="secondary">
+      <v-btn :value="prevValue" color="secondary" :disabled="disablePrev">
         <span>PREV</span>
       </v-btn>
     </v-btn-toggle>
@@ -65,6 +65,15 @@ export default Vue.extend({
     },
     editTarget(): String {
       return this.documentEdit ? 'D' : 'P'
+    },
+    disableEdit(): Boolean {
+      return this.disableButton(EDIT)
+    },
+    disableDual(): Boolean {
+      return this.disableButton(DUAL)
+    },
+    disablePrev(): Boolean {
+      return this.disableButton(PREV)
     }
   },
   watch: {
@@ -78,6 +87,9 @@ export default Vue.extend({
     },
     updateTitle(newTitle): void {
       this.$emit('updateTitle', newTitle)
+    },
+    disableButton(buttonMode: string): Boolean {
+      return buttonMode === this.mode
     }
   }
 })
