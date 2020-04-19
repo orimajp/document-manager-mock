@@ -63,7 +63,10 @@ export default Vue.extend({
   },
   watch: {
     windowSize() {
-      // console.log('watch.windowSize()')
+      // ★分割→プレビューへの遷移でハングする問題への対策
+      if (this.windowSize.width === 0) {
+        return
+      }
       this.resize()
     }
   },
