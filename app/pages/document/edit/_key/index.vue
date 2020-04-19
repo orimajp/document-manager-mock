@@ -9,10 +9,25 @@
     />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
+        <!--
         <document-editor-form
           :page-content="page"
           :display-mode="displayMode"
           @updateTitle="updateTitle"
+          @updatePageData="updatePageData"
+        />
+        -->
+        <!--
+        <document-editor-pane
+          :page-content="page"
+          :display-mode="displayMode"
+          @updatePageData="updatePageData"
+          @updateEditorScrollStete="updateEditorScrollStete"
+        />
+        -->
+        <document-editor-pane
+          :page-content="page"
+          :display-mode="displayMode"
           @updatePageData="updatePageData"
         />
       </v-col>
@@ -41,7 +56,8 @@ import Vue from 'vue'
 import { Context } from '@nuxt/types'
 import { documentService } from '~/services/document/DocumentService'
 import DocumentEditorNavbar from '~/components/document/edit/DocumentEditorNavbar'
-import DocumentEditorForm from '~/components/document/edit/DocumentEditorForm'
+// import DocumentEditorForm from '~/components/document/edit/DocumentEditorForm'
+import DocumentEditorPane from '~/components/document/edit/DocumentEditorPane'
 import DocumentContent from '~/components/document/DocumentContent.vue'
 import DocumentEditorFooter from '~/components/document/edit/DocumentEditorFooter'
 import { DocumentPage } from '~/models/document/DocumentPage'
@@ -69,7 +85,8 @@ export default Vue.extend({
   layout: 'viewer',
   components: {
     DocumentEditorNavbar,
-    DocumentEditorForm,
+    // DocumentEditorForm,
+    DocumentEditorPane,
     DocumentContent,
     DocumentEditorFooter
   },
@@ -89,6 +106,9 @@ export default Vue.extend({
     change: false,
     distinationPath: '',
     savePage: false
+    // savePage: false,
+    // scrollEditor: false,
+    // scrollPreview: false
   }),
   computed: {
     isDocumentTopPage(): boolean {
@@ -108,6 +128,17 @@ export default Vue.extend({
     },
     dualMode() {
       return this.displayMode === DUAL
+      /*
+    },
+    editorScrolling() {
+      return this.scrollEditor
+    },
+    previewScrolling() {
+      return this.scrollPreview
+    },
+    scrolling() {
+      return this.editorScrolling || this.previewScrolling
+      */
     }
   },
   watch: {
@@ -151,6 +182,15 @@ export default Vue.extend({
       this.change = true
       this.page.pageData = pageData
     },
+    /*
+    updateEditorScrollStete(state) {
+      console.log(`updateEditorScrollStete(): state=${state}`)
+      this.scrollEditor = state
+    },
+    updatePreviewScrollState(state) {
+      this.scrollPreview = state
+    },
+     */
     async updateDocument() {
       this.savePage = true
       await documentService.updateDocumentPage(this.page)

@@ -1,5 +1,7 @@
 import * as path from 'path'
 import { Configuration } from '@nuxt/types'
+// const webpack = require('webpack')
+const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 // import hljs from 'highlight.js' // こっちだけimportするとコードハイライトでコケる
 // import hljsDefineVue from 'highlightjs-vue' // こちらはimortできない
 
@@ -126,7 +128,10 @@ const nuxtConfig: Configuration = {
      */
     transpile: [/typed-vuex/],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      // @ts-ignore
+      config.plugins.push(new MonacoEditorPlugin())
+    }
   }
 }
 
