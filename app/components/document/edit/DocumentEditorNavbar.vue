@@ -33,6 +33,11 @@
       </v-btn>
     </v-btn-toggle>
     -->
+    <v-btn-toggle v-model="option" dense multiple class="option-button-group">
+      <v-btn value="DARK" color="secondary">
+        DARK
+      </v-btn>
+    </v-btn-toggle>
     <v-btn-toggle v-model="mode" dense>
       <v-btn :value="editValue" color="secondary">
         <span>EDIT</span>
@@ -62,6 +67,7 @@ export default Vue.extend({
     }
   },
   data: () => ({
+    option: [],
     mode: DUAL,
     editValue: EDIT,
     dualValue: DUAL,
@@ -103,6 +109,9 @@ export default Vue.extend({
         return
       }
       this.$emit('changeMode', this.mode)
+    },
+    option(val) {
+      this.$emit('darkModeState', val.includes('DARK'))
     }
   },
   methods: {
@@ -120,6 +129,9 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.option-button-group {
+  margin-right: 8px;
+}
 .header-input {
   margin-top: 0;
   margin-right: 10px;

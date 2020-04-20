@@ -9,6 +9,7 @@
         <markdown-editor
           :markdown-data="pageContent.pageData"
           :window-size="editorSize"
+          :dark-mode="darkMode"
           @updatePageData="updatePageData"
         />
       </v-col>
@@ -28,16 +29,16 @@ import { DUAL, PREV } from '~/models/EditorDisplayMode'
 const calculateEditorWidth = (windowWidth: number, displayMode: string) => {
   switch (displayMode) {
     case DUAL:
-      return windowWidth / 2 - 10
+      return windowWidth / 2
     case PREV:
       return 0
     default:
-      return windowWidth - 10
+      return windowWidth
   }
 }
 
 /* Markdown Editor高さ補正値 */
-const ADJUST_HEIGHT = 99
+const ADJUST_HEIGHT = 97
 
 export default Vue.extend({
   components: {
@@ -46,6 +47,10 @@ export default Vue.extend({
   props: {
     pageContent: {
       type: Object as PropType<DocumentPage>,
+      required: true
+    },
+    darkMode: {
+      type: Boolean,
       required: true
     },
     displayMode: {
@@ -115,7 +120,7 @@ export default Vue.extend({
 <style scoped>
 .fixed-content {
   /*top: 40px;*/
-  top: 26px;
+  top: 25px;
   position: fixed;
   z-index: 2;
 }

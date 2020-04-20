@@ -9,6 +9,7 @@
       wordWrap: 'on',
       fontSize: fontSize
     }"
+    :theme="theme"
     language="markdown"
     class="mdeditor"
     @editorWillMount="onEditorWillMount"
@@ -37,6 +38,10 @@ export default Vue.extend({
     windowSize: {
       type: Object as PropType<WindowSize>,
       required: true
+    },
+    darkMode: {
+      type: Boolean,
+      required: true
     }
   },
   data: () => ({
@@ -51,6 +56,9 @@ export default Vue.extend({
     editorWidth() {
       console.log(`editorWidth=${this.windowSize.width}px`)
       return this.windowSize.width + 'px'
+    },
+    theme() {
+      return this.darkMode ? 'vs-dark' : ''
     },
     editData: {
       get() {
@@ -86,5 +94,6 @@ export default Vue.extend({
 
 <style scoped>
 .mdeditor {
+  margin-left: -12px;
 }
 </style>
