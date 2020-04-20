@@ -6,6 +6,7 @@
       @changeMode="changeMode"
       @goTop="goTop"
       @updateTitle="updateTitle"
+      @darkModeState="darkModeState"
     />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
@@ -28,6 +29,7 @@
         <document-editor-pane
           :page-content="page"
           :display-mode="displayMode"
+          :dark-mode="darkMode"
           @updatePageData="updatePageData"
         />
       </v-col>
@@ -105,6 +107,7 @@ export default Vue.extend({
     displayMode: DUAL, // 初期値がコンポーネントと同期しない可能性あり
     change: false,
     distinationPath: '',
+    darkMode: false,
     savePage: false
     // savePage: false,
     // scrollEditor: false,
@@ -198,6 +201,9 @@ export default Vue.extend({
     },
     cancelDocument() {
       this.$router.push(`/document/view/${this.page.pageKey}`)
+    },
+    darkModeState(state) {
+      this.darkMode = state
     },
     changeMode(mode) {
       this.displayMode = mode
