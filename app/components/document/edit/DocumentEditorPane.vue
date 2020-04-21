@@ -120,7 +120,7 @@ export default Vue.extend({
 <style scoped>
 .fixed-content {
   /*top: 40px;*/
-  top: 25px;
+  top: 24px;
   position: fixed;
   z-index: 2;
 }
