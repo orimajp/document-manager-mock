@@ -38,7 +38,7 @@ const calculateEditorWidth = (windowWidth: number, displayMode: string) => {
 }
 
 /* Markdown Editor高さ補正値 */
-const ADJUST_HEIGHT = 97
+const ADJUST_HEIGHT = 95
 
 export default Vue.extend({
   components: {
