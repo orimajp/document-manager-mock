@@ -30,7 +30,7 @@
     "markdown-it-sub": "^1.0.0",
     "monaco-editor-webpack-plugin": "^1.9.0",
     "nuxt": "^2.12.2",
-    "nuxt-typed-vuex": "^0.1.17",
+    "nuxt-typed-vuex": "^0.1.18",
     "vue-monaco": "^1.2.0",
     "vuedraggable": "^2.23.2"
   },
