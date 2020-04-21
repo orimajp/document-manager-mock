@@ -20,19 +20,6 @@
       :value="pageTitle"
       @input="updateTitle"
     />
-    <!--
-    <v-btn-toggle v-model="mode" dense>
-      <v-btn :value="editValue" color="secondary" :disabled="disableEdit">
-        <span>EDIT</span>
-      </v-btn>
-      <v-btn :value="dualValue" color="secondary" :disabled="disableDual">
-        <span>DUAL</span>
-      </v-btn>
-      <v-btn :value="prevValue" color="secondary" :disabled="disablePrev">
-        <span>PREV</span>
-      </v-btn>
-    </v-btn-toggle>
-    -->
     <v-btn-toggle v-model="option" dense multiple class="option-button-group">
       <v-btn value="DARK" color="secondary">
         DARK
@@ -84,31 +71,21 @@ export default Vue.extend({
     },
     editTarget(): String {
       return this.documentEdit ? 'D' : 'P'
-    },
-    disableEdit(): Boolean {
-      return this.disableButton(EDIT)
-    },
-    disableDual(): Boolean {
-      return this.disableButton(DUAL)
-    },
-    disablePrev(): Boolean {
-      return this.disableButton(PREV)
     }
   },
   watch: {
-    /*
-    mode() {
-      this.$emit('changeMode', this.mode)
-    }
-     */
     mode(newValue, oldValue) {
       // 押下済みのボタンを押すとundefinedが設定される問題への対応
       console.log(`watch.mode() newValue=${newValue}, oldValue=${oldValue}`)
-      if (newValue === undefined) {
-        this.mode = oldValue
+      if (newValue !== undefined) {
+        this.$emit('changeMode', this.mode)
         return
       }
-      this.$emit('changeMode', this.mode)
+      // 二度押しされたボタンが未選択状態になる問題への対応
+      this.$nextTick(() => {
+        // 描画完了を待ってから値を復元することにより表示状態も復元する
+        this.mode = oldValue
+      })
     },
     option(val) {
       this.$emit('darkModeState', val.includes('DARK'))
@@ -120,9 +97,6 @@ export default Vue.extend({
     },
     updateTitle(newTitle): void {
       this.$emit('updateTitle', newTitle)
-    },
-    disableButton(buttonMode: string): Boolean {
-      return buttonMode === this.mode
     }
   }
 })
