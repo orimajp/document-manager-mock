@@ -9,9 +9,7 @@ export class DocumentMainBuilder {
   }
 
   createDocument(): DocumentMain {
-    const nodeWrapperBuilder = new DocumentNodeBuilder(
-      this.document.node
-    )
+    const nodeWrapperBuilder = new DocumentNodeBuilder(this.document.node)
     const documentNodeWrapper = nodeWrapperBuilder.createTopNode()
     return new DocumentMain(this.document.documentKey, documentNodeWrapper)
   }
