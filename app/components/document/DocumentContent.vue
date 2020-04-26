@@ -1,10 +1,20 @@
 <template>
   <v-content>
     <v-container fluid>
-      <h1>{{ pageTitle }}</h1>
-      <div class="document-area">
-        <div class="markdown-body">
-          <div v-html="$md.render(pageData)" />
+      <div
+        id="markdown-viewer"
+        ref="viewer"
+        :class="{ editPreviewStyle: editor }"
+      >
+        <h1>{{ pageTitle }}</h1>
+        <div class="document-area">
+          <div class="markdown-body">
+            <div
+              :style="{ width: viewerWidth }"
+              :class="{ dualLeftMargin: editor && displayMode === 'DUAL' }"
+              v-html="$md.render(pageData)"
+            />
+          </div>
         </div>
       </div>
     </v-container>
@@ -12,10 +22,12 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import Vue, { PropType } from 'vue'
 import { DocumentHeadlineFactory } from '~/models/document/factory/DocumentHeadlineFactory'
 import { DocumentHeadline } from '~/models/document/DocumentHeadline'
 import { DocumentPage } from '~/models/document/DocumentPage'
+import { WindowSize } from '~/models/WindowSize'
+import { DUAL, EDIT, PREV } from '~/models/EditorDisplayMode'
 
 const headlineSelector =
   '.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6'
@@ -41,6 +53,17 @@ const getInnerPath = (hrefs: string): string => {
   return null
 }
 
+const calculateViewerWidth = (windowWidth: number, displayMode: string) => {
+  switch (displayMode) {
+    case DUAL:
+      return windowWidth / 2 - 28
+    case EDIT:
+      return 0
+    default:
+      return windowWidth - 40
+  }
+}
+
 const createHeadline = (element: HTMLElement): DocumentHeadline => {
   return DocumentHeadlineFactory.createDocumentHeadline(element)
 }
@@ -48,21 +71,44 @@ const createHeadline = (element: HTMLElement): DocumentHeadline => {
 export default Vue.extend({
   props: {
     pageContent: {
-      type: Object,
+      type: Object as PropType<DocumentPage>,
       required: true
-    } as PropOptions<DocumentPage>,
+    },
+    windowSize: {
+      type: Object as PropType<WindowSize>,
+      required: false,
+      default: () => ({ height: 0, width: 0 })
+    },
     editor: {
       type: Boolean,
       required: false,
       default: false
+    },
+    displayMode: {
+      type: String,
+      required: false,
+      default: () => PREV
     }
   },
+  data: () => ({
+    timeoutId: null as number,
+    isScrollRecieved: false
+  }),
   computed: {
     pageTitle(): string {
       return this.pageContent.pageTitle
     },
     pageData(): string {
       return this.pageContent.pageData
+    },
+    viewer() {
+      return this.$refs.viewer
+    },
+    windowWidth() {
+      return calculateViewerWidth(this.windowSize.width, this.displayMode)
+    },
+    viewerWidth() {
+      return this.editor ? this.windowWidth + 'px' : '100%'
     }
   },
   watch: {
@@ -121,6 +167,11 @@ export default Vue.extend({
     },
     addListeners() {
       console.log('addListeners() called.')
+      if (this.editor) {
+        document
+          .getElementById('markdown-viewer')
+          .addEventListener('scroll', this.handleScroll)
+      }
       this._links = this.$el.getElementsByTagName('a')
       for (let i = 0; i < this._links.length; i++) {
         this._links[i].addEventListener('click', this.navigate, false)
@@ -128,6 +179,11 @@ export default Vue.extend({
     },
     removeListeners() {
       console.log('removeListeners() called.')
+      if (this.editor) {
+        document
+          .getElementById('markdown-viewer')
+          .removeEventListener('scroll', this.handleScroll)
+      }
       for (let i = 0; i < this._links.length; i++) {
         this._links[i].removeEventListener('click', this.navigate, false)
       }
@@ -165,13 +221,68 @@ export default Vue.extend({
     },
     goFootNode(id: string): void {
       window.location.href = `#${id}`
+    },
+    setTimeout(clearOnly) {
+      // clearOnly不要では？
+      if (this.timeoutId) {
+        window.clearTimeout(this.timeoutId)
+        this.timeoutId = null
+      }
+      if (!clearOnly) {
+        this.timeoutId = window.setTimeout(() => {
+          this.isScrollRecieved = false
+          this.timeoutId = null
+        }, 200)
+      }
+    },
+    setScrollTop(v) {
+      // v = nullはトップへ戻るボタン用だが現状使っていない (position: fixed;にしてない通常表示時は動かない気がする)
+      if (v === null) {
+        this.viewer.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+        return
+      }
+      this.isScrollRecieved = true
+      this.setTimeout(false)
+      const topEnd = this.viewer.scrollHeight - this.viewer.clientHeight
+      this.$nextTick(() => {
+        this.viewer.scrollTop = topEnd * v
+      })
+    },
+    handleScroll(e) {
+      if (this.isScrollRecieved) {
+        return
+      }
+      const el = e.target
+      if (el && el.clientHeight && el.scrollHeight) {
+        const topEnd = el.scrollHeight - el.clientHeight
+        if (topEnd > 0) {
+          this.$nextTick(() => {
+            this.$emit('onScrollUpdatedEditor', el.scrollTop / topEnd)
+          })
+        }
+      }
     }
   }
 })
 </script>
 
 <style>
-/* ここはmarkdown-itの都合上scopedは使えない */
+/* エディタプレビュー時 */
+.editPreviewStyle {
+  top: 48px;
+  bottom: 30px;
+  /*right: 0;*/
+  position: fixed;
+  overflow-y: auto;
+}
+.dualLeftMargin {
+  margin-left: -12px;
+}
+
+/* ここはmarkdown-itの都合上scopedは使えない(Vuetifyの既存スタイルを打ち消すため) */
 .v-application code {
   box-shadow: none;
   border-radius: 0;

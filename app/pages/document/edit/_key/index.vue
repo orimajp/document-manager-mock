@@ -7,6 +7,7 @@
       @goTop="goTop"
       @updateTitle="updateTitle"
       @darkModeState="darkModeState"
+      @syncModeState="syncModeState"
     />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
@@ -26,11 +27,25 @@
           @updateEditorScrollStete="updateEditorScrollStete"
         />
         -->
+        <!--
         <document-editor-pane
+          ref="editor"
           :page-content="page"
           :display-mode="displayMode"
           :dark-mode="darkMode"
           @updatePageData="updatePageData"
+          @onScrollUpdatedViewer="onScrollUpdatedViewer"
+        />
+        -->
+        <markdown-editor
+          ref="editor"
+          :markdown-data="page.pageData"
+          :window-size="windowSize"
+          :dark-mode="darkMode"
+          :display-mode="displayMode"
+          class="fixed-content"
+          @updatePageData="updatePageData"
+          @onScrollUpdatedViewer="onScrollUpdatedViewer"
         />
       </v-col>
       <v-col
@@ -39,9 +54,12 @@
         :class="{ 'preview-area': dualMode }"
       >
         <document-content
-          ref="documentContent"
+          ref="viewer"
           :page-content="page"
+          :window-size="windowSize"
           :editor="true"
+          :display-mode="displayMode"
+          @onScrollUpdatedEditor="onScrollUpdatedEditor"
         />
       </v-col>
     </v-row>
@@ -59,7 +77,7 @@ import { Context } from '@nuxt/types'
 import { documentService } from '~/services/document/DocumentService'
 import DocumentEditorNavbar from '~/components/document/edit/DocumentEditorNavbar'
 // import DocumentEditorForm from '~/components/document/edit/DocumentEditorForm'
-import DocumentEditorPane from '~/components/document/edit/DocumentEditorPane'
+// import DocumentEditorPane from '~/components/document/edit/DocumentEditorPane'
 import DocumentContent from '~/components/document/DocumentContent.vue'
 import DocumentEditorFooter from '~/components/document/edit/DocumentEditorFooter'
 import { DocumentPage } from '~/models/document/DocumentPage'
@@ -69,6 +87,8 @@ import {
   getDisplayEditFormCols,
   getDisplayPreviewAreaCols
 } from '~/models/EditorPaneColumns'
+import { WindowSize } from '~/models/WindowSize'
+import MarkdownEditor from '~/components/document/editor/MarkdownEditor.vue'
 
 /*
 const getDocument = (page: DocumentPage | null) => {
@@ -88,7 +108,8 @@ export default Vue.extend({
   components: {
     DocumentEditorNavbar,
     // DocumentEditorForm,
-    DocumentEditorPane,
+    // DocumentEditorPane,
+    MarkdownEditor,
     DocumentContent,
     DocumentEditorFooter
   },
@@ -108,10 +129,10 @@ export default Vue.extend({
     change: false,
     distinationPath: '',
     darkMode: false,
-    savePage: false
-    // savePage: false,
-    // scrollEditor: false,
-    // scrollPreview: false
+    syncMode: true,
+    savePage: false,
+    windowHeight: 0,
+    windowWidth: 0
   }),
   computed: {
     isDocumentTopPage(): boolean {
@@ -131,17 +152,9 @@ export default Vue.extend({
     },
     dualMode() {
       return this.displayMode === DUAL
-      /*
     },
-    editorScrolling() {
-      return this.scrollEditor
-    },
-    previewScrolling() {
-      return this.scrollPreview
-    },
-    scrolling() {
-      return this.editorScrolling || this.previewScrolling
-      */
+    windowSize(): WindowSize {
+      return { height: this.windowHeight, width: this.windowWidth }
     }
   },
   watch: {
@@ -185,15 +198,6 @@ export default Vue.extend({
       this.change = true
       this.page.pageData = pageData
     },
-    /*
-    updateEditorScrollStete(state) {
-      console.log(`updateEditorScrollStete(): state=${state}`)
-      this.scrollEditor = state
-    },
-    updatePreviewScrollState(state) {
-      this.scrollPreview = state
-    },
-     */
     async updateDocument() {
       this.savePage = true
       await documentService.updateDocumentPage(this.page)
@@ -205,6 +209,9 @@ export default Vue.extend({
     darkModeState(state) {
       this.darkMode = state
     },
+    syncModeState(state) {
+      this.syncMode = state
+    },
     changeMode(mode) {
       this.displayMode = mode
     },
@@ -213,9 +220,12 @@ export default Vue.extend({
     },
     addListener() {
       window.addEventListener('beforeunload', this.confirmUnload, false)
+      this.calculateWindowSize()
+      window.addEventListener('resize', this.calculateWindowSize, false)
     },
     removeListener() {
       window.removeEventListener('beforeunload', this.confirmUnload, false)
+      window.removeEventListener('resize', this.calculateWindowSize, false)
     },
     confirmUnload(event: BeforeUnloadEvent) {
       if (this.change && !this.savePage) {
@@ -223,6 +233,25 @@ export default Vue.extend({
         // ここのメッセージはブラウザ依存
         event.returnValue = LEAVE_CONFIRM_MESSAGE
       }
+    },
+    onScrollUpdatedEditor(value) {
+      if (!this.syncMode) {
+        return
+      }
+      this.$refs.editor.setScrollTop(value > 1 ? 1 : value)
+    },
+    onScrollUpdatedViewer(value) {
+      if (!this.syncMode) {
+        return
+      }
+      this.$refs.viewer.setScrollTop(value > 1 ? 1 : value)
+    },
+    calculateWindowSize() {
+      this.windowHeight = window.innerHeight
+      this.windowWidth = window.innerWidth
+      console.log(
+        `window height=${this.windowHeight}, width=${this.windowWidth}`
+      )
     }
   }
 })
@@ -232,6 +261,11 @@ export default Vue.extend({
 .content-area {
   margin-top: 50px;
   margin-bottom: 50px;
+}
+.fixed-content {
+  top: 48px;
+  position: fixed;
+  z-index: 2;
 }
 /* 以下は利用している */
 .preview-area {

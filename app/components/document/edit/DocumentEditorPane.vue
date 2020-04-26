@@ -10,7 +10,9 @@
           :markdown-data="pageContent.pageData"
           :window-size="editorSize"
           :dark-mode="darkMode"
+          :display-mode="displayMode"
           @updatePageData="updatePageData"
+          @onScrollUpdatedViewer="onScrollUpdatedViewer"
         />
       </v-col>
     </v-row>
@@ -21,10 +23,9 @@
 import Vue, { PropType } from 'vue'
 import { DocumentPage } from '~/models/document/DocumentPage'
 import { getDisplayEditFormCols } from '~/models/EditorPaneColumns'
-import MarkdownEditor, {
-  WindowSize
-} from '~/components/document/editor/MarkdownEditor'
+import MarkdownEditor from '~/components/document/editor/MarkdownEditor'
 import { DUAL, PREV } from '~/models/EditorDisplayMode'
+import { WindowSize } from '~/models/WindowSize'
 
 const calculateEditorWidth = (windowWidth: number, displayMode: string) => {
   switch (displayMode) {
@@ -112,6 +113,9 @@ export default Vue.extend({
         this.$emit('updateEditorScrollStete', false)
       }, 500)
        */
+    },
+    onScrollUpdatedViewer(value) {
+      this.$emit('onScrollUpdatedViewer', value)
     }
   }
 })

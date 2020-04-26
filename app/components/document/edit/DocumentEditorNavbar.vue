@@ -24,6 +24,9 @@
       <v-btn value="DARK" color="secondary">
         DARK
       </v-btn>
+      <v-btn value="SYNC" color="secondary">
+        SYNC
+      </v-btn>
     </v-btn-toggle>
     <v-btn-toggle v-model="mode" dense>
       <v-btn :value="editValue" color="secondary">
@@ -54,7 +57,7 @@ export default Vue.extend({
     }
   },
   data: () => ({
-    option: [],
+    option: ['SYNC'],
     mode: DUAL,
     editValue: EDIT,
     dualValue: DUAL,
@@ -89,6 +92,7 @@ export default Vue.extend({
     },
     option(val) {
       this.$emit('darkModeState', val.includes('DARK'))
+      this.$emit('syncModeState', val.includes('SYNC'))
     }
   },
   methods: {

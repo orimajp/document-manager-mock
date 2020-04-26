@@ -18,13 +18,28 @@
 
 <script lang="ts">
 // https://qiita.com/Kray-G/items/445b5cfe8e9c746e2b81
+// https://qiita.com/Kray-G/items/f2c29c38c9f5f19b465a
+// https://blog.mamansoft.net/2018/07/16/nuxtjs-typescript-monacoeditor/
 import Vue, { PropType } from 'vue'
 import MonacoEditor from 'vue-monaco'
+import * as monaco from 'monaco-editor'
+import { WindowSize } from '~/models/WindowSize'
+import { DUAL, PREV } from '~/models/EditorDisplayMode'
+import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor
 
-export interface WindowSize {
-  height: Number
-  width: Number
+const calculateEditorWidth = (windowWidth: number, displayMode: string) => {
+  switch (displayMode) {
+    case DUAL:
+      return windowWidth / 2
+    case PREV:
+      return 0
+    default:
+      return windowWidth
+  }
 }
+
+/* Markdown Editor高さ補正値 */
+const ADJUST_HEIGHT = 95
 
 export default Vue.extend({
   components: {
@@ -42,20 +57,33 @@ export default Vue.extend({
     darkMode: {
       type: Boolean,
       required: true
+    },
+    displayMode: {
+      type: String,
+      required: true
     }
   },
   data: () => ({
     fontSize: 13,
-    monaco: null
+    monaco: null as monaco,
+    editor: null as IStandaloneCodeEditor,
+    timeoutId: null as number,
+    isScrollRecieved: false
   }),
   computed: {
+    windowHeight() {
+      return this.windowSize.height - ADJUST_HEIGHT
+    },
+    windowWidth() {
+      return calculateEditorWidth(this.windowSize.width, this.displayMode)
+    },
     editorHeight() {
-      console.log(`editorHeight=${this.windowSize.height}px`)
-      return this.windowSize.height + 'px'
+      console.log(`editorHeight=${this.windowHeight}px`)
+      return this.windowHeight + 'px'
     },
     editorWidth() {
-      console.log(`editorWidth=${this.windowSize.width}px`)
-      return this.windowSize.width + 'px'
+      console.log(`editorWidth=${this.windowWidth}px`)
+      return this.windowWidth + 'px'
     },
     theme() {
       return this.darkMode ? 'vs-dark' : ''
@@ -70,13 +98,24 @@ export default Vue.extend({
     }
   },
   watch: {
-    windowSize() {
+    windowHeight() {
       // ★分割→プレビューへの遷移でハングする問題への対策
-      if (this.windowSize.width === 0) {
+      if (this.windowWidth === 0) {
+        return
+      }
+      this.resize()
+    },
+    windowWidth() {
+      // ★分割→プレビューへの遷移でハングする問題への対策
+      if (this.windowWidth === 0) {
         return
       }
       this.resize()
     }
+  },
+  mounted(): void {
+    this.editor = this.$refs.editor.getEditor()
+    this.editor.onDidScrollChange(this.handleScroll)
   },
   methods: {
     onEditorWillMount(monaco) {
@@ -84,9 +123,41 @@ export default Vue.extend({
     },
     resize() {
       this.$nextTick(() => {
-        console.log('Editor.layout()')
-        this.$refs.editor.getEditor().layout()
+        this.editor.layout()
       })
+    },
+    setTimeout(clearOnly) {
+      // clearOnly不要では？
+      if (this.timeoutId) {
+        window.clearTimeout(this.timeoutId)
+        this.timeoutId = null
+      }
+      if (!clearOnly) {
+        this.timeoutId = window.setTimeout(() => {
+          this.isScrollRecieved = false
+          this.timeoutId = null
+        }, 200)
+      }
+    },
+    setScrollTop(v) {
+      this.isScrollRecieved = true
+      this.setTimeout(false)
+      const topEnd = this.editor.getScrollHeight() - this.windowHeight
+      this.$nextTick(() => {
+        this.editor.setScrollTop(topEnd * v)
+      })
+    },
+    handleScroll() {
+      if (this.isScrollRecieved) {
+        return
+      }
+      const scrollTop = this.editor.getScrollTop()
+      const topEnd = this.editor.getScrollHeight() - this.windowHeight
+      if (topEnd > 0) {
+        this.$nextTick(() => {
+          this.$emit('onScrollUpdatedViewer', scrollTop / topEnd)
+        })
+      }
     }
   }
 })
@@ -94,6 +165,6 @@ export default Vue.extend({
 
 <style scoped>
 .mdeditor {
-  margin-left: -12px;
+  /*margin-left: -12px;*/
 }
 </style>
