@@ -11,32 +11,6 @@
     />
     <v-row class="content-area">
       <v-col v-show="displayEditForm" :cols="displayEditFormCols">
-        <!--
-        <document-editor-form
-          :page-content="page"
-          :display-mode="displayMode"
-          @updateTitle="updateTitle"
-          @updatePageData="updatePageData"
-        />
-        -->
-        <!--
-        <document-editor-pane
-          :page-content="page"
-          :display-mode="displayMode"
-          @updatePageData="updatePageData"
-          @updateEditorScrollStete="updateEditorScrollStete"
-        />
-        -->
-        <!--
-        <document-editor-pane
-          ref="editor"
-          :page-content="page"
-          :display-mode="displayMode"
-          :dark-mode="darkMode"
-          @updatePageData="updatePageData"
-          @onScrollUpdatedViewer="onScrollUpdatedViewer"
-        />
-        -->
         <markdown-editor
           ref="editor"
           :markdown-data="page.pageData"
@@ -51,7 +25,7 @@
       <v-col
         v-show="displayPreviewArea"
         :cols="displayPreviewAreaCols"
-        :class="{ 'preview-area': dualMode }"
+        class="preview-area"
       >
         <document-content
           ref="viewer"
@@ -76,8 +50,6 @@ import Vue from 'vue'
 import { Context } from '@nuxt/types'
 import { documentService } from '~/services/document/DocumentService'
 import DocumentEditorNavbar from '~/components/document/edit/DocumentEditorNavbar'
-// import DocumentEditorForm from '~/components/document/edit/DocumentEditorForm'
-// import DocumentEditorPane from '~/components/document/edit/DocumentEditorPane'
 import DocumentContent from '~/components/document/DocumentContent.vue'
 import DocumentEditorFooter from '~/components/document/edit/DocumentEditorFooter'
 import { DocumentPage } from '~/models/document/DocumentPage'
@@ -107,8 +79,6 @@ export default Vue.extend({
   layout: 'viewer',
   components: {
     DocumentEditorNavbar,
-    // DocumentEditorForm,
-    // DocumentEditorPane,
     MarkdownEditor,
     DocumentContent,
     DocumentEditorFooter
@@ -163,6 +133,7 @@ export default Vue.extend({
     }
   },
   mounted(): void {
+    this.calculateWindowSize()
     this.addListener()
   },
   beforeDestroy(): void {
@@ -220,7 +191,6 @@ export default Vue.extend({
     },
     addListener() {
       window.addEventListener('beforeunload', this.confirmUnload, false)
-      this.calculateWindowSize()
       window.addEventListener('resize', this.calculateWindowSize, false)
     },
     removeListener() {
@@ -267,8 +237,8 @@ export default Vue.extend({
   position: fixed;
   z-index: 2;
 }
-/* 以下は利用している */
 .preview-area {
   padding-left: 0;
+  padding-right: 0;
 }
 </style>

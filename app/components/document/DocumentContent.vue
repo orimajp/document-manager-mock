@@ -1,20 +1,23 @@
 <template>
   <v-content>
-    <v-container fluid>
+    <v-container
+      fluid
+      :class="{ 'editor-container-fluid': editor && dualMode }"
+    >
       <div
         id="markdown-viewer"
         ref="viewer"
-        :class="{ editPreviewStyle: editor }"
+        :class="{ 'edit-preview-style': editor }"
       >
-        <h1>{{ pageTitle }}</h1>
-        <div class="document-area">
-          <div class="markdown-body">
-            <div
-              :style="{ width: viewerWidth }"
-              :class="{ dualLeftMargin: editor && displayMode === 'DUAL' }"
-              v-html="$md.render(pageData)"
-            />
-          </div>
+        <h1 :class="{ 'markdown-edit-mode': editor }">
+          {{ pageTitle }}
+        </h1>
+        <div
+          class="markdown-body"
+          :style="{ width: viewerWidth }"
+          :class="{ 'markdown-edit-mode': editor }"
+        >
+          <div v-html="$md.render(pageData)" />
         </div>
       </div>
     </v-container>
@@ -56,11 +59,11 @@ const getInnerPath = (hrefs: string): string => {
 const calculateViewerWidth = (windowWidth: number, displayMode: string) => {
   switch (displayMode) {
     case DUAL:
-      return windowWidth / 2 - 28
+      return windowWidth / 2
     case EDIT:
       return 0
     default:
-      return windowWidth - 40
+      return windowWidth
   }
 }
 
@@ -103,6 +106,9 @@ export default Vue.extend({
     },
     viewer() {
       return this.$refs.viewer
+    },
+    dualMode() {
+      return this.displayMode === DUAL
     },
     windowWidth() {
       return calculateViewerWidth(this.windowSize.width, this.displayMode)
@@ -271,15 +277,16 @@ export default Vue.extend({
 
 <style>
 /* エディタプレビュー時 */
-.editPreviewStyle {
+.edit-preview-style {
   top: 48px;
   bottom: 30px;
-  /*right: 0;*/
   position: fixed;
   overflow-y: auto;
 }
-.dualLeftMargin {
-  margin-left: -12px;
+
+.editor-container-fluid {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* ここはmarkdown-itの都合上scopedは使えない(Vuetifyの既存スタイルを打ち消すため) */
@@ -302,10 +309,16 @@ export default Vue.extend({
 .v-application pre {
   text-indent: -0.5em;
 }
-.document-area {
-  padding: 10px;
+
+.markdown-edit-mode {
+  padding-left: 12px;
+  padding-right: 12px;
 }
-.document-area pre > code {
+
+.markdown-body {
+}
+
+.markdown-body pre > code {
   font-weight: 500;
 }
 
