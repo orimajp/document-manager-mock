@@ -115,7 +115,8 @@ const nuxtConfig: Configuration = {
       'markdown-it-ins',
       'markdown-it-sub',
       'markdown-it-abbr',
-      'markdown-it-deflist'
+      'markdown-it-deflist',
+      'markdown-it-video'
     ]
   },
 
