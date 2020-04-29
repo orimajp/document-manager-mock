@@ -399,4 +399,19 @@ export default Vue.extend({
 .markdown-body .footnotes-list {
   font-size: 85%;
 }
+
+/* markdown-it-video用レスポンシブスタイル */
+.markdown-body .embed-responsive {
+  position: relative;
+  height: 0;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+.markdown-body .embed-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 </style>
