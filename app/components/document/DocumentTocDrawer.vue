@@ -56,20 +56,26 @@ export default Vue.extend({
   background-color: lightgrey;
 }
 .headline-1 {
+  cursor: pointer;
 }
 .headline-2 {
+  cursor: pointer;
   margin-left: 5px;
 }
 .headline-3 {
+  cursor: pointer;
   margin-left: 10px;
 }
 .headline-4 {
+  cursor: pointer;
   margin-left: 15px;
 }
 .headline-5 {
+  cursor: pointer;
   margin-left: 20px;
 }
 .headline-6 {
+  cursor: pointer;
   margin-left: 25px;
 }
 </style>
