@@ -5,6 +5,7 @@ import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 import { pageKeyFactory } from '~/services/document/PageKeyFactory'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
+import { NewDocumentData } from '~/models/document/NewDocumentData'
 
 class DocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -41,6 +42,7 @@ class DocumentService implements IDocumentService {
     getDocumentService(pageData.pageKey).updateDocumentPage(pageData)
   }
 
+  // 正直これは使えない(所属元のdocumentKeyが無いため)
   registerDocumentPage(pageData: DocumentPage): DocumentPage {
     const pageKey = pageKeyFactory.createPageKey()
     pageData.pageKey = pageKey
@@ -56,6 +58,22 @@ class DocumentService implements IDocumentService {
     }
     console.log(JSON.stringify(records))
     return records
+  }
+
+  registerDocument(
+    documentKey: string,
+    newDocumentData: NewDocumentData
+  ): Promise<void> {
+    return getDocumentService(documentKey).registerDocument(
+      documentKey,
+      newDocumentData
+    )
+  }
+
+  async registerNewDocument(newDocumentData: NewDocumentData): Promise<String> {
+    const pageKey = pageKeyFactory.createPageKey()
+    await this.registerDocument(pageKey, newDocumentData)
+    return pageKey
   }
 }
 

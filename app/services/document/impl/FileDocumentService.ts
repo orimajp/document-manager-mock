@@ -4,6 +4,7 @@ import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
+import { NewDocumentData } from '~/models/document/NewDocumentData'
 
 class FileDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -94,6 +95,16 @@ class FileDocumentService implements IDocumentService {
         documentKey: 'md-page0'
       }
     ]
+  }
+
+  registerDocument(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    documentKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    newDocumentData: NewDocumentData
+  ): Promise<void> {
+    // TODO 登録系は実装しない
+    return Promise.resolve()
   }
 }
 
@@ -294,6 +305,9 @@ The HTML specification is maintained by the W3C.
 名前2 *名前のマークアッップ*
 
 :  定義2
+
+# markdown-it-video
+@[vimeo](365349055)
 
 `
 

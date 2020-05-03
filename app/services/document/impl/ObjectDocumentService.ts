@@ -4,6 +4,7 @@ import { DocumentPage } from '~/models/document/DocumentPage'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
+import { NewDocumentData } from '~/models/document/NewDocumentData'
 
 class ObjectDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -96,6 +97,16 @@ class ObjectDocumentService implements IDocumentService {
         documentKey: 'page0'
       }
     ] as Array<DocumentListRecord>
+  }
+
+  registerDocument(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    documentKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    newDocumentData: NewDocumentData
+  ): Promise<void> {
+    // TODO 登録系は実装しない
+    return Promise.resolve()
   }
 }
 

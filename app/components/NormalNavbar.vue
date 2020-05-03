@@ -6,6 +6,10 @@
       </v-icon>
     </v-btn>
     <v-toolbar-title v-text="pageTitle" />
+    <v-spacer />
+    <v-btn color="info" depressed @click="goCreateDocument">
+      ドキュメント作成
+    </v-btn>
   </v-app-bar>
 </template>
 
@@ -23,6 +27,9 @@ export default Vue.extend({
   methods: {
     goTop(): void {
       this.$router.push('/')
+    },
+    goCreateDocument() {
+      this.$router.push('/document/create/document')
     }
   }
 })
