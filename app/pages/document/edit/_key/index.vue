@@ -53,7 +53,6 @@ import DocumentEditorNavbar from '~/components/document/edit/DocumentEditorNavba
 import DocumentContent from '~/components/document/DocumentContent.vue'
 import DocumentEditorFooter from '~/components/document/edit/DocumentEditorFooter'
 import { DocumentPage } from '~/models/document/DocumentPage'
-import { DocumentMain } from '~/models/document/DocumentMain'
 import { EDIT, DUAL, PREV } from '~/models/EditorDisplayMode'
 import {
   getDisplayEditFormCols,
@@ -61,15 +60,6 @@ import {
 } from '~/models/EditorPaneColumns'
 import { WindowSize } from '~/models/WindowSize'
 import MarkdownEditor from '~/components/document/editor/MarkdownEditor.vue'
-
-/*
-const getDocument = (page: DocumentPage | null) => {
-  if (page === null) {
-    return Promise.resolve(null)
-  }
-  return documentService.getDocument(page.documentKey)
-}
-*/
 
 const LEAVE_CONFIRM_MESSAGE =
   '編集中のデータを破棄してページを離れます。よろしいですか？'
@@ -86,18 +76,14 @@ export default Vue.extend({
   async asyncData({ params }: Context) {
     const key = params.key
     const page = await documentService.getPage(key)
-    const document = await documentService.getDocument(page.documentKey)
     return {
-      document,
       page
     }
   },
   data: () => ({
-    document: {} as DocumentMain,
     page: {} as DocumentPage,
     displayMode: DUAL, // 初期値がコンポーネントと同期しない可能性あり
     change: false,
-    distinationPath: '',
     darkMode: false,
     syncMode: true,
     savePage: false,
@@ -152,13 +138,6 @@ export default Vue.extend({
     next(false)
   },
   methods: {
-    /*
-    async registerPage() {
-      // TODO ドキュメント新規登録処理、ページ新規登録処理 いずれもドキュメントサービス側で生成されたキーの返却が行われる
-      const createdPage = await documentService.registerDocumentPage(this.page)
-      await this.$router.push(`/document/view/${createdPage.pageKey}`)
-    },
-     */
     updateTitle(pageTitle) {
       console.log(`updateTitle() pageTitle=${pageTitle}`)
       this.change = true
