@@ -2,7 +2,7 @@
   <div>
     <document-editor-navbar
       :page-title="page.pageTitle"
-      :document-edit="true"
+      :document-edit="false"
       @changeMode="changeMode"
       @goTop="goTop"
       @updateTitle="updateTitle"
@@ -39,8 +39,8 @@
     </v-row>
     <document-editor-create-footer
       :change="titleFilled"
-      :document-edit="true"
-      @registerDocument="registerDocument"
+      :document-edit="false"
+      @createPage="createPage"
       @cancelDocument="cancelDocument"
     />
   </div>
@@ -48,6 +48,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Context } from '@nuxt/types'
 import { documentService } from '~/services/document/DocumentService'
 import DocumentEditorNavbar from '~/components/document/edit/DocumentEditorNavbar'
 import DocumentContent from '~/components/document/DocumentContent.vue'
@@ -59,7 +60,8 @@ import {
 } from '~/models/EditorPaneColumns'
 import { WindowSize } from '~/models/WindowSize'
 import MarkdownEditor from '~/components/document/editor/MarkdownEditor.vue'
-import { NewDocumentData } from '~/models/document/NewDocumentData'
+// import { NewDocumentData } from '~/models/document/NewDocumentData'
+import { NewPageData } from '~/models/document/NewPageData'
 import DocumentEditorCreateFooter from '~/components/document/create/DocumentEditorCreateFooter.vue'
 
 const LEAVE_CONFIRM_MESSAGE =
@@ -73,6 +75,12 @@ export default Vue.extend({
     MarkdownEditor,
     DocumentContent,
     DocumentEditorCreateFooter
+  },
+  asyncData({ params }: Context) {
+    const key = params.key
+    return {
+      documentKey: key
+    }
   },
   data: () => ({
     page: {},
@@ -153,13 +161,16 @@ export default Vue.extend({
       this.change = true
       this.page.pageData = pageData
     },
-    async registerDocument() {
+    async createPage() {
+      console.log('createPage(): documentKey=' + this.documentKey)
       this.savePage = true
-      const newDocumentData = new NewDocumentData(
+      const newPageData = new NewPageData(
         this.page.pageTitle,
-        this.page.pageData
+        this.page.pageData,
+        this.documentKey
       )
-      const key = await documentService.registerNewDocument(newDocumentData)
+      const key = await documentService.registerNewPage(newPageData)
+      this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
       await this.$router.push(`/document/view/${key}`)
     },
     cancelDocument() {

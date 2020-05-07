@@ -3,6 +3,7 @@ import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
+import { NewPageData } from '~/models/document/NewPageData'
 
 export interface IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain>
@@ -21,4 +22,5 @@ export interface IDocumentService {
     documentKey: string,
     newDocumentData: NewDocumentData
   ): Promise<void>
+  registerPage(pageKey: string, newPageData: NewPageData): Promise<void>
 }

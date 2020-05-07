@@ -10,13 +10,16 @@
       <small>{{ pageTitle }}</small>
     </v-toolbar-title>
     <v-spacer />
-    <v-btn color="info" depressed @click="goPageEdit">
+    <v-btn color="info" depressed @click="goPageCreate">
+      ページ作成
+    </v-btn>
+    <v-btn color="info" class="toolbar-button" depressed @click="goPageEdit">
       {{ editButtonTitle }}
     </v-btn>
     <v-btn
       color="success"
       depressed
-      class="toolba-button"
+      class="toolbar-button"
       :disabled="!canTreeEdit"
       @click="goTreeEdit"
     >
@@ -70,6 +73,11 @@ export default Vue.extend({
     openDrawer(): void {
       this.$emit('openDrawer')
     },
+    goPageCreate(): void {
+      this.$router.push(
+        `/document/create/page/${this.documentViewNavbarContent.documentKey}`
+      )
+    },
     goPageEdit(): void {
       this.$router.push(
         `/document/edit/${this.documentViewNavbarContent.pageKey}`
@@ -85,7 +93,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.toolba-button {
+.toolbar-button {
   margin-left: 7px;
 }
 </style>

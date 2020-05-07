@@ -5,6 +5,7 @@ import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
+import { NewPageData } from '~/models/document/NewPageData'
 
 class ObjectDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -107,6 +108,31 @@ class ObjectDocumentService implements IDocumentService {
   ): Promise<void> {
     // TODO 登録系は実装しない
     return Promise.resolve()
+  }
+
+  registerPage(pageKey: string, newPageData: NewPageData): Promise<void> {
+    return new Promise<void>(resolve => {
+      const node = {
+        pageTitle: newPageData.title,
+        pageKey,
+        nodes: [] as Array<DocumentNodeData>
+      } as DocumentNodeData
+
+      const documentKey = newPageData.documentKey as string
+      const documentNode = nodeMap.get(documentKey) as DocumentNodeData
+      documentNode.nodes.push(node)
+
+      const pageData = {
+        documentKey,
+        pageKey,
+        pageTitle: newPageData.title,
+        pageData: newPageData.pageData
+      } as DocumentPage
+
+      documentPages.push(pageData) // 別のインタフェースだが、構造が同じなのでTypsScript的にはOK
+
+      resolve()
+    })
   }
 }
 

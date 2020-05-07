@@ -5,6 +5,7 @@ import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
+import { NewPageData } from '~/models/document/NewPageData'
 
 export class TemporaryDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -129,12 +130,44 @@ export class TemporaryDocumentService implements IDocumentService {
       resolve()
     })
   }
+
+  registerPage(pageKey: string, newPageData: NewPageData): Promise<void> {
+    return new Promise<void>(resolve => {
+      const node = {
+        pageTitle: newPageData.title,
+        pageKey,
+        nodes: [] as Array<DocumentNodeData>
+      } as DocumentNodeData
+
+      const documentKey = newPageData.documentKey
+
+      const documentData = documentMainDatas.get(
+        documentKey
+      ) as DocumentMainData
+
+      const nodes = documentData.node.nodes
+      nodes.push(node)
+
+      const pageData = {
+        documentKey,
+        pageKey,
+        pageTitle: newPageData.title,
+        pageData: newPageData.pageData
+      } as DocumentPage
+      pageDatas.set(pageKey, pageData)
+
+      resolve()
+    })
+  }
 }
 
 export const temporaryDocumentService = new TemporaryDocumentService()
 
+// ドキュメントリスト表示用
 const records: Array<DocumentListRecord> = []
 
+// ページデータマップ
 const pageDatas = new Map<String, DocumentPage>()
 
+// ドキュメントデータマップ
 const documentMainDatas = new Map<String, DocumentMainData>()

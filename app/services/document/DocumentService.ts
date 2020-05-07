@@ -6,6 +6,7 @@ import { DocumentMainData, DocumentNodeData, DocumentPageData } from '~/types'
 import { pageKeyFactory } from '~/services/document/PageKeyFactory'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
+import { NewPageData } from '~/models/document/NewPageData'
 
 class DocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -70,9 +71,25 @@ class DocumentService implements IDocumentService {
     )
   }
 
+  registerPage(pageKey: string, newPageData: NewPageData): Promise<void> {
+    return getDocumentService(newPageData.documentKey as string).registerPage(
+      pageKey,
+      newPageData
+    )
+  }
+
   async registerNewDocument(newDocumentData: NewDocumentData): Promise<String> {
     const pageKey = pageKeyFactory.createPageKey()
     await this.registerDocument(pageKey, newDocumentData)
+    return pageKey
+  }
+
+  async registerNewPage(newPageData: NewPageData): Promise<String> {
+    console.log(
+      'registerNewPage(): newPageData.documentKey=' + newPageData.documentKey
+    )
+    const pageKey = pageKeyFactory.createPageKey(newPageData.documentKey)
+    await this.registerPage(pageKey, newPageData)
     return pageKey
   }
 }

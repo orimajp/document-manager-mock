@@ -5,6 +5,7 @@ import { temporaryDocumentService } from '~/services/document/impl/TemporaryDocu
 
 class DocumentServiceFactory {
   getDocumentService(key: string): IDocumentService {
+    console.log('select key=' + key)
     if (this.isFileDocument(key)) {
       console.log('select FileDocumentService.')
       return fileDocumentService

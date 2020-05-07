@@ -1,6 +1,12 @@
 class PageKeyFactory {
-  createPageKey(): string {
-    return `gen-${this.createSeed()}`
+  createPageKey(key?: String): string {
+    if (!key || key.startsWith('gen')) {
+      return `gen-${this.createSeed()}`
+    }
+    if (key.startsWith('md')) {
+      return `md-${this.createSeed()}`
+    }
+    return `page-${this.createSeed()}`
   }
 
   private createSeed(): number {
