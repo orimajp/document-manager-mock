@@ -7,7 +7,10 @@
       <v-container>
         <div class="tree-edit-content">
           <v-card :height="editAreaHeight" class="tree-edit-area" outlined>
-            <document-editable-tree v-model="treeNodes" />
+            <document-editable-tree
+              v-model="treeNodes"
+              :current-page-key="currentPageKey"
+            />
           </v-card>
         </div>
       </v-container>
@@ -66,6 +69,9 @@ export default Vue.extend({
     },
     editAreaHeight() {
       return this.windowHeight - ADJUST_HEIGHT
+    },
+    currentPageKey() {
+      return this.$accessor.pageKey
     }
   },
   mounted(): void {
@@ -88,7 +94,8 @@ export default Vue.extend({
       this.gotoView()
     },
     gotoView() {
-      this.$router.push(`/document/view/${this.document.documentKey}`)
+      const pageKey = this.$accessor.pageKey
+      this.$router.push(`/document/view/${pageKey}`)
     },
     calculateWindowWidth() {
       this.windowHeight = window.innerHeight

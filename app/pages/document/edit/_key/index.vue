@@ -17,6 +17,7 @@
           :window-size="windowSize"
           :dark-mode="darkMode"
           :display-mode="displayMode"
+          :edito-mode="true"
           class="fixed-content"
           @updatePageData="updatePageData"
           @onScrollUpdatedViewer="onScrollUpdatedViewer"

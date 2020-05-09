@@ -96,7 +96,13 @@ export default Vue.extend({
       return this.$accessor.headline.headlines
     },
     canTreeEdit(): boolean {
-      return this.treeNode.nodes.length > 0
+      if (this.treeNode.nodes.length > 1) {
+        return true
+      }
+      return (
+        this.treeNode.nodes.length === 1 &&
+        this.treeNode.nodes[0].nodes.length > 0
+      )
     }
   },
   mounted(): void {

@@ -146,7 +146,7 @@ export class TemporaryDocumentService implements IDocumentService {
       ) as DocumentMainData
 
       const nodes = documentData.node.nodes
-      nodes.push(node)
+      nodes.unshift(node)
 
       const pageData = {
         documentKey,

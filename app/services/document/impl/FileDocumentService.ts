@@ -118,7 +118,7 @@ class FileDocumentService implements IDocumentService {
 
       const documentKey = newPageData.documentKey as string
       const documentNode = nodeMap.get(documentKey) as DocumentNodeData
-      documentNode.nodes.push(node)
+      documentNode.nodes.unshift(node)
 
       const pageData = {
         documentKey,

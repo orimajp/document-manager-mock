@@ -8,10 +8,17 @@
     @input="emitter"
   >
     <div v-for="child in readValue" :key="child.pageKey" class="item-group">
-      <div class="item">
+      <div
+        class="item"
+        :class="{ 'current-item': isCurrentPage(child.pageKey) }"
+      >
         {{ child.pageTitle }}
       </div>
-      <editable-tree :list="child.nodes" class="item-sub" />
+      <editable-tree
+        :list="child.nodes"
+        :current-page-key="currentPageKey"
+        class="item-sub"
+      />
     </div>
   </draggable>
 </template>
@@ -35,6 +42,10 @@ export default Vue.extend({
       type: Array as PropType<Array<DocumentNodeData>>,
       required: false,
       default: null
+    },
+    currentPageKey: {
+      type: String,
+      required: true
     }
   },
   computed: {
@@ -45,6 +56,9 @@ export default Vue.extend({
   methods: {
     emitter(value) {
       this.$emit('input', value)
+    },
+    isCurrentPage(pageKey) {
+      return this.currentPageKey === pageKey
     }
   }
 })
@@ -69,6 +83,9 @@ export default Vue.extend({
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-text-overflow: ellipsis;
+}
+.item.current-item {
+  border: solid darkgrey 3px;
 }
 .item-sub {
   /*margin: 0 0 0 1rem;*/

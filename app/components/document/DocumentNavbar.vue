@@ -11,7 +11,7 @@
     </v-toolbar-title>
     <v-spacer />
     <v-btn color="info" depressed @click="goPageCreate">
-      ページ作成
+      作成
     </v-btn>
     <v-btn color="info" class="toolbar-button" depressed @click="goPageEdit">
       {{ editButtonTitle }}
@@ -23,7 +23,7 @@
       :disabled="!canTreeEdit"
       @click="goTreeEdit"
     >
-      メニュー階層変更
+      階層編集
     </v-btn>
   </v-app-bar>
 </template>
@@ -60,7 +60,8 @@ export default Vue.extend({
       )
     },
     editButtonTitle(): string {
-      return this.isDocumentTopPage ? 'ドキュメント編集' : 'ページ編集'
+      // return this.isDocumentTopPage ? 'ドキュメント編集' : 'ページ編集'
+      return this.isDocumentTopPage ? '編集' : '編集'
     },
     pageTitle(): string {
       return this.documentViewNavbarContent.pageTitle

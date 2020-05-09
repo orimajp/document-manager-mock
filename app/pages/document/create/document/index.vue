@@ -3,6 +3,7 @@
     <document-editor-navbar
       :page-title="page.pageTitle"
       :document-edit="true"
+      :create-mode="true"
       @changeMode="changeMode"
       @goTop="goTop"
       @updateTitle="updateTitle"

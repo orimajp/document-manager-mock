@@ -3,6 +3,7 @@
     <document-editor-navbar
       :page-title="page.pageTitle"
       :document-edit="false"
+      :create-mode="true"
       @changeMode="changeMode"
       @goTop="goTop"
       @updateTitle="updateTitle"
@@ -174,7 +175,8 @@ export default Vue.extend({
       await this.$router.push(`/document/view/${key}`)
     },
     cancelDocument() {
-      this.$router.push('/')
+      const pageKey = this.$accessor.pageKey
+      this.$router.push(`/document/view/${pageKey}`)
     },
     darkModeState(state) {
       this.darkMode = state

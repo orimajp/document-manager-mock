@@ -9,7 +9,7 @@
         ref="viewer"
         :class="{ 'edit-preview-style': editor }"
       >
-        <h1 :class="{ 'markdown-edit-mode': editor }">
+        <h1 class="document-title" :class="{ 'markdown-edit-mode': editor }">
           {{ pageTitle }}
         </h1>
         <div
@@ -287,6 +287,12 @@ export default Vue.extend({
 .editor-container-fluid {
   padding-left: 0;
   padding-right: 0;
+}
+
+.document-title {
+  font-size: 2.5em;
+  font-weight: 200;
+  color: darkgray;
 }
 
 /* ここはmarkdown-itの都合上scopedは使えない(Vuetifyの既存スタイルを打ち消すため) */

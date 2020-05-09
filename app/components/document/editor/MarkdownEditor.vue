@@ -61,6 +61,13 @@ export default Vue.extend({
     displayMode: {
       type: String,
       required: true
+    },
+    editoMode: {
+      type: Boolean,
+      required: false,
+      default: () => {
+        return false
+      }
     }
   },
   data: () => ({
@@ -116,8 +123,14 @@ export default Vue.extend({
   mounted(): void {
     this.editor = this.$refs.editor.getEditor()
     this.editor.onDidScrollChange(this.handleScroll)
+    if (this.editoMode) {
+      this.focus()
+    }
   },
   methods: {
+    focus() {
+      this.editor.focus()
+    },
     onEditorWillMount(monaco) {
       this.monaco = monaco
     },

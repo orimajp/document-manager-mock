@@ -9,6 +9,7 @@
       {{ editTarget }}
     </v-chip>
     <v-text-field
+      ref="titleField"
       outlined
       light
       dense
@@ -54,6 +55,13 @@ export default Vue.extend({
     documentEdit: {
       type: Boolean,
       required: true
+    },
+    createMode: {
+      type: Boolean,
+      required: false,
+      default: () => {
+        return false
+      }
     }
   },
   data: () => ({
@@ -93,6 +101,13 @@ export default Vue.extend({
     option(val) {
       this.$emit('darkModeState', val.includes('DARK'))
       this.$emit('syncModeState', val.includes('SYNC'))
+    }
+  },
+  mounted() {
+    if (this.createMode) {
+      this.$nextTick(() => {
+        this.$refs.titleField.focus()
+      })
     }
   },
   methods: {
