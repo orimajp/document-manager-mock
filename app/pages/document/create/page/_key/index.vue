@@ -44,6 +44,7 @@
       @createPage="createPage"
       @cancelDocument="cancelDocument"
     />
+    <tree-edit-selection-dialog ref="dialog" :document-key="documentKey" />
   </div>
 </template>
 
@@ -61,7 +62,7 @@ import {
 } from '~/models/EditorPaneColumns'
 import { WindowSize } from '~/models/WindowSize'
 import MarkdownEditor from '~/components/document/editor/MarkdownEditor.vue'
-// import { NewDocumentData } from '~/models/document/NewDocumentData'
+import TreeEditSelectionDialog from '~/components/document/create/TreeEditSelectionDialog'
 import { NewPageData } from '~/models/document/NewPageData'
 import DocumentEditorCreateFooter from '~/components/document/create/DocumentEditorCreateFooter.vue'
 
@@ -75,7 +76,8 @@ export default Vue.extend({
     DocumentEditorNavbar,
     MarkdownEditor,
     DocumentContent,
-    DocumentEditorCreateFooter
+    DocumentEditorCreateFooter,
+    TreeEditSelectionDialog
   },
   asyncData({ params }: Context) {
     const key = params.key
@@ -172,7 +174,20 @@ export default Vue.extend({
       )
       const key = await documentService.registerNewPage(newPageData)
       this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
+      if (await this.canTreeEdit()) {
+        await this.$accessor.setPageKey(key)
+        this.$refs.dialog.openDialog(key)
+        return
+      }
       await this.$router.push(`/document/view/${key}`)
+    },
+    async canTreeEdit() {
+      const document = await documentService.getDocument(this.documentKey)
+      const treeNode = document.node
+      if (treeNode.nodes.length > 1) {
+        return true
+      }
+      return treeNode.nodes.length === 1 && treeNode.nodes[0].nodes.length > 0
     },
     cancelDocument() {
       const pageKey = this.$accessor.pageKey
