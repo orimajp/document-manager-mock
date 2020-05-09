@@ -6,11 +6,20 @@
     :group="{ name: 'treeNodes' }"
     animation="200"
     @input="emitter"
+    @start="startMove"
+    @end="endMove"
   >
     <div v-for="child in readValue" :key="child.pageKey" class="item-group">
       <div
         class="item"
-        :class="{ 'current-item': isCurrentPage(child.pageKey) }"
+        :class="{
+          'current-item': isCurrentPage(child.pageKey),
+          moving: moving,
+          'select-item': selectionPage(child.pageKey)
+        }"
+        :data-page-key="child.pageKey"
+        @mousedown="mouseDown"
+        @mouseup="mouseUp"
       >
         {{ child.pageTitle }}
       </div>
@@ -48,17 +57,40 @@ export default Vue.extend({
       required: true
     }
   },
+  data: () => ({
+    moving: false,
+    selectPageKey: null
+  }),
   computed: {
     readValue() {
       return this.value ? this.value : this.list
     }
   },
   methods: {
+    startMove(e) {
+      console.log(e)
+      this.moving = true
+    },
+    endMove() {
+      this.moving = false
+      this.selectPageKey = null
+    },
+    mouseDown(e) {
+      if (e) {
+        this.selectPageKey = e.target.dataset.pageKey
+      }
+    },
+    mouseUp() {
+      this.selectPageKey = null
+    },
     emitter(value) {
       this.$emit('input', value)
     },
     isCurrentPage(pageKey) {
       return this.currentPageKey === pageKey
+    },
+    selectionPage(pageKey) {
+      return this.selectPageKey === pageKey
     }
   }
 })
@@ -74,6 +106,7 @@ export default Vue.extend({
 .item-group {
 }
 .item {
+  cursor: grab;
   /*padding: 1rem;*/
   padding: 5px 10px;
   border: solid darkgrey 1px;
@@ -86,6 +119,12 @@ export default Vue.extend({
 }
 .item.current-item {
   border: solid darkgrey 3px;
+}
+.item.select-item {
+  font-weight: bold;
+}
+.item.moving {
+  cursor: grabbing;
 }
 .item-sub {
   /*margin: 0 0 0 1rem;*/

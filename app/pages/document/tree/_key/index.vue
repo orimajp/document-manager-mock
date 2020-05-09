@@ -33,7 +33,7 @@ import DocumentEditableTree from '~/components/document/tree/DocumentEditableTre
 import DocumentEditableTreeFotter from '~/components/document/tree/DocumentEditableTreeFooter.vue'
 
 /* 高さ補正値 */
-const ADJUST_HEIGHT = 140
+const ADJUST_HEIGHT = 136
 
 // https://wood-roots.com/web/vue-js/2537
 // https://github.com/SortableJS/Vue.Draggable

@@ -6,7 +6,7 @@
       </v-icon>
     </v-btn>
     <v-toolbar-title>
-      <small>メニュー階層変更: {{ pageTitle }}</small>
+      <small>メニュー階層編集: {{ pageTitle }}</small>
     </v-toolbar-title>
   </v-app-bar>
 </template>
