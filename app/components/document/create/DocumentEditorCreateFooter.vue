@@ -8,7 +8,7 @@
     </div>
     <div class="footer-button">
       <v-btn color="primary" block :disabled="!change" @click="createDocument">
-        新規作成
+        登録
       </v-btn>
     </div>
   </v-footer>

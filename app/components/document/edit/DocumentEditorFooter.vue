@@ -8,7 +8,7 @@
     </div>
     <div class="footer-button">
       <v-btn color="primary" block :disabled="!change" @click="updateDocument">
-        変更保存
+        保存
       </v-btn>
     </div>
   </v-footer>
