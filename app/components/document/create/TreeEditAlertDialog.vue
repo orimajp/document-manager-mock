@@ -5,15 +5,12 @@
         メニュー階層編集確認
       </v-card-title>
       <v-card-text>
-        ページが登録されました。引き続きメニュー階層を編集しますか？
+        ページが登録されました。引き続きメニュー階層を編集します。
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="green darken-1" text @click="goPage">
-          ページに遷移
-        </v-btn>
         <v-btn color="green darken-1" text @click="goTreeEdit">
-          メニュー階層編集
+          OK
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -30,16 +27,11 @@ export default Vue.extend({
     }
   },
   data: () => ({
-    pageKey: null,
     dialog: false
   }),
   methods: {
-    openDialog(pageKey) {
+    openDialog() {
       this.dialog = true
-      this.pageKey = pageKey
-    },
-    goPage() {
-      this.$router.push(`/document/view/${this.pageKey}`)
     },
     goTreeEdit() {
       this.$router.push(`/document/tree/${this.documentKey}`)
