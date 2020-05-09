@@ -290,6 +290,7 @@ export default Vue.extend({
 }
 
 .document-title {
+  padding-bottom: 20px;
   font-size: 2.5em;
   font-weight: 200;
   color: darkgray;
