@@ -4,7 +4,9 @@
       v-if="!firstNode"
       class="doc-list"
       :class="{ selected: currentNode.select }"
+      :data-page-key="currentPageKey"
       @click="openPage(currentPageKey)"
+      @contextmenu="openContextMenu"
     >
       <v-icon class="collapse-icon" v-text="open" />
       <nuxt-link :to="getNuxtLink(currentPageKey)" class="page-link">
@@ -22,6 +24,7 @@
           :key="index"
           :page-key-array="addPageKeyArray"
           :current-node="child"
+          @openContextMenu="openContextMenu"
         />
       </ul>
     </li>
@@ -73,6 +76,10 @@ export default Vue.extend({
     },
     getNuxtLink(pageKey: string): string {
       return `/document/view/${pageKey}`
+    },
+    openContextMenu(e) {
+      console.log('openContextMenu(): called.')
+      this.$emit('openContextMenu', e)
     }
   }
 })
