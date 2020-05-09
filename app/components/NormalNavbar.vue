@@ -8,7 +8,7 @@
     <v-toolbar-title v-text="pageTitle" />
     <v-spacer />
     <v-btn color="info" depressed @click="goCreateDocument">
-      ドキュメント作成
+      新規ドキュメント
     </v-btn>
   </v-app-bar>
 </template>
