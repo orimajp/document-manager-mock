@@ -14,7 +14,9 @@
       <div
         class="document-top-link"
         :class="{ selected: selected }"
+        :data-page-key="documentKey"
         @click="goDocumentTop"
+        @contextmenu="openContextMenu"
         v-text="pageTitle"
       />
       <ul class="tree-area">
@@ -83,6 +85,9 @@ export default Vue.extend({
       const pageKey = this.$accessor.pageKey
       return this.currentNode.pageKey === pageKey
     },
+    documentKey() {
+      return this.currentNode.pageKey
+    },
     drawerState: {
       get() {
         console.log('drawerState#get() state=' + this.drawer)
@@ -113,7 +118,7 @@ export default Vue.extend({
   },
   methods: {
     goDocumentTop(): void {
-      this.$router.push(`./${this.currentNode.pageKey}`)
+      this.$router.push(`./${this.documentKey}`)
     },
     openContextMenu(e) {
       // https://stackoverflow.com/questions/55892377/how-to-add-right-click-event-for-v-treeview-to-open-menu-in-vuetify
