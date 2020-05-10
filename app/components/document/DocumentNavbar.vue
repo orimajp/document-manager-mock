@@ -72,7 +72,7 @@ export default Vue.extend({
     },
     goPageCreate(): void {
       this.$router.push(
-        `/document/create/page/${this.documentViewNavbarContent.documentKey}`
+        `/document/create/page/${this.documentViewNavbarContent.pageKey}`
       )
     },
     goPageEdit(): void {
@@ -82,7 +82,7 @@ export default Vue.extend({
     },
     goTreeEdit(): void {
       this.$router.push(
-        `/document/tree/${this.documentViewNavbarContent.documentKey}`
+        `/document/tree/${this.documentViewNavbarContent.pageKey}`
       )
     }
   }

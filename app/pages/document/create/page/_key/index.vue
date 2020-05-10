@@ -47,7 +47,7 @@
     <!--
     <tree-edit-selection-dialog ref="dialog" :document-key="documentKey" />
     -->
-    <tree-edit-alert-dialog ref="dialog" :document-key="documentKey" />
+    <tree-edit-alert-dialog ref="dialog" />
   </div>
 </template>
 
@@ -84,10 +84,13 @@ export default Vue.extend({
     // TreeEditSelectionDialog,
     TreeEditAlertDialog
   },
-  asyncData({ params }: Context) {
+  async asyncData({ params }: Context) {
     const key = params.key
+    const page = await documentService.getRowPage(key)
+    const document = await documentService.getRowDocument(page.documentKey)
     return {
-      documentKey: key
+      currentPageKey: key,
+      documentKey: document.documentKey
     }
   },
   data: () => ({
@@ -179,18 +182,12 @@ export default Vue.extend({
       )
       const key = await documentService.registerNewPage(newPageData)
       this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
-      await this.$accessor.setPageKey(key)
-      /*
       if (await this.canTreeEdit()) {
-        await this.$accessor.setPageKey(key)
         this.$refs.dialog.openDialog(key)
         return
       }
       await this.$router.push(`/document/view/${key}`)
-       */
-      this.$refs.dialog.openDialog()
     },
-    /*
     async canTreeEdit() {
       const document = await documentService.getDocument(this.documentKey)
       const treeNode = document.node
@@ -199,10 +196,8 @@ export default Vue.extend({
       }
       return treeNode.nodes.length === 1 && treeNode.nodes[0].nodes.length > 0
     },
-     */
     cancelDocument() {
-      const pageKey = this.$accessor.pageKey
-      this.$router.push(`/document/view/${pageKey}`)
+      this.$router.push(`/document/view/${this.currentPageKey}`)
     },
     darkModeState(state) {
       this.darkMode = state

@@ -20,21 +20,17 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  props: {
-    documentKey: {
-      type: String,
-      required: true
-    }
-  },
   data: () => ({
-    dialog: false
+    dialog: false,
+    pageKey: null
   }),
   methods: {
-    openDialog() {
+    openDialog(pageKey) {
       this.dialog = true
+      this.pageKey = pageKey
     },
     goTreeEdit() {
-      this.$router.push(`/document/tree/${this.documentKey}`)
+      this.$router.push(`/document/tree/${this.pageKey}`)
     }
   }
 })

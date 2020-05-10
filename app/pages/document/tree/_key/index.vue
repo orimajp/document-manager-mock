@@ -47,9 +47,9 @@ export default Vue.extend({
   },
   async asyncData({ params }: Context) {
     const key = params.key
-    console.log(`documentKey=${key}`)
-    const document = await documentService.getRowDocument(key)
+    console.log(`pageKey=${key}`)
     const page = await documentService.getRowPage(key)
+    const document = await documentService.getRowDocument(page.documentKey)
     return {
       document,
       page,
@@ -71,7 +71,7 @@ export default Vue.extend({
       return this.windowHeight - ADJUST_HEIGHT
     },
     currentPageKey() {
-      return this.$accessor.pageKey
+      return this.page.pageKey
     }
   },
   mounted(): void {
@@ -94,8 +94,7 @@ export default Vue.extend({
       this.gotoView()
     },
     gotoView() {
-      const pageKey = this.$accessor.pageKey
-      this.$router.push(`/document/view/${pageKey}`)
+      this.$router.push(`/document/view/${this.currentPageKey}`)
     },
     calculateWindowWidth() {
       this.windowHeight = window.innerHeight
