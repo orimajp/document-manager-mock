@@ -22,21 +22,21 @@
       @input="updateTitle"
     />
     <v-btn-toggle v-model="option" dense multiple class="option-button-group">
-      <v-btn value="DARK" color="secondary">
+      <v-btn value="DARK" color="secondary" tabindex="-1">
         DARK
       </v-btn>
-      <v-btn value="SYNC" color="secondary">
+      <v-btn value="SYNC" color="secondary" tabindex="-1">
         SYNC
       </v-btn>
     </v-btn-toggle>
     <v-btn-toggle v-model="mode" dense>
-      <v-btn :value="editValue" color="secondary">
+      <v-btn :value="editValue" color="secondary" tabindex="-1">
         <span>EDIT</span>
       </v-btn>
-      <v-btn :value="dualValue" color="secondary">
+      <v-btn :value="dualValue" color="secondary" tabindex="-1">
         <span>DUAL</span>
       </v-btn>
-      <v-btn :value="prevValue" color="secondary">
+      <v-btn :value="prevValue" color="secondary" tabindex="-1">
         <span>PREV</span>
       </v-btn>
     </v-btn-toggle>
