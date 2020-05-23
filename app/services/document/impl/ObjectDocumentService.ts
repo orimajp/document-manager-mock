@@ -6,6 +6,7 @@ import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
 import { NewPageData } from '~/models/document/NewPageData'
+import { documentNodeNestHandler } from '~/services/document/DocumentNodeNestHandler'
 
 class ObjectDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -134,6 +135,37 @@ class ObjectDocumentService implements IDocumentService {
       resolve()
     })
   }
+
+  registerPageAppendChild(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void> {
+    return new Promise<void>(resolve => {
+      const pageData = {
+        documentKey: newPageData.documentKey as string,
+        pageKey: newPageKey,
+        pageTitle: newPageData.title,
+        pageData: newPageData.pageData
+      } as DocumentPage
+
+      documentPages.push(pageData) // 別のインタフェースだが、構造が同じなのでTypsScript的にはOK
+
+      const node = {
+        pageTitle: newPageData.title,
+        pageKey: newPageKey,
+        nodes: [] as Array<DocumentNodeData>
+      } as DocumentNodeData
+
+      prevendNewDocumentNode(
+        targetPagekey,
+        newPageData.documentKey as string,
+        node
+      )
+
+      resolve()
+    })
+  }
 }
 
 export const objectDocumentService = new ObjectDocumentService()
@@ -159,6 +191,57 @@ const createPage = (pageKey: string): DocumentPageData | null => {
 
   return null
 }
+
+/*
+ドキュメントツリー中のノード検索方法
+1.ターゲットのページキーを使ってページデータを取得
+2.ページデータのドキュメントキーを取得
+3.ドキュメントキーを使ってドキュメントを取得
+4.ドキュメントのノードからノードツリーを取得
+5.ノードツリーを再帰的にページ検索
+※ページリンクを子供に追加する場合はこれでいいが、同一階層に追加する場合は親階層のnodeが必要
+*/
+
+/*
+const getParentNode = (pageKey: string): DocumentNodeData => {
+}
+*/
+
+const prevendNewDocumentNode = (
+  targetPageKey: string,
+  documentKey: string,
+  newDocumentNode: DocumentNodeData
+): void => {
+  const documentNode = nodeMap.get(documentKey)
+  if (documentNode === undefined) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。documentKey=${documentKey}`
+    )
+  }
+
+  const result = documentNodeNestHandler.prevendChileTargetNode(
+    targetPageKey,
+    documentNode,
+    newDocumentNode
+  )
+
+  if (!result) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。 pageKey=${targetPageKey}`
+    )
+  }
+}
+
+/*
+const nestSearchParentNode = (
+  pageKey: string,
+  nodes: Array<DocumentNodeData>
+): DocumentNodeData => {
+  console.log(pageKey)
+  console.log(nodes)
+  return {} as DocumentNodeData // TODO
+}
+*/
 
 const documentNode1: DocumentNodeData = {
   pageTitle: 'ページ0',

@@ -84,12 +84,15 @@ export default Vue.extend({
     // TreeEditSelectionDialog,
     TreeEditAlertDialog
   },
-  async asyncData({ params }: Context) {
+  async asyncData({ params, query }: Context) {
     const key = params.key
+    const targetKey = query.targetKey ? query.targetKey : null
+    console.log(`key=${key}, targetKey=${targetKey}`)
     const page = await documentService.getRowPage(key)
     const document = await documentService.getRowDocument(page.documentKey)
     return {
       currentPageKey: key,
+      targetPageKey: targetKey,
       documentKey: document.documentKey
     }
   },
@@ -180,13 +183,11 @@ export default Vue.extend({
         this.page.pageData,
         this.documentKey
       )
-      const key = await documentService.registerNewPage(newPageData)
-      this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
-      if (await this.canTreeEdit()) {
-        this.$refs.dialog.openDialog(key)
+      if (this.targetPageKey === null) {
+        await this.registerNewPage(newPageData)
         return
       }
-      await this.$router.push(`/document/view/${key}`)
+      await this.registerNewPageAppendChild(newPageData)
     },
     async canTreeEdit() {
       const document = await documentService.getDocument(this.documentKey)
@@ -195,6 +196,23 @@ export default Vue.extend({
         return true
       }
       return treeNode.nodes.length === 1 && treeNode.nodes[0].nodes.length > 0
+    },
+    async registerNewPage(newPageData) {
+      const key = await documentService.registerNewPage(newPageData)
+      this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
+      if (await this.canTreeEdit()) {
+        this.$refs.dialog.openDialog(key)
+        return
+      }
+      await this.$router.push(`/document/view/${key}`)
+    },
+    async registerNewPageAppendChild(newPageData) {
+      const key = await documentService.registerNewPageAppendChild(
+        this.targetPageKey,
+        newPageData
+      )
+      this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
+      await this.$router.push(`/document/view/${key}`)
     },
     cancelDocument() {
       this.$router.push(`/document/view/${this.currentPageKey}`)

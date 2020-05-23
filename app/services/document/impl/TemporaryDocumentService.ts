@@ -6,6 +6,7 @@ import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { NewPageData } from '~/models/document/NewPageData'
+import { documentNodeNestHandler } from '~/services/document/DocumentNodeNestHandler'
 
 export class TemporaryDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -158,6 +159,62 @@ export class TemporaryDocumentService implements IDocumentService {
 
       resolve()
     })
+  }
+
+  registerPageAppendChild(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void> {
+    return new Promise<void>(resolve => {
+      const pageData = {
+        documentKey: newPageData.documentKey as string,
+        pageKey: newPageKey,
+        pageTitle: newPageData.title,
+        pageData: newPageData.pageData
+      } as DocumentPage
+
+      pageDatas.set(newPageKey, pageData)
+
+      const node = {
+        pageTitle: newPageData.title,
+        pageKey: newPageKey,
+        nodes: [] as Array<DocumentNodeData>
+      } as DocumentNodeData
+
+      prevendNewDocumentNode(
+        targetPagekey,
+        newPageData.documentKey as string,
+        node
+      )
+
+      resolve()
+    })
+  }
+}
+
+const prevendNewDocumentNode = (
+  targetPageKey: string,
+  documentKey: string,
+  newDocumentNode: DocumentNodeData
+): void => {
+  const documentMain = documentMainDatas.get(documentKey)
+  if (documentMain === undefined) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。documentKey=${documentKey}`
+    )
+  }
+
+  const result = documentNodeNestHandler.prevendChileTargetNode(
+    targetPageKey,
+    documentMain.node,
+    newDocumentNode
+  )
+
+  if (!result) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。 pageKey=${targetPageKey}`
+    )
   }
 }
 

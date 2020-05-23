@@ -12,12 +12,19 @@
           新規ウィンドウで開く
         </v-list-item-title>
       </v-list-item>
+      <v-divider />
+      <v-list-item class="menu-item">
+        <v-list-item-title @click="createChildPage">
+          子の先頭にページを追加
+        </v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { documentService } from '~/services/document/DocumentService'
 
 // https://stackoverflow.com/questions/55892377/how-to-add-right-click-event-for-v-treeview-to-open-menu-in-vuetify
 export default Vue.extend({
@@ -40,6 +47,13 @@ export default Vue.extend({
     openPage() {
       const url = `/document/view/${this.openPageKey}`
       window.open(url, '_blank')
+    },
+    async createChildPage() {
+      const page = await documentService.getRowPage(this.openPageKey)
+      const documentKey = page.documentKey
+      this.$router.push(
+        `/document/create/page/${documentKey}?targetKey=${this.openPageKey}`
+      )
     }
   }
 })

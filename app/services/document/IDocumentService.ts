@@ -23,4 +23,9 @@ export interface IDocumentService {
     newDocumentData: NewDocumentData
   ): Promise<void>
   registerPage(pageKey: string, newPageData: NewPageData): Promise<void>
+  registerPageAppendChild(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void>
 }
