@@ -32,14 +32,16 @@ export default Vue.extend({
     showContextMenu: false,
     contextMenuX: 0,
     contextMenuY: 0,
-    openPageKey: null
+    openPageKey: null,
+    top: false
   }),
   methods: {
-    openContextMenu(e, pageKey) {
+    openContextMenu(e, pageKey, top) {
       this.openPageKey = pageKey
       this.showContextMenu = false
       this.contextMenuX = e.clientX
       this.contextMenuY = e.clientY
+      this.top = top
       this.$nextTick(() => {
         this.showContextMenu = true
       })

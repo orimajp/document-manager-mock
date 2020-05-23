@@ -115,6 +115,11 @@ li {
   padding-top: 10px;
   padding-bottom: 10px;
   /*position: relative;*/
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .doc-list:hover {
   background-color: lightgrey;

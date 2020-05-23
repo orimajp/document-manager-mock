@@ -16,7 +16,7 @@
         :class="{ selected: selected }"
         :data-page-key="documentKey"
         @click="goDocumentTop"
-        @contextmenu="openContextMenu"
+        @contextmenu="openTopCntextMenu"
         v-text="pageTitle"
       />
       <ul class="tree-area">
@@ -102,8 +102,12 @@ export default Vue.extend({
     goDocumentTop(): void {
       this.$router.push(`./${this.documentKey}`)
     },
+    openTopCntextMenu(e) {
+      e.preventDefault()
+      this.$refs.contextMenu.openContextMenu(e, this.documentKey, true)
+    },
     openContextMenu(e, pageKey) {
-      this.$refs.contextMenu.openContextMenu(e, pageKey)
+      this.$refs.contextMenu.openContextMenu(e, pageKey, false)
     }
   }
 })
@@ -123,6 +127,11 @@ export default Vue.extend({
   padding: 5px 0 5px 10px;
   margin-bottom: 5px;
   cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .document-top-link:hover {
   background-color: lightgray;
