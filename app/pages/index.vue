@@ -2,29 +2,23 @@
   <div>
     <v-content>
       <v-container>
-        <!--
-        <h1>ナビゲーション</h1>
-        <ul>
-          <li>
-            <nuxt-link to="/document/view/page0">
-              ツリー構造テスト(page0)
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/document/view/md-page0">
-              markdownレンダリングテスト(md-page0)
-            </nuxt-link>
-          </li>
-        </ul>
-        -->
-        <h1>ナビゲーション</h1>
-        <ul>
-          <li v-for="(record, index) in records" :key="index">
-            <nuxt-link :to="getNuxtLink(record.documentKey)">
-              {{ record.pageName }}
-            </nuxt-link>
-          </li>
-        </ul>
+        <h1>ドキュメント一覧</h1>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th>ドキュメント名</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(record, index) in records" :key="index">
+                <td @click="goPage(record.documentKey)">
+                  {{ record.pageName }}
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-container>
     </v-content>
   </div>
@@ -40,15 +34,19 @@ export default Vue.extend({
   asyncData(ctx: Context): Promise<object | void> | object | void {
     const records = documentService.getDocumentList()
     return {
-      records
+      records: records.slice().reverse()
     }
   },
   methods: {
-    getNuxtLink(documentKey) {
-      return `/document/view/${documentKey}`
+    goPage(documentKey) {
+      this.$router.push(`/document/view/${documentKey}`)
     }
   }
 })
 </script>
 
-<style></style>
+<style scoped>
+td {
+  cursor: pointer;
+}
+</style>

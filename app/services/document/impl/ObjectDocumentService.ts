@@ -95,8 +95,8 @@ class ObjectDocumentService implements IDocumentService {
   getDocumentList(): Array<DocumentListRecord> {
     return [
       {
-        pageName: 'ページ0のタイトル',
-        documentKey: 'page0'
+        pageName: documentNode1.pageTitle,
+        documentKey: documentNode1.pageKey
       }
     ] as Array<DocumentListRecord>
   }
@@ -244,7 +244,7 @@ const nestSearchParentNode = (
 */
 
 const documentNode1: DocumentNodeData = {
-  pageTitle: 'ページ0',
+  pageTitle: 'ページ0のタイトル(ツリーテスト)',
   pageKey: 'page0',
   nodes: [
     {
@@ -329,7 +329,7 @@ const documentPages: Array<DocumentPageData> = [
   {
     documentKey: 'page0',
     pageKey: 'page0',
-    pageTitle: 'ページ0のタイトル',
+    pageTitle: 'ページ0のタイトル(ツリーテスト)',
     pageData: 'ページ0のデータ'
   },
   {
