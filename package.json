@@ -36,7 +36,7 @@
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
-    "@mdi/font": "^5.2.45",
+    "@mdi/font": "^5.3.45",
     "@nuxt/typescript-build": "^1.0.0",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
