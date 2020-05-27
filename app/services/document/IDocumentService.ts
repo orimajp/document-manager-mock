@@ -28,4 +28,9 @@ export interface IDocumentService {
     newPageKey: string,
     newPageData: NewPageData
   ): Promise<void>
+  registerPageAppendNext(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void>
 }

@@ -6,7 +6,10 @@ import { DocumentMain } from '~/models/document/DocumentMain'
 import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
 import { NewPageData } from '~/models/document/NewPageData'
-import { documentNodeNestHandler } from '~/services/document/DocumentNodeNestHandler'
+import {
+  documentNodeNestHandler,
+  UNMATCH
+} from '~/services/document/DocumentNodeNestHandler'
 
 class FileDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -164,6 +167,37 @@ class FileDocumentService implements IDocumentService {
       resolve()
     })
   }
+
+  registerPageAppendNext(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void> {
+    return new Promise<void>(resolve => {
+      const pageData = {
+        documentKey: newPageData.documentKey as string,
+        pageKey: newPageKey,
+        pageTitle: newPageData.title,
+        pageData: newPageData.pageData
+      } as DocumentPage
+
+      documentPages.push(pageData) // 別のインタフェースだが、構造が同じなのでTypsScript的にはOK
+
+      const node = {
+        pageTitle: newPageData.title,
+        pageKey: newPageKey,
+        nodes: [] as Array<DocumentNodeData>
+      } as DocumentNodeData
+
+      appendNewDocumentNode(
+        targetPagekey,
+        newPageData.documentKey as string,
+        node
+      )
+
+      resolve()
+    })
+  }
 }
 
 export const fileDocumentService = new FileDocumentService()
@@ -220,6 +254,31 @@ const prevendNewDocumentNode = (
   )
 
   if (!result) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。 pageKey=${targetPageKey}`
+    )
+  }
+}
+
+const appendNewDocumentNode = (
+  targetPageKey: string,
+  documentKey: string,
+  newDocumentNode: DocumentNodeData
+): void => {
+  const documentNode = nodeMap.get(documentKey)
+  if (documentNode === undefined) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。documentKey=${documentKey}`
+    )
+  }
+
+  const result = documentNodeNestHandler.appendNextTargetNode(
+    targetPageKey,
+    documentNode,
+    newDocumentNode
+  )
+
+  if (result === UNMATCH) {
     throw new Error(
       `ドキュメントノードが見つかりません。 pageKey=${targetPageKey}`
     )

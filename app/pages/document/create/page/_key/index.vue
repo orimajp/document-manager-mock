@@ -86,13 +86,20 @@ export default Vue.extend({
   },
   async asyncData({ params, query }: Context) {
     const key = params.key
-    const targetKey = query.targetKey ? query.targetKey : null
+    const prevendChildTargetKey = query.prevendChildTargetKey
+      ? query.prevendChildTargetKey
+      : null
+    const appendNextTargetKey = query.appendNextTargetKey
+      ? query.appendNextTargetKey
+      : null
+    const targetKey = prevendChildTargetKey || appendNextTargetKey || null
     console.log(`key=${key}, targetKey=${targetKey}`)
     const page = await documentService.getRowPage(key)
     const document = await documentService.getRowDocument(page.documentKey)
     return {
       currentPageKey: key,
-      targetPageKey: targetKey,
+      prevendChildTargetKey,
+      appendNextTargetKey,
       documentKey: document.documentKey
     }
   },
@@ -183,11 +190,15 @@ export default Vue.extend({
         this.page.pageData,
         this.documentKey
       )
-      if (this.targetPageKey === null) {
-        await this.registerNewPage(newPageData)
+      if (this.prevendChildTargetKey !== null) {
+        await this.registerNewPagePrevendChild(newPageData)
         return
       }
-      await this.registerNewPageAppendChild(newPageData)
+      if (this.appendNextTargetKey !== null) {
+        await this.registerNewPageAppendNext(newPageData)
+        return
+      }
+      await this.registerNewPage(newPageData)
     },
     async canTreeEdit() {
       const document = await documentService.getDocument(this.documentKey)
@@ -206,9 +217,17 @@ export default Vue.extend({
       }
       await this.$router.push(`/document/view/${key}`)
     },
-    async registerNewPageAppendChild(newPageData) {
-      const key = await documentService.registerNewPageAppendChild(
-        this.targetPageKey,
+    async registerNewPagePrevendChild(newPageData) {
+      const key = await documentService.registerNewPagePrevendChild(
+        this.prevendChildTargetKey,
+        newPageData
+      )
+      this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない
+      await this.$router.push(`/document/view/${key}`)
+    },
+    async registerNewPageAppendNext(newPageData) {
+      const key = await documentService.registerNewPageAppendNext(
+        this.appendNextTargetKey,
         newPageData
       )
       this.$accessor.crearDocumentKey() // これやらないと表示ページ再表示時にドキュメントが再ロードされずツリー変更が反映されない

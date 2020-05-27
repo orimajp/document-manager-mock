@@ -6,7 +6,10 @@ import { DocumentListRecord } from '~/models/document/DocumentListRecord'
 import { NewDocumentData } from '~/models/document/NewDocumentData'
 import { DocumentMainBuilder } from '~/models/document/DocumentMainBuilder'
 import { NewPageData } from '~/models/document/NewPageData'
-import { documentNodeNestHandler } from '~/services/document/DocumentNodeNestHandler'
+import {
+  documentNodeNestHandler,
+  UNMATCH
+} from '~/services/document/DocumentNodeNestHandler'
 
 export class TemporaryDocumentService implements IDocumentService {
   getDocument(documentKey: string): Promise<DocumentMain> {
@@ -69,6 +72,22 @@ export class TemporaryDocumentService implements IDocumentService {
     }
     page.pageTitle = pageData.pageTitle
     page.pageData = pageData.pageData
+
+    if (pageData.pageKey !== pageData.documentKey) {
+      return
+    }
+    for (const record of records) {
+      if (record.documentKey === pageData.documentKey) {
+        record.pageName = pageData.pageTitle
+        return
+      }
+    }
+
+    const document = documentMainDatas.get(pageData.documentKey)
+    if (document === undefined) {
+      return
+    }
+    document.node.pageTitle = pageData.pageTitle
   }
 
   updateRowDocumentNodes(
@@ -94,6 +113,22 @@ export class TemporaryDocumentService implements IDocumentService {
     }
     page.pageTitle = pageData.pageTitle
     page.pageData = pageData.pageData
+
+    if (pageData.pageKey !== pageData.documentKey) {
+      return
+    }
+    for (const record of records) {
+      if (record.documentKey === pageData.documentKey) {
+        record.pageName = pageData.pageTitle
+        return
+      }
+    }
+
+    const document = documentMainDatas.get(pageData.documentKey)
+    if (document === undefined) {
+      return
+    }
+    document.node.pageTitle = pageData.pageTitle
   }
 
   getDocumentList(): Array<DocumentListRecord> {
@@ -191,6 +226,37 @@ export class TemporaryDocumentService implements IDocumentService {
       resolve()
     })
   }
+
+  registerPageAppendNext(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void> {
+    return new Promise<void>(resolve => {
+      const pageData = {
+        documentKey: newPageData.documentKey as string,
+        pageKey: newPageKey,
+        pageTitle: newPageData.title,
+        pageData: newPageData.pageData
+      } as DocumentPage
+
+      pageDatas.set(newPageKey, pageData)
+
+      const node = {
+        pageTitle: newPageData.title,
+        pageKey: newPageKey,
+        nodes: [] as Array<DocumentNodeData>
+      } as DocumentNodeData
+
+      appendNewDocumentNode(
+        targetPagekey,
+        newPageData.documentKey as string,
+        node
+      )
+
+      resolve()
+    })
+  }
 }
 
 const prevendNewDocumentNode = (
@@ -212,6 +278,31 @@ const prevendNewDocumentNode = (
   )
 
   if (!result) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。 pageKey=${targetPageKey}`
+    )
+  }
+}
+
+const appendNewDocumentNode = (
+  targetPageKey: string,
+  documentKey: string,
+  newDocumentNode: DocumentNodeData
+): void => {
+  const documentMain = documentMainDatas.get(documentKey)
+  if (documentMain === undefined) {
+    throw new Error(
+      `ドキュメントノードが見つかりません。documentKey=${documentKey}`
+    )
+  }
+
+  const result = documentNodeNestHandler.appendNextTargetNode(
+    targetPageKey,
+    documentMain.node,
+    newDocumentNode
+  )
+
+  if (result === UNMATCH) {
     throw new Error(
       `ドキュメントノードが見つかりません。 pageKey=${targetPageKey}`
     )

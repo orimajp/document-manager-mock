@@ -105,15 +105,29 @@ class DocumentService implements IDocumentService {
     )
   }
 
-  registerNewPageAppendNext(
+  registerPageAppendNext(
+    targetPagekey: string,
+    newPageKey: string,
+    newPageData: NewPageData
+  ): Promise<void> {
+    return getDocumentService(targetPagekey).registerPageAppendNext(
+      targetPagekey,
+      newPageKey,
+      newPageData
+    )
+  }
+
+  async registerNewPageAppendNext(
     targetPagekey: string,
     newPageData: NewPageData
   ): Promise<String> {
     console.log(`positionPageKey=${targetPagekey}, newPageData=${newPageData}`)
-    return Promise.resolve('a')
+    const pageKey = pageKeyFactory.createPageKey(newPageData.documentKey)
+    await this.registerPageAppendNext(targetPagekey, pageKey, newPageData)
+    return pageKey
   }
 
-  async registerNewPageAppendChild(
+  async registerNewPagePrevendChild(
     targetPagekey: string,
     newPageData: NewPageData
   ): Promise<String> {

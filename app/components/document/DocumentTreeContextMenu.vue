@@ -18,6 +18,11 @@
           子の先頭にページを追加
         </v-list-item-title>
       </v-list-item>
+      <v-list-item v-if="!top" class="menu-item">
+        <v-list-item-title @click="createNextPage">
+          次にページを追加
+        </v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -54,7 +59,14 @@ export default Vue.extend({
       const page = await documentService.getRowPage(this.openPageKey)
       const documentKey = page.documentKey
       this.$router.push(
-        `/document/create/page/${documentKey}?targetKey=${this.openPageKey}`
+        `/document/create/page/${documentKey}?prevendChildTargetKey=${this.openPageKey}`
+      )
+    },
+    async createNextPage() {
+      const page = await documentService.getRowPage(this.openPageKey)
+      const documentKey = page.documentKey
+      this.$router.push(
+        `/document/create/page/${documentKey}?appendNextTargetKey=${this.openPageKey}`
       )
     }
   }
