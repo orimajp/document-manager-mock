@@ -47,7 +47,10 @@
     <!--
     <tree-edit-selection-dialog ref="dialog" :document-key="documentKey" />
     -->
+    <!--
     <tree-edit-alert-dialog ref="dialog" />
+    -->
+    <tree-edit-dialog ref="dialog" />
   </div>
 </template>
 
@@ -66,7 +69,8 @@ import {
 import { WindowSize } from '~/models/WindowSize'
 import MarkdownEditor from '~/components/document/editor/MarkdownEditor.vue'
 // import TreeEditSelectionDialog from '~/components/document/create/TreeEditSelectionDialog'
-import TreeEditAlertDialog from '~/components/document/create/TreeEditAlertDialog'
+// import TreeEditAlertDialog from '~/components/document/create/TreeEditAlertDialog'
+import TreeEditDialog from '~/components/document/create/TreeEditDialog'
 import { NewPageData } from '~/models/document/NewPageData'
 import DocumentEditorCreateFooter from '~/components/document/create/DocumentEditorCreateFooter.vue'
 
@@ -82,7 +86,8 @@ export default Vue.extend({
     DocumentContent,
     DocumentEditorCreateFooter,
     // TreeEditSelectionDialog,
-    TreeEditAlertDialog
+    // TreeEditAlertDialog
+    TreeEditDialog
   },
   async asyncData({ params, query }: Context) {
     const key = params.key
