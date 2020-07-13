@@ -12,7 +12,7 @@
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^0.4.10",
+    "@nuxt/typescript-runtime": "^1.0.0",
     "@nuxtjs/markdownit": "^1.2.9",
     "@types/highlightjs": "^9.12.0",
     "github-markdown-css": "^4.0.0",
@@ -30,14 +30,15 @@
     "markdown-it-sub": "^1.0.0",
     "markdown-it-video": "^0.6.3",
     "monaco-editor-webpack-plugin": "^1.9.0",
-    "nuxt": "^2.13.0",
+    "nuxt": "^2.13.3",
     "nuxt-typed-vuex": "^0.1.19",
     "vue-monaco": "^1.2.1",
-    "vuedraggable": "^2.23.2"
+    "vuedraggable": "^2.24.0"
   },
   "devDependencies": {
     "@mdi/font": "^5.3.45",
-    "@nuxt/typescript-build": "^1.0.3",
+    "@nuxt/types": "^2.13.3",
+    "@nuxt/typescript-build": "^2.0.0",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
@@ -45,7 +46,7 @@
     "@types/vuedraggable": "^2.23.1",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.3.0",
+    "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-nuxt": ">=1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
