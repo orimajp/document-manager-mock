@@ -30,14 +30,14 @@
     "markdown-it-sub": "^1.0.0",
     "markdown-it-video": "^0.6.3",
     "monaco-editor-webpack-plugin": "^1.9.0",
-    "nuxt": "^2.14.0",
-    "nuxt-typed-vuex": "^0.1.19",
+    "nuxt": "^2.14.4",
+    "nuxt-typed-vuex": "^0.1.20",
     "vue-monaco": "^1.2.1",
-    "vuedraggable": "^2.24.0"
+    "vuedraggable": "^2.24.1"
   },
   "devDependencies": {
-    "@mdi/font": "^5.4.55",
-    "@nuxt/types": "^2.14.0",
+    "@mdi/font": "^5.5.55",
+    "@nuxt/types": "^2.14.4",
     "@nuxt/typescript-build": "^2.0.2",
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
@@ -46,10 +46,10 @@
     "@types/vuedraggable": "^2.23.1",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.5.0",
+    "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-nuxt": ">=1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5"
+    "prettier": "^2.1.1"
   }
 }

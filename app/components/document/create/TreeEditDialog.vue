@@ -2,9 +2,7 @@
   <v-dialog v-model="dialog" persistent max-width="800">
     <div class="tree-edit-content">
       <v-card outlined :height="dialogAreaHeight">
-        <v-card-title>
-          メニュー階層変更
-        </v-card-title>
+        <v-card-title> メニュー階層変更 </v-card-title>
         <v-card-text :style="{ height: editAreaHeight }">
           <div class="tree-edit-area" :style="{ height: editAreaHeight }">
             <document-editable-tree

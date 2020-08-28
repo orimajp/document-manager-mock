@@ -1,9 +1,7 @@
 <template>
   <v-app-bar app clipped-left dark dense class="primary">
     <v-btn icon @click="goTop">
-      <v-icon>
-        mdi-home
-      </v-icon>
+      <v-icon> mdi-home </v-icon>
     </v-btn>
     <v-toolbar-title v-text="pageTitle" />
     <v-spacer />

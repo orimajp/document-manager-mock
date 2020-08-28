@@ -39,6 +39,7 @@
   "files": [
     // "shims-vue.d.ts"
     "app/types/vue-shim.d.ts",
+    // "app/types/highlightjs-vue.d.ts",
     "node_modules/monaco-editor/monaco.d.ts"
   ],
   "exclude": [
